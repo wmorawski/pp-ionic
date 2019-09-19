@@ -1,3 +1,14 @@
-<ion-app>
-  <ion-router-outlet></ion-router-outlet>
-</ion-app>
+<div class="flex-container">
+  <Flex>
+    <FlexItem>
+      <Navbar [rightContent]="rightContent" [mode]="'light'" (onLeftClick)="onLeftClick()">
+        PartyPlanner
+      </Navbar>
+    </FlexItem>
+  </Flex>
+</div>
+
+
+<ng-template #rightContent>
+  <Icon [type]="'search'" [ngStyle]="{ marginRight: '16px' }"></Icon>
+</ng-template>
