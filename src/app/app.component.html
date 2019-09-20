@@ -1,14 +1,9 @@
-<div class="flex-container">
-  <Flex>
-    <FlexItem>
-      <Navbar [rightContent]="rightContent" [mode]="'light'" (onLeftClick)="onLeftClick()">
-        PartyPlanner
-      </Navbar>
-    </FlexItem>
-  </Flex>
-</div>
+<Navbar [leftContent]="left" [rightContent]="rightContent" [mode]="'light'" (onLeftClick)="onLeftClick()"></Navbar>
 
+<ng-template #left>
+    <app-logo></app-logo>
+</ng-template>
 
 <ng-template #rightContent>
-  <Icon [type]="'search'" [ngStyle]="{ marginRight: '16px' }"></Icon>
+    <Icon [type]="'search'" [ngStyle]="{ marginRight: '16px' }"></Icon>
 </ng-template>
