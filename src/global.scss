@@ -24,7 +24,89 @@
 @import '~@ionic/angular/css/text-alignment.css';
 @import '~@ionic/angular/css/text-transformation.css';
 @import '~@ionic/angular/css/flex-utils.css';
+@import '~animate.css/animate.min.css';
 
 body {
     background: var(--ion-color-light);
+}
+.flex-container {
+    margin: 0 15px;
+}
+.bg-primary {
+    background: var(--ion-color-primary);
+}
+.vh100 {
+    height: 100vh;
+}
+.animated.delay-500ms {
+    -webkit-animation-delay: 500ms;
+    animation-delay: 500ms;
+}
+.animated.delay-100ms {
+    -webkit-animation-delay: 100ms;
+    animation-delay: 100ms;
+}
+.animated.delay-200ms {
+    -webkit-animation-delay: 200ms;
+    animation-delay: 200ms;
+}
+.animated.delay-300ms {
+    -webkit-animation-delay: 300ms;
+    animation-delay: 300ms;
+}
+.animated.delay-400ms {
+    -webkit-animation-delay: 400ms;
+    animation-delay: 400ms;
+}
+.animated.delay-600ms {
+    -webkit-animation-delay: 600ms;
+    animation-delay: 600ms;
+}
+.animated.delay-700ms {
+    -webkit-animation-delay: 700ms;
+    animation-delay: 700ms;
+}
+.animated.delay-800ms {
+    -webkit-animation-delay: 800ms;
+    animation-delay: 800ms;
+}
+.animated.delay-900ms {
+    -webkit-animation-delay: 900ms;
+    animation-delay: 900ms;
+}
+.animated.duration-100ms {
+    -webkit-animation-duration: 100ms;
+    animation-duration: 100ms;
+}
+.animated.duration-200ms {
+    -webkit-animation-duration: 200ms;
+    animation-duration: 200ms;
+}
+.animated.duration-300ms {
+    -webkit-animation-duration: 300ms;
+    animation-duration: 300ms;
+}
+.animated.duration-400ms {
+    -webkit-animation-duration: 400ms;
+    animation-duration: 400ms;
+}
+.animated.duration-500ms {
+    -webkit-animation-duration: 500ms;
+    animation-duration: 500ms;
+}
+.animated.duration-600ms {
+    -webkit-animation-duration: 600ms;
+    animation-duration: 600ms;
+}
+.animated.duration-700ms {
+    -webkit-animation-duration: 700ms;
+    animation-duration: 700ms;
+}
+.animated.duration-800ms {
+    -webkit-animation-duration: 800ms;
+    animation-duration: 800ms;
+}
+.animated.duration-900ms {
+    -webkit-animation-duration: 900ms;
+    animation-duration: 900ms;
 }
