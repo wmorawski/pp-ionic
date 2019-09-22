@@ -16,9 +16,13 @@ export class AppComponent {
         private platform: Platform,
         private splashScreen: SplashScreen,
         private statusBar: StatusBar,
-        private authService: AuthService
+        private authService: AuthService,
     ) {
         this.initializeApp();
+        this.authService.isAuthenticated.subscribe((logged) => {
+            this.isLogged = logged;
+        });
+        this.authService.autoLogin();
     }
 
     initializeApp() {
@@ -28,9 +32,5 @@ export class AppComponent {
         });
     }
 
-    ionViewWillEnter() {
-        this.authService.isAuthenticated.subscribe(logged => {
-            this.isLogged = logged;
-        });
-    }
+    ionViewWillEnter() {}
 }

@@ -1,3 +1,4 @@
+import { NavController } from '@ionic/angular';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { PP_USER_ID, PP_AUTH_TOKEN } from 'src/app/constants';
@@ -9,7 +10,7 @@ export class AuthService {
     private userId: string = null;
     private _isAuthenticated = new BehaviorSubject(false);
 
-    constructor() {}
+    constructor(private readonly navCtrl: NavController) {}
 
     get isAuthenticated(): Observable<boolean> {
         return this._isAuthenticated.asObservable();
@@ -35,6 +36,7 @@ export class AuthService {
         localStorage.removeItem(PP_AUTH_TOKEN);
         this.userId = null;
         this._isAuthenticated.next(false);
+        this.navCtrl.navigateRoot(['/auth/login']);
     }
 
     autoLogin() {

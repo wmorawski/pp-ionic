@@ -1,3 +1,4 @@
+import { NavController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { PP_USER_ID, PP_AUTH_TOKEN } from 'src/app/constants';
@@ -13,13 +14,19 @@ import { Router } from '@angular/router';
 export class LoginPage implements OnInit {
     public email = '';
     public password = '';
-    constructor(private authService: AuthService, private readonly apollo: Apollo, private router: Router) {}
+    public loading = false;
+    constructor(
+        private authService: AuthService,
+        private readonly apollo: Apollo,
+        private readonly navCtrl: NavController,
+    ) {}
 
     ngOnInit() {}
 
     confirm() {
+        this.loading = true;
         this.apollo
-            .mutate({
+            .mutate<any>({
                 mutation: LOGIN_MUTATION,
                 variables: {
                     email: this.email,
@@ -27,16 +34,18 @@ export class LoginPage implements OnInit {
                 },
             })
             .subscribe(
-                result => {
+                (result) => {
+                    this.loading = false;
                     const id = result.data.login.user.id;
                     const token = result.data.login.token;
                     this.saveUserData(id, token);
 
-                    this.router.navigate(['/']);
+                    this.navCtrl.navigateRoot(['/']);
                 },
-                error => {
+                (error) => {
+                    this.loading = false;
                     console.log('Ooops, error!');
-                }
+                },
             );
     }
     saveUserData(id, token) {

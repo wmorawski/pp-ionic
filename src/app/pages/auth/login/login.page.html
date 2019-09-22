@@ -1,5 +1,5 @@
 <div class="flex-container" style="display: flex; height: 100%; align-items: center; justify-content: center;">
-    <ion-grid fixed no-padding>
+    <ion-grid fixed class="ion-no-padding">
         <ion-row class="ion-text-center" style="margin-bottom: 1.33em;">
             <ion-col size="12" class="animated zoomIn duration-300ms delay-500ms">
                 <ion-icon name="logo" size="large" style="width: 64px; height: 64px"></ion-icon>
@@ -27,7 +27,15 @@
                 ></ion-input>
             </ion-col>
             <ion-col size="12" style="margin-top: 1em;" class="animated fadeInUp duration-400ms delay-1s">
-                <div Button style="color: var(--ion-color-primary)" (onClick)="confirm()">Sign in</div>
+                <div
+                    Button
+                    [loading]="loading"
+                    [disabled]="loading"
+                    style="color: var(--ion-color-primary)"
+                    (onClick)="confirm()"
+                >
+                    Sign{{ loading ? 'ing' : '' }} in
+                </div>
                 <a style="color: white; padding-top: .66em; display: block;">Create new account</a>
             </ion-col>
         </ion-row>

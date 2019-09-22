@@ -1,13 +1,18 @@
 <ion-app>
     <ng-container *ngIf="isLogged; else notLogged">
-        <Navbar [leftContent]="left" [rightContent]="rightContent" [mode]="'light'" (onLeftClick)="onLeftClick()"></Navbar>
+        <Navbar
+            [leftContent]="left"
+            [rightContent]="rightContent"
+            [mode]="'light'"
+            (onLeftClick)="onLeftClick()"
+        ></Navbar>
         <TabBar [barTintColor]="'white'" [tabBarPosition]="'top'" (onPress)="tabBarTabOnPress($event)">
             <TabBarItem [title]="'Life'" [key]="1" [badge]="1" [icon]="icon1" [selectedIcon]="icon11">
                 <ng-template #icon1>
-                    <a router-link="/home">Home</a>
+                    <ion-icon name="home" style="width: 22px; height: 22px;"></ion-icon>
                 </ng-template>
                 <ng-template #icon11>
-                    <a router-link="/home">Home</a>
+                    <ion-icon name="home" style="width: 22px; height: 22px;"></ion-icon>
                 </ng-template>
                 <div style="background-color: white; height: 100%; text-align: center">
                     <ng-container>
@@ -73,13 +78,13 @@
     </ng-container>
 </ion-app>
 <ng-template #notLogged>
-    <ion-content color="primary" fullscreen="true" force-overscroll="false" class="animated slideInUp faster">
+    <ion-content color="primary" fullscreen="true" force-overscroll="false" class="animated slideInUp duration-300ms">
         <ion-router-outlet></ion-router-outlet>
     </ion-content>
 </ng-template>
 
 <ng-template #content>
-    <ion-router-outlet></ion-router-outlet>
+    <ion-router-outlet class="animated slideInUp duration-300ms"></ion-router-outlet>
 </ng-template>
 
 <ng-template #left>

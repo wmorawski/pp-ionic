@@ -7,12 +7,16 @@ import { NavController } from '@ionic/angular';
     providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
-    constructor(private readonly authService: AuthService, private readonly navCtrl: NavController, private readonly router: Router) {}
+    constructor(
+        private readonly authService: AuthService,
+        private readonly navCtrl: NavController,
+        private readonly router: Router,
+    ) {}
 
     canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         const isLogged = this.authService.isAuthenticatedSync;
         if (!isLogged) {
-            this.router.navigate(['auth', 'login']);
+            this.navCtrl.navigateRoot(['auth', 'login']);
             return false;
         }
         return true;
