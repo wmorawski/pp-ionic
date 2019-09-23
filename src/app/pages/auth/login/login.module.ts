@@ -7,6 +7,8 @@ import { IonicModule } from '@ionic/angular';
 
 import { LoginPage } from './login.page';
 import { NgZorroAntdMobileModule } from 'ng-zorro-antd-mobile';
+import { Facebook } from '@ionic-native/facebook/ngx';
+import { SpotifyAuth } from '@ionic-native/spotify-auth/ngx';
 
 const routes: Routes = [
     {
@@ -17,6 +19,7 @@ const routes: Routes = [
 
 @NgModule({
     imports: [CommonModule, FormsModule, IonicModule, RouterModule.forChild(routes), NgZorroAntdMobileModule],
+    providers: [Facebook, SpotifyAuth],
     declarations: [LoginPage],
 })
 export class LoginPageModule {}
