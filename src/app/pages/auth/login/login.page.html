@@ -11,7 +11,6 @@
                     class="ion-text-left"
                     inputmode="email"
                     [(ngModel)]="email"
-                    autofocus="true"
                     type="email"
                     placeholder="Your e-mail address"
                 ></ion-input>
@@ -27,15 +26,33 @@
                 ></ion-input>
             </ion-col>
             <ion-col size="12" style="margin-top: 1em;" class="animated fadeInUp duration-400ms delay-1s">
+                <div Button [loading]="loading" [disabled]="loading" style="color: var(--ion-color-primary)" (onClick)="confirm()">
+                    Sign{{ loading ? 'ing' : '' }} in
+                </div>
+            </ion-col>
+            <ion-col size="12" style="margin-top: 1em;" class="animated fadeInUp duration-400ms delay-1s">
                 <div
                     Button
                     [loading]="loading"
                     [disabled]="loading"
-                    style="color: var(--ion-color-primary)"
-                    (onClick)="confirm()"
+                    style="color: #fff; background: var(--ion-color-primary)"
+                    (onClick)="fbLogin()"
                 >
-                    Sign{{ loading ? 'ing' : '' }} in
+                    Sign{{ loading ? 'ing' : '' }} in by Facebook
                 </div>
+            </ion-col>
+            <ion-col size="12" style="margin-top: 1em;" class="animated fadeInUp duration-400ms delay-1s">
+                <div
+                    Button
+                    [loading]="loading"
+                    [disabled]="loading"
+                    style="color: #fff; background: var(--ion-color-success)"
+                    (onClick)="spotifyLogin()"
+                >
+                    Sign{{ loading ? 'ing' : '' }} in by Spotify
+                </div>
+            </ion-col>
+            <ion-col size="12" style="margin-top: 1em;" class="animated fadeInUp duration-400ms delay-1s">
                 <a style="color: white; padding-top: .66em; display: block;">Create new account</a>
             </ion-col>
         </ion-row>

@@ -14,6 +14,11 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgZorroAntdMobileModule } from 'ng-zorro-antd-mobile';
 import { GraphQLModule } from './graphql.module';
 import { SharedModule } from './shared/shared.module';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { far } from '@fortawesome/free-regular-svg-icons';
+
+library.add(far);
 
 @NgModule({
     declarations: [AppComponent],
@@ -30,6 +35,7 @@ import { SharedModule } from './shared/shared.module';
         NgZorroAntdMobileModule,
         GraphQLModule,
         SharedModule,
+        FontAwesomeModule,
     ],
     providers: [StatusBar, SplashScreen, { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
     bootstrap: [AppComponent],

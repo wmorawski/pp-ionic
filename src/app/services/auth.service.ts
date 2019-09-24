@@ -32,7 +32,7 @@ export class AuthService {
     }
 
     logout() {
-        localStorage.removeItem(PP_AUTH_TOKEN);
+        localStorage.removeItem(PP_USER_ID);
         localStorage.removeItem(PP_AUTH_TOKEN);
         this.userId = null;
         this._isAuthenticated.next(false);
