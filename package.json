@@ -64,6 +64,8 @@
     "es6-promise-plugin": "^4.2.2",
     "graphql": "^14.3.1",
     "graphql-tag": "^2.10.0",
+    "ionic-text-avatar": "^1.1.0",
+    "ng-zorro-antd": "^8.3.0",
     "ng-zorro-antd-mobile": "^1.0.0-rc.0",
     "rxjs": "~6.5.1",
     "spotify-web-api-js": "^1.2.0",

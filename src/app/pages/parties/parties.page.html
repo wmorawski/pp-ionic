@@ -1,9 +1,26 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>parties</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content>
-
+<ion-content [scrollEvents]="true" (ionScroll)="onScroll($event)" no-bounce>
+    <ng-container *ngIf="!(hasParties | async); else content">
+        <ion-grid
+            fixed
+            class="ion-align-items-center ion-justify-content-center"
+            style="display: flex; height: 100%; flex-direction: column"
+        >
+            <ion-row class="ion-justify-content-center">
+                <ion-col size="10">
+                    <ion-img src="/assets/img/no_data.svg"></ion-img>
+                </ion-col>
+            </ion-row>
+            <ion-row class="ion-justify-content-center">
+                <ion-col size="12" class="ion-text-center">
+                    <span
+                        ><strong><h4>You currently do not have any parties</h4></strong></span
+                    >
+                </ion-col>
+                <ion-col size="12" style="margin-top: 1em;">
+                    <div Button [icon]="'plus'" type="primary" (onClick)="create()">Create new party</div>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </ng-container>
+    <ng-template #content> </ng-template>
 </ion-content>

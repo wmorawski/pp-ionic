@@ -1,13 +1,14 @@
 import { NavController } from '@ionic/angular';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { PP_USER_ID, PP_AUTH_TOKEN } from 'src/app/constants';
 import { ApolloBoost, Apollo } from 'apollo-angular-boost';
-import { LOGIN_MUTATION } from 'src/app/graphql/mutations';
+import { LOGIN_MUTATION, SOCIAL_LOGIN_MUTATION } from 'src/app/graphql/mutations';
 import { Router } from '@angular/router';
 import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook/ngx';
 import { SpotifyAuth } from '@ionic-native/spotify-auth/ngx';
 import * as SpotifyWebApi from 'spotify-web-api-js';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
     selector: 'app-login',
@@ -18,6 +19,9 @@ export class LoginPage implements OnInit {
     public email = '';
     public password = '';
     public loading = false;
+    public facebookLoading = false;
+    public spotifyLoading = false;
+    public error = null;
     constructor(
         private authService: AuthService,
         private readonly apollo: Apollo,
@@ -44,12 +48,12 @@ export class LoginPage implements OnInit {
                     const id = result.data.login.user.id;
                     const token = result.data.login.token;
                     this.saveUserData(id, token);
-
+                    this.error = null;
                     this.navCtrl.navigateRoot(['/']);
                 },
                 error => {
                     this.loading = false;
-                    console.log('Ooops, error!');
+                    this.error = error;
                 }
             );
     }
@@ -60,18 +64,37 @@ export class LoginPage implements OnInit {
     }
 
     async fbLogin() {
+        this.facebookLoading = true;
         this.fb
             .login(['public_profile', 'email'])
             .then((res: FacebookLoginResponse) => {
                 console.log(res);
-                this.fb.api('/me', ['public_profile']).then(user => {
-                    console.log(user);
-                }).catch(error => {
-                    console.log(error)
-                })
+                this.apollo
+                    .mutate<any>({
+                        mutation: SOCIAL_LOGIN_MUTATION,
+                        variables: {
+                            id: res.authResponse.userID,
+                        },
+                    })
+                    .subscribe(
+                        result => {
+                            console.log(result);
+                            const id = result.data.socialLogin.user.id;
+                            const token = result.data.socialLogin.token;
+                            this.saveUserData(id, token);
+                            this.error = null;
+                            this.navCtrl.navigateRoot(['/']);
+                            this.facebookLoading = false;
+                        },
+                        error => {
+                            this.error = error;
+                            this.facebookLoading = false;
+                        }
+                    );
             })
             .catch(err => {
                 console.log('err', err);
+                this.facebookLoading = false;
             });
     }
 

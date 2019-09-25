@@ -5,6 +5,11 @@
                 <ion-icon name="logo" size="large" style="width: 64px; height: 64px"></ion-icon>
             </ion-col>
         </ion-row>
+        <ion-row>
+            <ion-col size="12">
+                <app-graphql-error [error]="error"></app-graphql-error>
+            </ion-col>
+        </ion-row>
         <ion-row class="ion-text-center" style="padding-left: 2em; padding-right: 2em;">
             <ion-col size="12" class="animated fadeInUp duration-400ms delay-800ms">
                 <ion-input
@@ -33,23 +38,23 @@
             <ion-col size="12" style="margin-top: 1em;" class="animated fadeInUp duration-400ms delay-1s">
                 <div
                     Button
-                    [loading]="loading"
-                    [disabled]="loading"
+                    [loading]="facebookLoading"
+                    [disabled]="facebookLoading"
                     style="color: #fff; background: var(--ion-color-primary)"
                     (onClick)="fbLogin()"
                 >
-                    Sign{{ loading ? 'ing' : '' }} in by Facebook
+                    Sign{{ facebookLoading ? 'ing' : '' }} in by Facebook
                 </div>
             </ion-col>
             <ion-col size="12" style="margin-top: 1em;" class="animated fadeInUp duration-400ms delay-1s">
                 <div
                     Button
-                    [loading]="loading"
-                    [disabled]="loading"
+                    [loading]="spotifyLoading"
+                    [disabled]="spotifyLoading"
                     style="color: #fff; background: var(--ion-color-success)"
                     (onClick)="spotifyLogin()"
                 >
-                    Sign{{ loading ? 'ing' : '' }} in by Spotify
+                    Sign{{ spotifyLoading ? 'ing' : '' }} in by Spotify
                 </div>
             </ion-col>
             <ion-col size="12" style="margin-top: 1em;" class="animated fadeInUp duration-400ms delay-1s">

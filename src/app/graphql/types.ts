@@ -1658,6 +1658,7 @@ export type Mutation = {
   joinParty?: Maybe<Scalars['Boolean']>,
   signup: AuthPayload,
   login: AuthPayload,
+  socialLogin: AuthPayload,
   updateMe: User,
   inviteToFriends: User,
   requestReset?: Maybe<SuccessMessage>,
@@ -2139,6 +2140,11 @@ export type MutationSignupArgs = {
 export type MutationLoginArgs = {
   email: Scalars['String'],
   password: Scalars['String']
+};
+
+
+export type MutationSocialLoginArgs = {
+  id: Scalars['String']
 };
 
 
@@ -5611,6 +5617,10 @@ export type LoginMutation = (
   & { login: (
     { __typename?: 'AuthPayload' }
     & Pick<AuthPayload, 'token'>
+    & { user: (
+      { __typename?: 'User' }
+      & Pick<User, 'id'>
+    ) }
   ) }
 );
 
@@ -6071,6 +6081,7 @@ export type SignupVariables = SignupMutationVariables;
 export type SignupSignup = SignupMutation['signup'];
 export type LoginVariables = LoginMutationVariables;
 export type LoginLogin = LoginMutation['login'];
+export type LoginUser = LoginMutation['login']['user'];
 export type CreatePartyVariables = CreatePartyMutationVariables;
 export type CreatePartyCreateParty = Party_FragmentFragment;
 export type CreateMessageVariables = CreateMessageMutationVariables;
@@ -6238,6 +6249,9 @@ export const SignupDocument = gql`
 export const LoginDocument = gql`
     mutation Login($email: String!, $password: String!) {
   login(email: $email, password: $password) {
+    user {
+      id
+    }
     token
   }
 }

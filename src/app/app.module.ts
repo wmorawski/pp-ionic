@@ -17,6 +17,12 @@ import { SharedModule } from './shared/shared.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { far } from '@fortawesome/free-regular-svg-icons';
+import { NgZorroAntdModule, NZ_I18N, pl_PL, en_US } from 'ng-zorro-antd';
+import { registerLocaleData } from '@angular/common';
+import pl from '@angular/common/locales/pl';
+import en from '@angular/common/locales/en';
+
+registerLocaleData(pl);
 
 library.add(far);
 
@@ -36,8 +42,14 @@ library.add(far);
         GraphQLModule,
         SharedModule,
         FontAwesomeModule,
+        NgZorroAntdModule,
     ],
-    providers: [StatusBar, SplashScreen, { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+    providers: [
+        StatusBar,
+        SplashScreen,
+        { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+        { provide: NZ_I18N, useValue: en_US },
+    ],
     bootstrap: [AppComponent],
 })
 export class AppModule {}

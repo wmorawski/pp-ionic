@@ -1,0 +1,48 @@
+<ion-content>
+    <ion-grid>
+        <ion-row>
+            <ion-col size="12">
+                <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+                    <nz-form-item>
+                        <nz-form-control nzErrorTip="Please input your username!">
+                            <nz-input-group nzPrefixIcon="plus" nzSize="large">
+                                <input type="text" nz-input formControlName="title" placeholder="Name your party" />
+                            </nz-input-group>
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item>
+                        <nz-form-control>
+                            <nz-input-group>
+                                <ion-item lines="none">
+                                    <ion-label>Start date</ion-label>
+                                    <ion-datetime
+                                        placeholder="Start Date"
+                                        display-format="DD.MM.YYYY HH:mm"
+                                        picker-format="DD.MM.YYYY HH:mm"
+                                        [min]="minDate"
+                                        minuteValues="0,15,30,45"
+                                    ></ion-datetime>
+                                </ion-item>
+                            </nz-input-group>
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item>
+                        <nz-form-control>
+                            <nz-input-group>
+                                <ion-item lines="none">
+                                    <ion-label>End date</ion-label>
+                                    <ion-datetime displayFormat="MMMM" value="2012-12-15T13:47:20.789"></ion-datetime>
+                                </ion-item>
+                            </nz-input-group>
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item>
+                        <nz-form-control>
+                            <button nz-button nzType="primary" nzBlock nzSize="large">Save</button>
+                        </nz-form-control>
+                    </nz-form-item>
+                </form>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>
