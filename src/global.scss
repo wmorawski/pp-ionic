@@ -27,8 +27,15 @@
 @import '~animate.css/animate.min.css';
 
 body,
-ion-content, main {
+ion-content,
+main,
+.inner-scroll,
+ion-router-outlet,
+.tabs-inner {
     background: var(--ion-color-light) !important;
+}
+main {
+    --background: #f4f5f8 !important;
 }
 .flex-container {
     margin: 0 15px;

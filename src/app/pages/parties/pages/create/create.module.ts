@@ -8,6 +8,7 @@ import { IonicModule } from '@ionic/angular';
 import { CreatePage } from './create.page';
 import { NgZorroAntdModule } from 'ng-zorro-antd';
 import { NgZorroAntdMobileModule } from 'ng-zorro-antd-mobile';
+import { ColorCircleModule } from 'ngx-color/circle'; // <color-circle></color-circle>
 
 const routes: Routes = [
     {
@@ -25,6 +26,7 @@ const routes: Routes = [
         NgZorroAntdModule,
         ReactiveFormsModule,
         NgZorroAntdMobileModule,
+        ColorCircleModule,
     ],
 
     declarations: [CreatePage],

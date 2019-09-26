@@ -1,0 +1,13 @@
+<ion-card class="animated fadeInUp duration-200ms delay-100ms" button [routerLink]="['/parties', party.id]">
+    <img src="/assets/img/having-fun.svg" style="max-height: 300px; width: auto; display: block; margin: 0 auto;" />
+    <ion-card-header>
+        <ion-card-title>{{ party.title }}</ion-card-title>
+        <ion-card-subtitle>
+            <ion-icon name="user"></ion-icon> {{ party.author.firstName }} {{ party.author.lastName }} &nbsp;
+        </ion-card-subtitle>
+        <ion-card-subtitle>
+            <i nz-icon nzType="clock-circle"></i> {{ party.start | date: 'dd MMM HH:mm' }} to
+            {{ party.end | date: 'dd MMM HH:mm' }}</ion-card-subtitle
+        >
+    </ion-card-header>
+</ion-card>

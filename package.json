@@ -67,9 +67,11 @@
     "ionic-text-avatar": "^1.1.0",
     "ng-zorro-antd": "^8.3.0",
     "ng-zorro-antd-mobile": "^1.0.0-rc.0",
+    "ngx-color": "^4.1.0",
     "rxjs": "~6.5.1",
     "spotify-web-api-js": "^1.2.0",
     "tslib": "^1.9.0",
+    "uuid": "^3.3.3",
     "zone.js": "~0.9.1"
   },
   "devDependencies": {

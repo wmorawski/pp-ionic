@@ -2206,7 +2206,6 @@ export type Party = {
   end: Scalars['DateTime'],
   inviteSecret: Scalars['String'],
   playlist?: Maybe<Playlist>,
-  cart?: Maybe<PartyCart>,
 };
 
 
@@ -2258,7 +2257,7 @@ export type PartyCartConnection = {
 
 export type PartyCartCreateInput = {
   id?: Maybe<Scalars['ID']>,
-  party: PartyCreateOneWithoutCartInput,
+  party: PartyCreateOneInput,
   items?: Maybe<PartyCartItemCreateManyWithoutCartInput>,
 };
 
@@ -2267,19 +2266,9 @@ export type PartyCartCreateOneWithoutItemsInput = {
   connect?: Maybe<PartyCartWhereUniqueInput>,
 };
 
-export type PartyCartCreateOneWithoutPartyInput = {
-  create?: Maybe<PartyCartCreateWithoutPartyInput>,
-  connect?: Maybe<PartyCartWhereUniqueInput>,
-};
-
 export type PartyCartCreateWithoutItemsInput = {
   id?: Maybe<Scalars['ID']>,
-  party: PartyCreateOneWithoutCartInput,
-};
-
-export type PartyCartCreateWithoutPartyInput = {
-  id?: Maybe<Scalars['ID']>,
-  items?: Maybe<PartyCartItemCreateManyWithoutCartInput>,
+  party: PartyCreateOneInput,
 };
 
 export type PartyCartEdge = {
@@ -2600,7 +2589,7 @@ export type PartyCartSubscriptionWhereInput = {
 };
 
 export type PartyCartUpdateInput = {
-  party?: Maybe<PartyUpdateOneRequiredWithoutCartInput>,
+  party?: Maybe<PartyUpdateOneRequiredInput>,
   items?: Maybe<PartyCartItemUpdateManyWithoutCartInput>,
 };
 
@@ -2611,31 +2600,13 @@ export type PartyCartUpdateOneRequiredWithoutItemsInput = {
   connect?: Maybe<PartyCartWhereUniqueInput>,
 };
 
-export type PartyCartUpdateOneWithoutPartyInput = {
-  create?: Maybe<PartyCartCreateWithoutPartyInput>,
-  update?: Maybe<PartyCartUpdateWithoutPartyDataInput>,
-  upsert?: Maybe<PartyCartUpsertWithoutPartyInput>,
-  delete?: Maybe<Scalars['Boolean']>,
-  disconnect?: Maybe<Scalars['Boolean']>,
-  connect?: Maybe<PartyCartWhereUniqueInput>,
-};
-
 export type PartyCartUpdateWithoutItemsDataInput = {
-  party?: Maybe<PartyUpdateOneRequiredWithoutCartInput>,
-};
-
-export type PartyCartUpdateWithoutPartyDataInput = {
-  items?: Maybe<PartyCartItemUpdateManyWithoutCartInput>,
+  party?: Maybe<PartyUpdateOneRequiredInput>,
 };
 
 export type PartyCartUpsertWithoutItemsInput = {
   update: PartyCartUpdateWithoutItemsDataInput,
   create: PartyCartCreateWithoutItemsInput,
-};
-
-export type PartyCartUpsertWithoutPartyInput = {
-  update: PartyCartUpdateWithoutPartyDataInput,
-  create: PartyCartCreateWithoutPartyInput,
 };
 
 export type PartyCartWhereInput = {
@@ -2688,7 +2659,6 @@ export type PartyCreateInput = {
   end?: Maybe<Scalars['DateTime']>,
   inviteSecret: Scalars['String'],
   playlist?: Maybe<PlaylistCreateOneWithoutPartiesInput>,
-  cart?: Maybe<PartyCartCreateOneWithoutPartyInput>,
 };
 
 export type PartyCreateManyWithoutMembersInput = {
@@ -2706,28 +2676,6 @@ export type PartyCreateOneInput = {
   connect?: Maybe<PartyWhereUniqueInput>,
 };
 
-export type PartyCreateOneWithoutCartInput = {
-  create?: Maybe<PartyCreateWithoutCartInput>,
-  connect?: Maybe<PartyWhereUniqueInput>,
-};
-
-export type PartyCreateWithoutCartInput = {
-  id?: Maybe<Scalars['ID']>,
-  title: Scalars['String'],
-  normalizedTitle: Scalars['String'],
-  description: Scalars['String'],
-  author: UserCreateOneInput,
-  location: LocationCreateOneInput,
-  games?: Maybe<GameCreateManyInput>,
-  colorTint: Scalars['String'],
-  isPublic?: Maybe<Scalars['Boolean']>,
-  members?: Maybe<UserCreateManyWithoutPartiesInput>,
-  start?: Maybe<Scalars['DateTime']>,
-  end?: Maybe<Scalars['DateTime']>,
-  inviteSecret: Scalars['String'],
-  playlist?: Maybe<PlaylistCreateOneWithoutPartiesInput>,
-};
-
 export type PartyCreateWithoutMembersInput = {
   id?: Maybe<Scalars['ID']>,
   title: Scalars['String'],
@@ -2742,7 +2690,6 @@ export type PartyCreateWithoutMembersInput = {
   end?: Maybe<Scalars['DateTime']>,
   inviteSecret: Scalars['String'],
   playlist?: Maybe<PlaylistCreateOneWithoutPartiesInput>,
-  cart?: Maybe<PartyCartCreateOneWithoutPartyInput>,
 };
 
 export type PartyCreateWithoutPlaylistInput = {
@@ -2759,7 +2706,6 @@ export type PartyCreateWithoutPlaylistInput = {
   start?: Maybe<Scalars['DateTime']>,
   end?: Maybe<Scalars['DateTime']>,
   inviteSecret: Scalars['String'],
-  cart?: Maybe<PartyCartCreateOneWithoutPartyInput>,
 };
 
 export type PartyEdge = {
@@ -3221,7 +3167,6 @@ export type PartyUpdateDataInput = {
   end?: Maybe<Scalars['DateTime']>,
   inviteSecret?: Maybe<Scalars['String']>,
   playlist?: Maybe<PlaylistUpdateOneWithoutPartiesInput>,
-  cart?: Maybe<PartyCartUpdateOneWithoutPartyInput>,
 };
 
 export type PartyUpdateInput = {
@@ -3238,7 +3183,6 @@ export type PartyUpdateInput = {
   end?: Maybe<Scalars['DateTime']>,
   inviteSecret?: Maybe<Scalars['String']>,
   playlist?: Maybe<PlaylistUpdateOneWithoutPartiesInput>,
-  cart?: Maybe<PartyCartUpdateOneWithoutPartyInput>,
 };
 
 export type PartyUpdateManyDataInput = {
@@ -3299,29 +3243,6 @@ export type PartyUpdateOneRequiredInput = {
   connect?: Maybe<PartyWhereUniqueInput>,
 };
 
-export type PartyUpdateOneRequiredWithoutCartInput = {
-  create?: Maybe<PartyCreateWithoutCartInput>,
-  update?: Maybe<PartyUpdateWithoutCartDataInput>,
-  upsert?: Maybe<PartyUpsertWithoutCartInput>,
-  connect?: Maybe<PartyWhereUniqueInput>,
-};
-
-export type PartyUpdateWithoutCartDataInput = {
-  title?: Maybe<Scalars['String']>,
-  normalizedTitle?: Maybe<Scalars['String']>,
-  description?: Maybe<Scalars['String']>,
-  author?: Maybe<UserUpdateOneRequiredInput>,
-  location?: Maybe<LocationUpdateOneRequiredInput>,
-  games?: Maybe<GameUpdateManyInput>,
-  colorTint?: Maybe<Scalars['String']>,
-  isPublic?: Maybe<Scalars['Boolean']>,
-  members?: Maybe<UserUpdateManyWithoutPartiesInput>,
-  start?: Maybe<Scalars['DateTime']>,
-  end?: Maybe<Scalars['DateTime']>,
-  inviteSecret?: Maybe<Scalars['String']>,
-  playlist?: Maybe<PlaylistUpdateOneWithoutPartiesInput>,
-};
-
 export type PartyUpdateWithoutMembersDataInput = {
   title?: Maybe<Scalars['String']>,
   normalizedTitle?: Maybe<Scalars['String']>,
@@ -3335,7 +3256,6 @@ export type PartyUpdateWithoutMembersDataInput = {
   end?: Maybe<Scalars['DateTime']>,
   inviteSecret?: Maybe<Scalars['String']>,
   playlist?: Maybe<PlaylistUpdateOneWithoutPartiesInput>,
-  cart?: Maybe<PartyCartUpdateOneWithoutPartyInput>,
 };
 
 export type PartyUpdateWithoutPlaylistDataInput = {
@@ -3351,7 +3271,6 @@ export type PartyUpdateWithoutPlaylistDataInput = {
   start?: Maybe<Scalars['DateTime']>,
   end?: Maybe<Scalars['DateTime']>,
   inviteSecret?: Maybe<Scalars['String']>,
-  cart?: Maybe<PartyCartUpdateOneWithoutPartyInput>,
 };
 
 export type PartyUpdateWithWhereUniqueWithoutMembersInput = {
@@ -3367,11 +3286,6 @@ export type PartyUpdateWithWhereUniqueWithoutPlaylistInput = {
 export type PartyUpsertNestedInput = {
   update: PartyUpdateDataInput,
   create: PartyCreateInput,
-};
-
-export type PartyUpsertWithoutCartInput = {
-  update: PartyUpdateWithoutCartDataInput,
-  create: PartyCreateWithoutCartInput,
 };
 
 export type PartyUpsertWithWhereUniqueWithoutMembersInput = {
@@ -3520,7 +3434,6 @@ export type PartyWhereInput = {
   inviteSecret_ends_with?: Maybe<Scalars['String']>,
   inviteSecret_not_ends_with?: Maybe<Scalars['String']>,
   playlist?: Maybe<PlaylistWhereInput>,
-  cart?: Maybe<PartyCartWhereInput>,
   AND?: Maybe<Array<PartyWhereInput>>,
   OR?: Maybe<Array<PartyWhereInput>>,
   NOT?: Maybe<Array<PartyWhereInput>>,
@@ -5543,7 +5456,7 @@ export type Party_FragmentFragment = (
   & Pick<Party, 'id' | 'title' | 'description' | 'colorTint' | 'start' | 'end' | 'isPublic' | 'inviteSecret'>
   & { location: (
     { __typename?: 'Location' }
-    & Pick<Location, 'placeName'>
+    & Pick<Location, 'placeName' | 'longitude' | 'latitude'>
   ), author: (
     { __typename?: 'User' }
     & Pick<User, 'firstName' | 'lastName' | 'id'>
@@ -5615,6 +5528,23 @@ export type LoginMutationVariables = {
 export type LoginMutation = (
   { __typename?: 'Mutation' }
   & { login: (
+    { __typename?: 'AuthPayload' }
+    & Pick<AuthPayload, 'token'>
+    & { user: (
+      { __typename?: 'User' }
+      & Pick<User, 'id'>
+    ) }
+  ) }
+);
+
+export type SocialLoginMutationVariables = {
+  id: Scalars['String']
+};
+
+
+export type SocialLoginMutation = (
+  { __typename?: 'Mutation' }
+  & { socialLogin: (
     { __typename?: 'AuthPayload' }
     & Pick<AuthPayload, 'token'>
     & { user: (
@@ -6082,6 +6012,9 @@ export type SignupSignup = SignupMutation['signup'];
 export type LoginVariables = LoginMutationVariables;
 export type LoginLogin = LoginMutation['login'];
 export type LoginUser = LoginMutation['login']['user'];
+export type SocialLoginVariables = SocialLoginMutationVariables;
+export type SocialLoginSocialLogin = SocialLoginMutation['socialLogin'];
+export type SocialLoginUser = SocialLoginMutation['socialLogin']['user'];
 export type CreatePartyVariables = CreatePartyMutationVariables;
 export type CreatePartyCreateParty = Party_FragmentFragment;
 export type CreateMessageVariables = CreateMessageMutationVariables;
@@ -6164,6 +6097,8 @@ export type PartyInvitationSubscriptionPreviousValues = PartyInvitationSubscript
   description
   location {
     placeName
+    longitude
+    latitude
   }
   author {
     firstName
@@ -6262,6 +6197,24 @@ export const LoginDocument = gql`
   })
   export class LoginGQL extends Apollo.Mutation<LoginMutation, LoginMutationVariables> {
     document = LoginDocument;
+    
+  }
+export const SocialLoginDocument = gql`
+    mutation SocialLogin($id: String!) {
+  socialLogin(id: $id) {
+    user {
+      id
+    }
+    token
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class SocialLoginGQL extends Apollo.Mutation<SocialLoginMutation, SocialLoginMutationVariables> {
+    document = SocialLoginDocument;
     
   }
 export const CreatePartyDocument = gql`

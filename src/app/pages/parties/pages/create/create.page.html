@@ -1,44 +1,139 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>Create a party</ion-title>
+    </ion-toolbar>
+</ion-header>
 <ion-content>
     <ion-grid>
         <ion-row>
             <ion-col size="12">
                 <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
                     <nz-form-item>
-                        <nz-form-control nzErrorTip="Please input your username!">
-                            <nz-input-group nzPrefixIcon="plus" nzSize="large">
+                        <nz-form-label
+                            ><i nz-icon nzType="form" nzTheme="outline"></i>&nbsp; Name your party
+                        </nz-form-label>
+                        <nz-form-control nzErrorTip="This field is required!">
+                            <nz-input-group nzPrefixIcon="form" nzSize="large">
                                 <input type="text" nz-input formControlName="title" placeholder="Name your party" />
                             </nz-input-group>
                         </nz-form-control>
                     </nz-form-item>
                     <nz-form-item>
-                        <nz-form-control>
+                        <nz-form-control nzErrorTip="This field is required!">
                             <nz-input-group>
-                                <ion-item lines="none">
-                                    <ion-label>Start date</ion-label>
-                                    <ion-datetime
-                                        placeholder="Start Date"
-                                        display-format="DD.MM.YYYY HH:mm"
-                                        picker-format="DD.MM.YYYY HH:mm"
-                                        [min]="minDate"
-                                        minuteValues="0,15,30,45"
-                                    ></ion-datetime>
-                                </ion-item>
+                                <nz-form-label [nzMd]="6" nzFor="location">
+                                    <ion-icon slot="start" name="calendar"></ion-icon>&nbsp; Select dates
+                                </nz-form-label>
+                                <ion-row>
+                                    <ion-col size="6">
+                                        <ion-item lines="none">
+                                            <ion-datetime
+                                                placeholder="Start Date"
+                                                display-format="DD.MM.YY HH:mm"
+                                                picker-format="DD.MM.YYYY HH:mm"
+                                                [min]="minDate"
+                                                minuteValues="0,15,30,45"
+                                                [max]="maxYear"
+                                                formControlName="dateStart"
+                                            ></ion-datetime>
+                                        </ion-item>
+                                    </ion-col>
+                                    <ion-col size="6">
+                                        <ion-item lines="none">
+                                            <ion-datetime
+                                                placeholder="End Date"
+                                                display-format="DD.MM.YY HH:mm"
+                                                picker-format="DD.MM.YYYY HH:mm"
+                                                [min]="validateForm.controls['dateStart'].value || minDate"
+                                                minuteValues="0,15,30,45"
+                                                [max]="maxYear"
+                                                formControlName="dateEnd"
+                                            ></ion-datetime>
+                                        </ion-item>
+                                    </ion-col>
+                                </ion-row>
                             </nz-input-group>
                         </nz-form-control>
                     </nz-form-item>
                     <nz-form-item>
                         <nz-form-control>
                             <nz-input-group>
-                                <ion-item lines="none">
-                                    <ion-label>End date</ion-label>
-                                    <ion-datetime displayFormat="MMMM" value="2012-12-15T13:47:20.789"></ion-datetime>
-                                </ion-item>
+                                <ion-row class="ion-align-items-center">
+                                    <ion-col size="8">
+                                        <h5>Should party be public</h5>
+                                    </ion-col>
+                                    <ion-col size="4">
+                                        <nz-switch
+                                            formControlName="isPublic"
+                                            [nzCheckedChildren]="checkedTemplate"
+                                            [nzUnCheckedChildren]="unCheckedTemplate"
+                                        ></nz-switch>
+                                    </ion-col>
+                                </ion-row>
+
+                                <ng-template #checkedTemplate><i nz-icon nzType="check"></i></ng-template>
+                                <ng-template #unCheckedTemplate><i nz-icon nzType="close"></i></ng-template>
                             </nz-input-group>
                         </nz-form-control>
                     </nz-form-item>
                     <nz-form-item>
                         <nz-form-control>
-                            <button nz-button nzType="primary" nzBlock nzSize="large">Save</button>
+                            <nz-input-group>
+                                <ion-row>
+                                    <ion-col size="12">
+                                        <h5 [ngStyle]="{ color: validateForm.controls['colorTint'].value }">
+                                            Pick a color
+                                        </h5>
+                                        <small nz-text nzType="secondary">
+                                            (This color will be used in your calendar)
+                                        </small>
+                                    </ion-col>
+                                </ion-row>
+                                <ion-row>
+                                    <ion-col size="12">
+                                        <color-circle
+                                            width="100%"
+                                            [color]="this.initialGroup.colorTint[0]"
+                                            (onChange)="handleColorChange($event)"
+                                        ></color-circle>
+                                    </ion-col>
+                                </ion-row>
+                            </nz-input-group>
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item>
+                        <nz-form-label [nzMd]="6" nzFor="location">
+                            <ion-icon slot="start" name="map-pin"></ion-icon>&nbsp; Location
+                        </nz-form-label>
+                        <nz-form-control [nzMd]="14">
+                            <div Button [type]="'dashed'" (onClick)="localizeMe()" size="small">Localize me</div>
+                            <nz-select
+                                style="width: 100%"
+                                formControlName="location"
+                                nzAllowClear
+                                nzServerSearch
+                                nzPlaceHolder="Search for location..."
+                                [nzShowArrow]="true"
+                                [nzNotFoundContent]="searchingForLocations ? 'Searching...' : 'No location found'"
+                                [nzDropdownMatchSelectWidth]="true"
+                                [nzShowSearch]="true"
+                                (nzOnSearch)="searchLocation($event)"
+                                (ngModelChange)="locationSelected($event)"
+                                [nzLoading]="searchingForLocations"
+                            >
+                                <nz-option
+                                    [nzValue]="location.id"
+                                    [nzLabel]="location.place_name"
+                                    *ngFor="let location of locations"
+                                ></nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item>
+                        <nz-form-control>
+                            <button nz-button nzType="primary" nzBlock nzSize="large" [disabled]="!validateForm.valid">
+                                Save
+                            </button>
                         </nz-form-control>
                     </nz-form-item>
                 </form>

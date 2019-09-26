@@ -21,7 +21,7 @@ export const LOGIN_MUTATION = gql`
 `;
 
 export const SOCIAL_LOGIN_MUTATION = gql`
-    mutation Login($id: String!) {
+    mutation SocialLogin($id: String!) {
         socialLogin(id: $id) {
             user {
                 id

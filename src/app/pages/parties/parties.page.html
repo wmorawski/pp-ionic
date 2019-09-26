@@ -1,8 +1,8 @@
-<ion-content [scrollEvents]="true" (ionScroll)="onScroll($event)" no-bounce>
+<ion-content [scrollEvents]="true" (ionScroll)="onScroll($event)" no-bounce color="light">
     <ng-container *ngIf="!(hasParties | async); else content">
         <ion-grid
             fixed
-            class="ion-align-items-center ion-justify-content-center"
+            class="ion-align-items-center ion-justify-content-center animated fadeIn delay-300ms"
             style="display: flex; height: 100%; flex-direction: column"
         >
             <ion-row class="ion-justify-content-center">
@@ -22,5 +22,12 @@
             </ion-row>
         </ion-grid>
     </ng-container>
-    <ng-template #content> </ng-template>
+    <ng-template #content>
+        <ion-fab vertical="bottom" horizontal="end" slot="fixed" class="animated zoomIn duration-300ms delay-400ms">
+            <ion-fab-button [routerLink]="['create']">
+                <ion-icon name="add"></ion-icon>
+            </ion-fab-button>
+        </ion-fab>
+        <app-party-item *ngFor="let party of parties | async" [party]="party"></app-party-item>
+    </ng-template>
 </ion-content>
