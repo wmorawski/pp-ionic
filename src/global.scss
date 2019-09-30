@@ -26,16 +26,14 @@
 @import '~@ionic/angular/css/flex-utils.css';
 @import '~animate.css/animate.min.css';
 
-body,
-ion-content,
-main,
-.inner-scroll,
-ion-router-outlet,
-.tabs-inner {
+body {
     background: var(--ion-color-light) !important;
 }
 main {
     --background: #f4f5f8 !important;
+}
+.mapboxgl-canvas {
+    height: 100% !important;
 }
 .flex-container {
     margin: 0 15px;

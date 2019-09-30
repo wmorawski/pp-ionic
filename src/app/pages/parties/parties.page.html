@@ -1,4 +1,4 @@
-<ion-content [scrollEvents]="true" (ionScroll)="onScroll($event)" no-bounce color="light">
+<ion-content [scrollEvents]="!showMap" (ionScroll)="onScroll($event)" no-bounce color="light">
     <ng-container *ngIf="!(hasParties | async); else content">
         <ion-grid
             fixed
@@ -23,11 +23,30 @@
         </ion-grid>
     </ng-container>
     <ng-template #content>
+        <ion-row style="margin-top: 1em;" class="animated zoomIn duration-300ms delay-400ms">
+            <ion-col size="12">
+                <button nz-button nzType="primary" nzBlock nzSize="large" (click)="toggleMap()">{{ showMap ? 'Hide' : 'Show' }} map</button>
+            </ion-col>
+        </ion-row>
+        <ng-container *ngIf="!showMap; else mapTemplate">
+            <ion-virtual-scroll [items]="parties | async" approxItemHeight="330px">
+                <app-party-item *virtualItem="let party" [party]="party"></app-party-item>
+            </ion-virtual-scroll>
+        </ng-container>
+        <ng-template #mapTemplate>
+            <ion-grid fixed class="animated fadeInUp duration-200ms delay-100ms" style="height: 88%;">
+                <ion-row style="height: 100%;">
+                    <ion-col size="12">
+                        <map-box></map-box>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+        </ng-template>
+
         <ion-fab vertical="bottom" horizontal="end" slot="fixed" class="animated zoomIn duration-300ms delay-400ms">
             <ion-fab-button [routerLink]="['create']">
                 <ion-icon name="add"></ion-icon>
             </ion-fab-button>
         </ion-fab>
-        <app-party-item *ngFor="let party of parties | async" [party]="party"></app-party-item>
     </ng-template>
 </ion-content>
