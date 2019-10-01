@@ -33,7 +33,7 @@ export class CreatePage implements OnInit {
         dateStart: [null, [Validators.required]],
         dateEnd: [null, [Validators.required]],
         isPublic: false,
-        colorTint: ['#4caf50'],
+        colorTint: '#4caf50',
         location: [null, [Validators.required]],
     };
 
@@ -89,7 +89,7 @@ export class CreatePage implements OnInit {
                             latitude: formData.location.center[1],
                         },
                     },
-                    colorTint: formData.colorTint[0],
+                    colorTint: formData.colorTint,
                     inviteSecret: uuid(),
                 },
             };

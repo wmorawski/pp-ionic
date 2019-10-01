@@ -14,7 +14,7 @@ import { map } from 'rxjs/operators';
 export class MapBoxComponent implements OnInit {
     /// default settings
     map: mapboxgl.Map;
-    style = 'mapbox://styles/mapbox/outdoors-v10';
+    style = 'mapbox://styles/mapbox/streets-v11';
     lat = 52.406374;
     lng = 16.9251681;
     message = 'Hello World!';
@@ -36,7 +36,10 @@ export class MapBoxComponent implements OnInit {
             .valueChanges.pipe(
                 map(result =>
                     result.data.parties.map(party => {
-                        return new GeoJson([party.location.longitude, party.location.latitude], { message: party.title });
+                        return new GeoJson([party.location.longitude, party.location.latitude], {
+                            message: party.title,
+                            color: party.colorTint,
+                        });
                     })
                 )
             );
@@ -99,11 +102,11 @@ export class MapBoxComponent implements OnInit {
                     'text-field': '{message}',
                     'text-size': 24,
                     'text-transform': 'uppercase',
-                    'icon-image': 'marker-11',
+                    'icon-image': 'beer-15',
                     'text-offset': [0, 1.5],
                 },
                 paint: {
-                    'text-color': '#f16624',
+                    'text-color': ['get', 'color'],
                     'text-halo-color': '#fff',
                     'text-halo-width': 2,
                 },

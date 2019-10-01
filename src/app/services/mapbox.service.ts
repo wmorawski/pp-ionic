@@ -19,7 +19,7 @@ export class MapboxService implements OnInit {
 
     public searchLocation(query = '') {
         return this.http.get(
-            `${this.baseURL}/geocoding/v5/mapbox.places/${query}.json?${this.tokenParam}types=address&country=PL&limit=10`
+            `${this.baseURL}/geocoding/v5/mapbox.places/${query}.json?${this.tokenParam}&types=address&country=PL&limit=10`
         );
     }
 }
