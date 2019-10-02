@@ -15,7 +15,7 @@ import { AppService } from 'src/app/services/app.service';
 })
 export class PartiesPage extends NavbarManager implements OnInit {
     hasParties: Observable<boolean>;
-    parties: Observable<any>;
+    parties: any;
 
     constructor(
         protected appService: AppService,
@@ -31,18 +31,29 @@ export class PartiesPage extends NavbarManager implements OnInit {
     ionViewWillEnter() {
         this.hasParties = this.hasPartiesGQL.watch().valueChanges.pipe(map((result) => result.data.hasParties));
         if (this.hasParties) {
-            this.parties = this.partiesQueryGQL
-                .watch({
-                    where: {
-                        members_some: { id: localStorage.getItem(PP_USER_ID) },
-                    },
-                    orderBy: PartyOrderByInput.CreatedAtDesc,
-                })
-                .valueChanges.pipe(map((result) => result.data.parties));
+            this.fetchParties().subscribe((res) => {
+                this.parties = res.data.parties;
+            });
         }
+    }
+
+    fetchParties() {
+        return this.partiesQueryGQL.fetch({
+            where: {
+                members_some: { id: localStorage.getItem(PP_USER_ID) },
+            },
+            orderBy: PartyOrderByInput.CreatedAtDesc,
+        });
     }
 
     create() {
         this.navCtrl.navigateForward(['parties', 'create']);
+    }
+
+    doRefresh(refresher) {
+        this.fetchParties().subscribe((res) => {
+            this.parties = res.data.parties;
+            refresher.target.complete();
+        });
     }
 }

@@ -7,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ValidatorFn } from '@angular/forms';
 import { PP_USER_ID } from 'src/app/constants';
 import uuid from 'uuid/v4';
+import { NavController } from '@ionic/angular';
 
 const MyAwesomeRangeValidator: ValidatorFn = (fg: FormGroup) => {
     const start = fg.get('dateStart').value;
@@ -40,6 +41,7 @@ export class CreatePage implements OnInit {
         private mapbox: MapboxService,
         private createPartyGQL: CreatePartyGQL,
         private apollo: Apollo,
+        private navCtrl: NavController,
     ) {}
 
     ngOnInit(): void {
@@ -105,7 +107,9 @@ export class CreatePage implements OnInit {
                         store.writeQuery({ query: PARTIES_QUERY, data });
                     },
                 })
-                .subscribe((res) => {});
+                .subscribe((res) => {
+                    this.navCtrl.navigateBack('/parties');
+                });
         }
     }
 
