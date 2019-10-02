@@ -65,6 +65,7 @@
     "graphql": "^14.3.1",
     "graphql-tag": "^2.10.0",
     "ionic-text-avatar": "^1.1.0",
+    "mapbox-gl": "^1.4.0",
     "ng-zorro-antd": "^8.3.0",
     "ng-zorro-antd-mobile": "^1.0.0-rc.0",
     "ngx-color": "^4.1.0",

@@ -32,6 +32,9 @@ body {
 main {
     --background: #f4f5f8 !important;
 }
+.mapboxgl-canvas {
+    height: 100% !important;
+}
 .flex-container {
     margin: 0 15px;
 }

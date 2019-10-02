@@ -7,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ValidatorFn } from '@angular/forms';
 import { PP_USER_ID } from 'src/app/constants';
 import uuid from 'uuid/v4';
+import { ModalService } from 'ng-zorro-antd-mobile';
 import { NavController } from '@ionic/angular';
 
 const MyAwesomeRangeValidator: ValidatorFn = (fg: FormGroup) => {
@@ -32,7 +33,7 @@ export class CreatePage implements OnInit {
         dateStart: [null, [Validators.required]],
         dateEnd: [null, [Validators.required]],
         isPublic: false,
-        colorTint: ['#4caf50'],
+        colorTint: '#4caf50',
         location: [null, [Validators.required]],
     };
 
@@ -41,6 +42,7 @@ export class CreatePage implements OnInit {
         private mapbox: MapboxService,
         private createPartyGQL: CreatePartyGQL,
         private apollo: Apollo,
+        private modalService: ModalService,
         private navCtrl: NavController,
     ) {}
 
@@ -87,7 +89,7 @@ export class CreatePage implements OnInit {
                             latitude: formData.location.center[1],
                         },
                     },
-                    colorTint: formData.colorTint[0],
+                    colorTint: formData.colorTint,
                     inviteSecret: uuid(),
                 },
             };
@@ -95,21 +97,55 @@ export class CreatePage implements OnInit {
                 .mutate<any>({
                     mutation: CREATE_PARTY_MUTATION,
                     variables,
-                    update: (store, { data: { createParty } }) => {
-                        const data: any = store.readQuery({
-                            query: PARTIES_QUERY,
-                            variables: {
-                                where: { members_some: { id: localStorage.getItem(PP_USER_ID) } },
-                                orderBy: 'createdAt_DESC',
-                            },
-                        });
-                        data.parties = [...data.parties, createParty];
-                        store.writeQuery({ query: PARTIES_QUERY, data });
+                    update: (proxy, { data: { createParty } }) => {
+                        try {
+                            const data: any = proxy.readQuery({
+                                query: PARTIES_QUERY,
+                                variables: {
+                                    where: { members_some: { id: localStorage.getItem(PP_USER_ID) } },
+                                    orderBy: 'createdAt_DESC',
+                                },
+                            });
+                            data.parties = [createParty, ...data.parties];
+                            proxy.writeQuery({
+                                query: PARTIES_QUERY,
+                                data,
+                                variables: {
+                                    where: { members_some: { id: localStorage.getItem(PP_USER_ID) } },
+                                    orderBy: 'createdAt_DESC',
+                                },
+                            });
+                        } catch (e) {}
                     },
                 })
-                .subscribe((res) => {
-                    this.navCtrl.navigateBack('/parties');
-                });
+                .subscribe(
+                    (res) => {
+                        this.modalService.alert(
+                            'Party created!',
+                            'Party has been successfully created and your friends has been notified.',
+                            [
+                                {
+                                    text: 'Go to party dashboard',
+                                    onPress: async () => {
+                                        await this.navCtrl.navigateBack(['/parties', res.data.createParty.id]);
+                                    },
+                                },
+                            ],
+                        );
+                    },
+                    (err) => {
+                        this.modalService.alert(
+                            'Something went wrong',
+                            'We were not able to create a party. Please try again',
+                            [
+                                {
+                                    text: 'Close',
+                                    onPress: () => {},
+                                },
+                            ],
+                        );
+                    },
+                );
         }
     }
 

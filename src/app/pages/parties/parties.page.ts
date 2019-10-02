@@ -7,6 +7,8 @@ import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { NavController } from '@ionic/angular';
 import { AppService } from 'src/app/services/app.service';
+import { Apollo } from 'apollo-angular-boost';
+import { PARTIES_QUERY } from 'src/app/graphql/queries';
 
 @Component({
     selector: 'app-parties',
@@ -16,12 +18,14 @@ import { AppService } from 'src/app/services/app.service';
 export class PartiesPage extends NavbarManager implements OnInit {
     hasParties: Observable<boolean>;
     parties: any;
+    showMap = false;
 
     constructor(
         protected appService: AppService,
         private hasPartiesGQL: HasPartiesQueryGQL,
         private partiesQueryGQL: PartiesQueryGQL,
         private navCtrl: NavController,
+        private apollo: Apollo,
     ) {
         super(appService);
     }
@@ -31,9 +35,14 @@ export class PartiesPage extends NavbarManager implements OnInit {
     ionViewWillEnter() {
         this.hasParties = this.hasPartiesGQL.watch().valueChanges.pipe(map((result) => result.data.hasParties));
         if (this.hasParties) {
-            this.fetchParties().subscribe((res) => {
-                this.parties = res.data.parties;
-            });
+            this.parties = this.partiesQueryGQL
+                .watch({
+                    where: {
+                        members_some: { id: localStorage.getItem(PP_USER_ID) },
+                    },
+                    orderBy: PartyOrderByInput.CreatedAtDesc,
+                })
+                .valueChanges.pipe(map((result) => result.data.parties));
         }
     }
 
@@ -50,10 +59,12 @@ export class PartiesPage extends NavbarManager implements OnInit {
         this.navCtrl.navigateForward(['parties', 'create']);
     }
 
-    doRefresh(refresher) {
-        this.fetchParties().subscribe((res) => {
-            this.parties = res.data.parties;
-            refresher.target.complete();
-        });
+    toggleMap() {
+        this.showMap = !this.showMap;
+        if (this.showMap) {
+            this.appService.hideNavbar();
+        } else {
+            this.appService.showNavbar();
+        }
     }
 }
