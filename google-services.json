@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "115558485597",
+    "firebase_url": "https://partyplanner-c76a2.firebaseio.com",
+    "project_id": "partyplanner-c76a2",
+    "storage_bucket": "partyplanner-c76a2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:115558485597:android:e75978441cfc39f3a307b4",
+        "android_client_info": {
+          "package_name": "fun.partyplanner.partyplanner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "115558485597-qferqjrgogucc4dcv16hnfm87kvm2jjd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "fun.partyplanner.partyplanner",
+            "certificate_hash": "466aa8804da172cb56504a47d6312fb9fb6f61d6"
+          }
+        },
+        {
+          "client_id": "115558485597-j9kpdo811eu2q05v3v6o3uea1qdpnpjf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzc4jLCirbUoeGdT1T-DcDYPLBtcMFMSw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "115558485597-j9kpdo811eu2q05v3v6o3uea1qdpnpjf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
