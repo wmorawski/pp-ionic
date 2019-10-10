@@ -1,9 +1,21 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>calendar</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content>
-
+<ion-content style="height: 100%;" color="light">
+    <ion-grid fixed>
+        <ion-row>
+            <ion-col size="12">
+                <full-calendar
+                    schedulerLicenseKey="GPL-My-Project-Is-Open-Source"
+                    defaultView="dayGridMonth"
+                    [plugins]="calendarPlugins"
+                    [firstDay]="1"
+                    [aspectRatio]="0.25"
+                    [events]="parsedParties"
+                    [displayEventTime]="false"
+                    [contentHeight]="550"
+                    [eventLimit]="4"
+                    (dateClick)="handleDateClick($event)"
+                    (eventClick)="handleEventClick($event)"
+                ></full-calendar>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
 </ion-content>

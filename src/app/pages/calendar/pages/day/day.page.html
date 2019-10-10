@@ -1,0 +1,32 @@
+<ion-content style="height: 100%;">
+    <ion-grid fixed>
+        <ion-row>
+            <ion-col size="12" *ngIf="partiesData && partiesData.length">
+                <full-calendar
+                    schedulerLicenseKey="GPL-My-Project-Is-Open-Source"
+                    defaultView="timeGridDay"
+                    [plugins]="calendarPlugins"
+                    [defaultDate]="router.snapshot.params.date"
+                    [events]="parsedParties"
+                    [minTime]="'06:00:00'"
+                    deepChangeDetection="true"
+                    [nowIndicator]="true"
+                    [slotLabelFormat]="{
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        meridiem: false,
+                        hour12: false
+                    }"
+                    [displayEventTime]="true"
+                    [eventTimeFormat]="{
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        meridiem: false,
+                        hour12: false
+                    }"
+                    (eventClick)="handleEventClick($event)"
+                ></full-calendar>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>

@@ -2,21 +2,21 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
-import { FullCalendarModule } from '@fullcalendar/angular';
-import { IonicModule } from '@ionic/angular';
 
-import { CalendarPage } from './calendar.page';
+import { IonicModule } from '@ionic/angular';
+import { FullCalendarModule } from '@fullcalendar/angular';
+
+import { DayPage } from './day.page';
 
 const routes: Routes = [
     {
         path: '',
-        component: CalendarPage,
+        component: DayPage,
     },
-    { path: 'day/:date', loadChildren: './pages/day/day.module#DayPageModule' },
 ];
 
 @NgModule({
     imports: [CommonModule, FormsModule, IonicModule, RouterModule.forChild(routes), FullCalendarModule],
-    declarations: [CalendarPage],
+    declarations: [DayPage],
 })
-export class CalendarPageModule {}
+export class DayPageModule {}

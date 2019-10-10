@@ -25,7 +25,7 @@ export class PartiesPage extends NavbarManager implements OnInit {
         private hasPartiesGQL: HasPartiesQueryGQL,
         private partiesQueryGQL: PartiesQueryGQL,
         private navCtrl: NavController,
-        private apollo: Apollo,
+        private apollo: Apollo
     ) {
         super(appService);
     }
@@ -33,7 +33,7 @@ export class PartiesPage extends NavbarManager implements OnInit {
     ngOnInit() {}
 
     ionViewWillEnter() {
-        this.hasParties = this.hasPartiesGQL.watch().valueChanges.pipe(map((result) => result.data.hasParties));
+        this.hasParties = this.hasPartiesGQL.watch().valueChanges.pipe(map(result => result.data.hasParties));
         if (this.hasParties) {
             this.parties = this.partiesQueryGQL
                 .watch({
@@ -42,7 +42,7 @@ export class PartiesPage extends NavbarManager implements OnInit {
                     },
                     orderBy: PartyOrderByInput.CreatedAtDesc,
                 })
-                .valueChanges.pipe(map((result) => result.data.parties));
+                .valueChanges.pipe(map(result => result.data.parties));
         }
     }
 

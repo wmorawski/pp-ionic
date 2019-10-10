@@ -75,41 +75,10 @@ export class MapBoxComponent implements OnInit {
         /// Add realtime firebase data on map load
         this.map.on('load', event => {
             this.map.resize();
-            /// register source
-            this.map.addSource('firebase', {
-                type: 'geojson',
-                data: {
-                    type: 'FeatureCollection',
-                    features: [],
-                },
-            });
-
-            /// get source
-            this.source = this.map.getSource('firebase');
-
-            /// subscribe to realtime database and set data source
             this.markers.subscribe(markers => {
-                const data = new FeatureCollection(markers);
-                this.source.setData(data);
-            });
-
-            /// create map layers with realtime data
-            this.map.addLayer({
-                id: 'firebase',
-                source: 'firebase',
-                type: 'symbol',
-                layout: {
-                    'text-field': '{message}',
-                    'text-size': 24,
-                    'text-transform': 'uppercase',
-                    'icon-image': 'beer-15',
-                    'text-offset': [0, 1.5],
-                },
-                paint: {
-                    'text-color': ['get', 'color'],
-                    'text-halo-color': '#fff',
-                    'text-halo-width': 2,
-                },
+                markers.map(marker => {
+                    return new mapboxgl.Marker().setLngLat(marker.geometry.coordinates).addTo(this.map);
+                });
             });
         });
     }
