@@ -25,9 +25,7 @@
     <ng-template #content>
         <ion-row style="margin-top: 1em;" class="animated zoomIn duration-300ms delay-400ms">
             <ion-col size="12">
-                <button nz-button nzType="primary" nzBlock nzSize="large" (click)="toggleMap()">
-                    {{ showMap ? 'Hide' : 'Show' }} map
-                </button>
+                <button nz-button nzType="primary" nzBlock nzSize="large" (click)="toggleMap()">{{ showMap ? 'Hide' : 'Show' }} map</button>
             </ion-col>
         </ion-row>
         <ng-container *ngIf="!showMap; else mapTemplate">
@@ -39,7 +37,44 @@
             <ion-grid fixed class="animated fadeInUp duration-200ms delay-100ms" style="height: 88%;">
                 <ion-row style="height: 100%;">
                     <ion-col size="12">
-                        <map-box></map-box>
+                        <mgl-map
+                            [style]="'mapbox://styles/mapbox/streets-v9'"
+                            [zoom]="[12]"
+                            [center]="[16.9251681, 52.406374]"
+                            (load)="initMap($event)"
+                        >
+                            <ng-container *ngFor="let party of parties | async">
+                                <mgl-marker
+                                    [lngLat]="[party.location.longitude, party.location.latitude]"
+                                    className="red"
+                                    anchor="center"
+                                    #partyMarker
+                                >
+                                    <ion-icon
+                                        name="map-marker"
+                                        [ngStyle]="{ color: party.colorTint, fontSize: '32px', stroke: 'black', strokeWidth: 2 }"
+                                    ></ion-icon>
+                                    <p class="ion-text-center ion-justify-content-center">
+                                        <strong>{{ party.title }}</strong>
+                                    </p>
+                                </mgl-marker>
+                                <mgl-popup [closeOnClick]="true" [closeButton]="false" [offset]="24" anchor="bottom" [marker]="partyMarker">
+                                    <ion-grid fixed>
+                                        <ion-row>
+                                            <ion-col size="12"
+                                                ><strong>{{ party.title }}</strong
+                                                >&nbsp;<small style="text-transform: uppercase">
+                                                    {{ party.start | amDateFormat: 'DD MMM HH:mm' }} to
+                                                    {{ party.end | amDateFormat: 'DD MMM HH:mm' }}</small
+                                                ></ion-col
+                                            >
+                                            <ion-col size="12">{{ party.location.placeName }}</ion-col>
+                                        </ion-row>
+                                    </ion-grid>
+                                </mgl-popup>
+                            </ng-container>
+                            <mgl-control mglGeolocate [showUserLocation]="true" [trackUserLocation]="true"></mgl-control>
+                        </mgl-map>
                     </ion-col>
                 </ion-row>
             </ion-grid>

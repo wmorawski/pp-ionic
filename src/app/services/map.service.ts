@@ -11,10 +11,7 @@ import { PP_USER_ID } from '../constants';
     providedIn: 'root',
 })
 export class MapService {
-    constructor(private readonly apollo: Apollo) {
-        // tslint:disable-next-line
-        mapboxgl.accessToken = environment.mapbox.accessToken;
-    }
+    constructor(private readonly apollo: Apollo) {}
 
     getMarkers() {
         return this.apollo.getClient().readQuery({

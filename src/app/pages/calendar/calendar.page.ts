@@ -30,7 +30,6 @@ export class CalendarPage implements OnInit {
             .watchQuery<any>({
                 query: PARTIES_QUERY,
                 variables: getPartiesDateVariables(new Date(), localStorage.getItem(PP_USER_ID)),
-                fetchPolicy: 'network-only',
             })
             .valueChanges.subscribe(res => {
                 const { data: partiesData, loading: partiesLoading } = res;

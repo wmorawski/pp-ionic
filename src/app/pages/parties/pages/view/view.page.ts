@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-view',
@@ -6,10 +7,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./view.page.scss'],
 })
 export class ViewPage implements OnInit {
-
-  constructor() { }
+  id;
+  constructor(private router: ActivatedRoute) { }
 
   ngOnInit() {
+  }
+  ionViewWillEnter() {
+    this.id = this.router.snapshot.params.id;
   }
 
 }

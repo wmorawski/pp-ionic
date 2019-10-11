@@ -9,6 +9,7 @@ import { CreatePage } from './create.page';
 import { NgZorroAntdModule } from 'ng-zorro-antd';
 import { NgZorroAntdMobileModule } from 'ng-zorro-antd-mobile';
 import { ColorCircleModule } from 'ngx-color/circle'; // <color-circle></color-circle>
+import { Geolocation } from '@ionic-native/geolocation/ngx';
 
 const routes: Routes = [
     {
@@ -28,6 +29,7 @@ const routes: Routes = [
         NgZorroAntdMobileModule,
         ColorCircleModule,
     ],
+    providers: [Geolocation],
 
     declarations: [CreatePage],
 })

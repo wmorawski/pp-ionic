@@ -9,6 +9,8 @@ import { NavController } from '@ionic/angular';
 import { AppService } from 'src/app/services/app.service';
 import { Apollo } from 'apollo-angular-boost';
 import { PARTIES_QUERY } from 'src/app/graphql/queries';
+import { Map } from 'mapbox-gl';
+import { getPartiesDateVariables } from 'src/app/shared/helpers/graphql-utils';
 
 @Component({
     selector: 'app-parties',
@@ -19,6 +21,7 @@ export class PartiesPage extends NavbarManager implements OnInit {
     hasParties: Observable<boolean>;
     parties: any;
     showMap = false;
+    map: Map;
 
     constructor(
         protected appService: AppService,
@@ -36,12 +39,7 @@ export class PartiesPage extends NavbarManager implements OnInit {
         this.hasParties = this.hasPartiesGQL.watch().valueChanges.pipe(map(result => result.data.hasParties));
         if (this.hasParties) {
             this.parties = this.partiesQueryGQL
-                .watch({
-                    where: {
-                        members_some: { id: localStorage.getItem(PP_USER_ID) },
-                    },
-                    orderBy: PartyOrderByInput.CreatedAtDesc,
-                })
+                .watch(getPartiesDateVariables(new Date(), localStorage.getItem(PP_USER_ID)))
                 .valueChanges.pipe(map(result => result.data.parties));
         }
     }
@@ -66,5 +64,10 @@ export class PartiesPage extends NavbarManager implements OnInit {
         } else {
             this.appService.showNavbar();
         }
+    }
+
+    initMap(e) {
+        this.map = e;
+        this.map.resize();
     }
 }

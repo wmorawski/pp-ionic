@@ -22,4 +22,8 @@ export class MapboxService implements OnInit {
             `${this.baseURL}/geocoding/v5/mapbox.places/${query}.json?${this.tokenParam}&types=address&country=PL&limit=10`
         );
     }
+
+    public searchByPosition(longitude, latitude) {
+        return this.http.get(`${this.baseURL}/geocoding/v5/mapbox.places/${longitude},${latitude}.json?${this.tokenParam}&types=address`);
+    }
 }

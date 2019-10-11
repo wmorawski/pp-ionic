@@ -8,19 +8,14 @@ import { IonicModule } from '@ionic/angular';
 import { ViewPage } from './view.page';
 
 const routes: Routes = [
-  {
-    path: '',
-    component: ViewPage
-  }
+    {
+        path: '',
+        component: ViewPage,
+    },
 ];
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    RouterModule.forChild(routes)
-  ],
-  declarations: [ViewPage]
+    imports: [CommonModule, FormsModule, IonicModule, RouterModule.forChild(routes)],
+    declarations: [ViewPage],
 })
 export class ViewPageModule {}

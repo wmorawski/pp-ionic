@@ -3,12 +3,14 @@ import { CREATE_PARTY_MUTATION } from './../../../../graphql/mutations';
 import { Apollo } from 'apollo-angular-boost';
 import { CreatePartyGQL, CreatePartyMutationVariables } from './../../../../graphql/types';
 import { MapboxService } from './../../../../services/mapbox.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ValidatorFn } from '@angular/forms';
 import { PP_USER_ID } from 'src/app/constants';
 import uuid from 'uuid/v4';
 import { ModalService } from 'ng-zorro-antd-mobile';
 import { NavController } from '@ionic/angular';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { getPartiesDateVariables } from 'src/app/shared/helpers/graphql-utils';
 
 const MyAwesomeRangeValidator: ValidatorFn = (fg: FormGroup) => {
     const start = fg.get('dateStart').value;
@@ -44,6 +46,8 @@ export class CreatePage implements OnInit {
         private apollo: Apollo,
         private modalService: ModalService,
         private navCtrl: NavController,
+        private geolocation: Geolocation,
+        private chr: ChangeDetectorRef
     ) {}
 
     ngOnInit(): void {
@@ -101,25 +105,19 @@ export class CreatePage implements OnInit {
                         try {
                             const data: any = proxy.readQuery({
                                 query: PARTIES_QUERY,
-                                variables: {
-                                    where: { members_some: { id: localStorage.getItem(PP_USER_ID) } },
-                                    orderBy: 'createdAt_DESC',
-                                },
+                                variables: getPartiesDateVariables(new Date(), localStorage.getItem(PP_USER_ID)),
                             });
                             data.parties = [createParty, ...data.parties];
                             proxy.writeQuery({
                                 query: PARTIES_QUERY,
                                 data,
-                                variables: {
-                                    where: { members_some: { id: localStorage.getItem(PP_USER_ID) } },
-                                    orderBy: 'createdAt_DESC',
-                                },
+                                variables: getPartiesDateVariables(new Date(), localStorage.getItem(PP_USER_ID)),
                             });
                         } catch (e) {}
                     },
                 })
                 .subscribe(
-                    (res) => {
+                    res => {
                         this.modalService.alert(
                             'Party created!',
                             'Party has been successfully created and your friends has been notified.',
@@ -130,21 +128,17 @@ export class CreatePage implements OnInit {
                                         await this.navCtrl.navigateBack(['/parties', res.data.createParty.id]);
                                     },
                                 },
-                            ],
+                            ]
                         );
                     },
-                    (err) => {
-                        this.modalService.alert(
-                            'Something went wrong',
-                            'We were not able to create a party. Please try again',
-                            [
-                                {
-                                    text: 'Close',
-                                    onPress: () => {},
-                                },
-                            ],
-                        );
-                    },
+                    err => {
+                        this.modalService.alert('Something went wrong', 'We were not able to create a party. Please try again', [
+                            {
+                                text: 'Close',
+                                onPress: () => {},
+                            },
+                        ]);
+                    }
                 );
         }
     }
@@ -189,12 +183,22 @@ export class CreatePage implements OnInit {
 
     locationSelected(id) {
         if (id) {
-            const location = this.locations.find((loc) => loc.id === id);
+            const location = this.locations.find(loc => loc.id === id);
             if (location) {
                 this.validateForm.controls.location.setValue(location);
+                console.log('selected', this.validateForm.controls.location.value);
             }
         }
     }
 
-    localizeMe() {}
+    async localizeMe() {
+        this.searchingForLocations = true;
+        const position = await this.geolocation.getCurrentPosition();
+        this.mapbox.searchByPosition(position.coords.longitude, position.coords.latitude).subscribe((res: any) => {
+            this.searchingForLocations = false;
+            this.locations = res.features;
+            this.chr.detectChanges();
+            this.locationSelected(res.features[0].id);
+        });
+    }
 }
