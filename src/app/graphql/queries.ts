@@ -1,5 +1,6 @@
 import { gql } from 'apollo-angular-boost';
 import { PARTY_FRAGMENT, MESSAGE_FRAGMENT, PARTY_INVITATION_FRAGMENT } from './fragments';
+import { PartyWhereUniqueInput } from '../../../../pp-back/dist/src/prisma/prisma.binding.d';
 
 export const ME_QUERY = gql`
     query MeQuery {
@@ -53,6 +54,20 @@ export const PARTIES_QUERY = gql`
         $last: Int
     ) {
         parties(where: $where, orderBy: $orderBy, skip: $skip, after: $after, before: $before, first: $first, last: $last) {
+            location {
+                placeName
+                latitude
+                longitude
+            }
+            ...PARTY_FRAGMENT
+        }
+    }
+    ${PARTY_FRAGMENT}
+`;
+
+export const PARTY_QUERY = gql`
+    query PartyQuery($where: PartyWhereUniqueInput!) {
+        party(where: $where) {
             location {
                 placeName
                 latitude

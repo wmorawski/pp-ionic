@@ -8,6 +8,7 @@ import { HomePage } from './home.page';
 import { NgZorroAntdMobileModule } from 'ng-zorro-antd-mobile';
 import { AvatarComponent } from 'src/app/shared/components/avatar/avatar.component';
 import { NgZorroAntdModule } from 'ng-zorro-antd';
+import { MainNavModule } from 'src/app/shared/components/navigation/main/main.module';
 
 @NgModule({
     imports: [
@@ -16,6 +17,7 @@ import { NgZorroAntdModule } from 'ng-zorro-antd';
         IonicModule,
         NgZorroAntdMobileModule,
         NgZorroAntdModule,
+        MainNavModule,
         RouterModule.forChild([
             {
                 path: '',
@@ -23,6 +25,6 @@ import { NgZorroAntdModule } from 'ng-zorro-antd';
             },
         ]),
     ],
-    declarations: [HomePage, AvatarComponent],
+    declarations: [HomePage],
 })
 export class HomePageModule {}
