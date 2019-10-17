@@ -1,35 +1,37 @@
 <ion-app>
     <ng-container *ngIf="isLogged; else notLogged">
-        <Navbar
-            [leftContent]="left"
-            [rightContent]="rightContent"
-            [mode]="'light'"
-            (onLeftClick)="onLeftClick()"
-            class="navbar"
-            [ngClass]="{ 'navbar-hidden': !isNavbarVisible, 'navbar-visible': isNavbarVisible }"
-        ></Navbar>
-        <ion-tabs style="position: sticky">
-            <ion-tab-bar slot="top">
-                <ion-tab-button tab="home">
-                    <ion-icon name="home" size="small"></ion-icon>
-                </ion-tab-button>
-                <ion-tab-button tab="parties">
-                    <ion-icon name="logo" size="small"></ion-icon>
-                </ion-tab-button>
-                <ion-tab-button tab="chats">
-                    <ion-icon name="message-circle" size="small"></ion-icon>
-                </ion-tab-button>
-                <ion-tab-button tab="calendar">
-                    <ion-icon name="calendar" size="small"></ion-icon>
-                </ion-tab-button>
-                <ion-tab-button tab="profile">
-                    <ion-icon name="user" size="small"></ion-icon>
-                </ion-tab-button>
-                <ion-tab-button tab="more">
-                    <ion-icon name="more-horizontal" size="small"></ion-icon>
-                </ion-tab-button>
-            </ion-tab-bar>
-        </ion-tabs>
+        <ng-container *ngIf="isMainNavVisible; else content">
+            <Navbar
+                [leftContent]="left"
+                [rightContent]="rightContent"
+                [mode]="'light'"
+                (onLeftClick)="onLeftClick()"
+                class="navbar"
+                [ngClass]="{ 'navbar-hidden': !isNavbarVisible, 'navbar-visible': isNavbarVisible }"
+            ></Navbar>
+            <ion-tabs style="position: sticky">
+                <ion-tab-bar slot="top">
+                    <ion-tab-button tab="home">
+                        <ion-icon name="home" size="small"></ion-icon>
+                    </ion-tab-button>
+                    <ion-tab-button tab="parties">
+                        <ion-icon name="logo" size="small"></ion-icon>
+                    </ion-tab-button>
+                    <ion-tab-button tab="chats">
+                        <ion-icon name="message-circle" size="small"></ion-icon>
+                    </ion-tab-button>
+                    <ion-tab-button tab="calendar">
+                        <ion-icon name="calendar" size="small"></ion-icon>
+                    </ion-tab-button>
+                    <ion-tab-button tab="profile">
+                        <ion-icon name="user" size="small"></ion-icon>
+                    </ion-tab-button>
+                    <ion-tab-button tab="more">
+                        <ion-icon name="more-horizontal" size="small"></ion-icon>
+                    </ion-tab-button>
+                </ion-tab-bar>
+            </ion-tabs>
+        </ng-container>
     </ng-container>
 </ion-app>
 <ng-template #notLogged>

@@ -1,0 +1,10 @@
+.navbar {
+  transition: height 250ms ease-in-out;
+  height: 45px;
+  &.navbar-hidden {
+    height: 0;
+  }
+  &.navbar-visible {
+    height: 45px;
+  }
+}

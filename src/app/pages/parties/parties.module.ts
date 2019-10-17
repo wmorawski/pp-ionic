@@ -13,6 +13,7 @@ import { MapBoxComponent } from '../../shared/components/map-box/map-box.compone
 import { NgxMapboxGLModule } from 'ngx-mapbox-gl';
 import { environment } from 'src/environments/environment';
 import { MomentModule } from 'ngx-moment';
+import { ViewPage } from './pages/view/view.page';
 
 const routes: Routes = [
     {
@@ -22,7 +23,15 @@ const routes: Routes = [
     { path: 'create', loadChildren: './pages/create/create.module#CreatePageModule' },
     {
         path: ':id',
-        loadChildren: './pages/view/view.module#ViewPageModule',
+        component: ViewPage,
+        children: [
+            { path: '', redirectTo: 'home', pathMatch: 'full' },
+            {
+                path: 'home',
+                loadChildren:
+                    'src/app/pages/parties/pages/view/pages/parties-view-home/parties-view-home.module#PartiesViewHomePageModule',
+            },
+        ],
     },
 ];
 
@@ -40,7 +49,7 @@ const routes: Routes = [
         }),
         MomentModule,
     ],
-
-    declarations: [PartiesPage, PartyItemComponent, MapBoxComponent],
+    exports: [RouterModule],
+    declarations: [PartiesPage, PartyItemComponent, MapBoxComponent, ViewPage],
 })
 export class PartiesPageModule {}

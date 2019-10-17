@@ -1,1 +1,31 @@
-<h1>Halo</h1>
+<ion-header *ngIf="party | async">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button defaultHref="parties"></ion-back-button>
+        </ion-buttons>
+        <ion-buttons slot="end">
+            <ion-button (click)="openMenu()">
+                <ion-icon slot="icon-only" name="more-horizontal"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title>{{ (party | async)?.title }}</ion-title>
+    </ion-toolbar>
+</ion-header>
+<ion-content color="light">
+    <ion-tabs>
+        <ion-tab-bar slot="bottom">
+            <ion-tab-button tab="home">
+                <ion-icon name="alert-circle" size="small"></ion-icon>
+            </ion-tab-button>
+            <ion-tab-button tab="music">
+                <ion-icon name="spotify" size="small"></ion-icon>
+            </ion-tab-button>
+            <ion-tab-button tab="entertainment">
+                <ion-icon name="ent-joystick" size="small"></ion-icon>
+            </ion-tab-button>
+            <ion-tab-button tab="cart">
+                <ion-icon name="shopping-cart" size="small"></ion-icon>
+            </ion-tab-button>
+        </ion-tab-bar>
+    </ion-tabs>
+</ion-content>

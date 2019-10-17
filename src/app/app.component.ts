@@ -19,6 +19,7 @@ import { tap } from 'rxjs/operators';
 export class AppComponent implements OnDestroy {
     public isLogged = false;
     public isNavbarVisible = true;
+    public isMainNavVisible = true;
     public loading = true;
     public currentUser: any = null;
     private meQuerySubscription: Subscription;
@@ -30,10 +31,10 @@ export class AppComponent implements OnDestroy {
         private appService: AppService,
         private apollo: Apollo,
         private fcm: FcmService,
-        private toastCtrl: ToastController,
+        private toastCtrl: ToastController
     ) {
         this.initializeApp();
-        this.authService.isAuthenticated.subscribe((logged) => {
+        this.authService.isAuthenticated.subscribe(logged => {
             this.isLogged = logged;
             if (logged === true) {
                 this.meQuerySubscription = this.apollo
@@ -47,8 +48,11 @@ export class AppComponent implements OnDestroy {
                     });
             }
         });
-        this.appService.isNavbarVisible.subscribe((visible) => {
+        this.appService.isNavbarVisible.subscribe(visible => {
             this.isNavbarVisible = visible;
+        });
+        this.appService.needsMainNavigation.subscribe(visible => {
+            this.isMainNavVisible = visible;
         });
         this.authService.autoLogin();
     }
@@ -63,14 +67,14 @@ export class AppComponent implements OnDestroy {
             this.fcm
                 .listenToNotifications()
                 .pipe(
-                    tap(async (msg) => {
+                    tap(async msg => {
                         // show a toast
                         const toast = await this.toastCtrl.create({
                             message: msg.body,
                             duration: 3000,
                         });
                         toast.present();
-                    }),
+                    })
                 )
                 .subscribe();
         });
