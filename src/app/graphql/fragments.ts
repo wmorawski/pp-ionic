@@ -53,12 +53,16 @@ export const PARTY_INVITATION_FRAGMENT = gql`
         id
         createdAt
         invitedBy {
+            id
             firstName
             lastName
             avatar
         }
         user {
             id
+            firstName
+            lastName
+            avatar
         }
         party {
             title

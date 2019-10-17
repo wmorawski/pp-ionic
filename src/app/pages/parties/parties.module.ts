@@ -7,7 +7,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { PartiesPage } from './parties.page';
 import { NgZorroAntdMobileModule } from 'ng-zorro-antd-mobile';
-import { NzIconModule, NzButtonModule } from 'ng-zorro-antd';
+import { NzIconModule, NzButtonModule, NgZorroAntdModule } from 'ng-zorro-antd';
 import { PartyItemComponent } from './components/party-item/party-item.component';
 import { MapBoxComponent } from '../../shared/components/map-box/map-box.component';
 import { NgxMapboxGLModule } from 'ngx-mapbox-gl';
@@ -44,6 +44,7 @@ const routes: Routes = [
         NgZorroAntdMobileModule,
         NzButtonModule,
         NzIconModule,
+        NgZorroAntdModule,
         NgxMapboxGLModule.withConfig({
             accessToken: environment.mapbox.accessToken,
         }),

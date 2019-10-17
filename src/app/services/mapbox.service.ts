@@ -32,7 +32,7 @@ export class MapboxService implements OnInit {
     public getDrivingTraffic({ from: { fLongitude, fLatitude }, to: { tLongitude, tLatitude } }) {
         return this.http.get(
             // tslint:disable-next-line: max-line-length
-            `${this.baseURL}/directions/v5/mapbox/driving-traffic/${fLongitude},${fLatitude};${tLongitude},${tLatitude}.json?${this.tokenParam}&overview=full&annotations=duration,distance`,
+            `${this.baseURL}/directions/v5/mapbox/driving/${fLongitude},${fLatitude};${tLongitude},${tLatitude}.json?${this.tokenParam}&overview=full&annotations=duration,distance,speed`,
         );
     }
 }

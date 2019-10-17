@@ -87,6 +87,7 @@
         "moment": "^2.24.0",
         "ng-zorro-antd": "^8.3.0",
         "ng-zorro-antd-mobile": "^1.0.0-rc.0",
+        "ngx-avatar": "^3.7.0",
         "ngx-color": "^4.1.0",
         "ngx-mapbox-gl": "^4.0.0",
         "ngx-moment": "^3.4.0",
@@ -121,6 +122,8 @@
         "protractor": "~5.4.0",
         "ts-node": "~7.0.0",
         "tslint": "~5.15.0",
+        "tslint-config-prettier": "^1.18.0",
+        "tslint-plugin-prettier": "^2.0.1",
         "typescript": "~3.4.3"
     },
     "description": "An Ionic project",

@@ -1,0 +1,15 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-searchbar showCancelButton="focus"></ion-searchbar>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+    <ion-list>
+        <ion-item *ngFor="let invitation of invitations$ | async">
+            <ion-avatar>
+                <ngx-avatar [name]="invitation.user.firstName" textSizeRatio="2" size="32"></ngx-avatar>
+            </ion-avatar>
+            <ion-label>{{ invitation.user.firstName }} {{ invitation.user.lastName }}</ion-label>
+        </ion-item>
+    </ion-list>
+</ion-content>

@@ -1,3 +1,6 @@
+import { MembersModalComponent } from './../../components/modals/members-modal/members-modal.component';
+import { InvitesModalComponent } from './../../components/modals/invites-modal/invites-modal.component';
+import { QrModalComponent } from './../../components/modals/qr-modal/qr-modal.component';
 import { MomentModule } from 'ngx-moment';
 import { MetaInfoComponent } from './../../components/meta-info/meta-info.component';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
@@ -15,6 +18,7 @@ import { StyledComponentsModule } from 'angular-styled-components';
 import { NgZorroAntdModule } from 'ng-zorro-antd';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { NgZorroAntdMobileModule } from 'ng-zorro-antd-mobile';
+import { AvatarModule } from 'ngx-avatar';
 
 const routes: Routes = [
     {
@@ -35,8 +39,17 @@ const routes: Routes = [
         NgZorroAntdMobileModule,
         SharedModule,
         MomentModule,
+        AvatarModule,
     ],
     providers: [I18nPluralPipe, Geolocation],
-    declarations: [PartiesViewHomePage, NavButtonComponent, MetaInfoComponent],
+    declarations: [
+        PartiesViewHomePage,
+        NavButtonComponent,
+        MetaInfoComponent,
+        QrModalComponent,
+        InvitesModalComponent,
+        MembersModalComponent,
+    ],
+    entryComponents: [QrModalComponent, InvitesModalComponent, MembersModalComponent],
 })
 export class PartiesViewHomePageModule {}

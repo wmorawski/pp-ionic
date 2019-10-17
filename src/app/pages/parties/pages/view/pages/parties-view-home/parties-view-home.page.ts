@@ -1,3 +1,6 @@
+import { MembersModalComponent } from './../../components/modals/members-modal/members-modal.component';
+import { InvitesModalComponent } from './../../components/modals/invites-modal/invites-modal.component';
+import { QrModalComponent } from './../../components/modals/qr-modal/qr-modal.component';
 import { MapboxService } from './../../../../../../services/mapbox.service';
 import { Component, OnInit } from '@angular/core';
 import { AppService } from 'src/app/services/app.service';
@@ -6,6 +9,7 @@ import { PartyQueryGQL, Party } from 'src/app/graphql/types';
 import { map } from 'rxjs/operators';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { getPartyVariables } from 'src/app/shared/helpers/graphql-utils';
+import { ModalController } from '@ionic/angular';
 
 @Component({
     selector: 'app-parties-view-home',
@@ -29,6 +33,7 @@ export class PartiesViewHomePage implements OnInit {
         private partyQueryGQL: PartyQueryGQL,
         private mabpox: MapboxService,
         private geo: Geolocation,
+        private modalController: ModalController
     ) {}
 
     ngOnInit() {}
@@ -40,9 +45,48 @@ export class PartiesViewHomePage implements OnInit {
         this.party$.subscribe(async (party: Party) => {
             const userPosition = await this.geo.getCurrentPosition();
             this.location$ = this.mabpox.getDrivingTraffic({
-                from: { fLongitude: userPosition.coords.longitude, fLatitude: userPosition.coords.latitude },
-                to: { tLongitude: party.location.longitude, tLatitude: party.location.latitude },
+                from: {
+                    fLongitude: userPosition.coords.longitude,
+                    fLatitude: userPosition.coords.latitude,
+                },
+                to: {
+                    tLongitude: party.location.longitude,
+                    tLatitude: party.location.latitude,
+                },
             });
+        });
+    }
+
+    showQrModal() {
+        return this.party$.subscribe(async (party) => {
+            return await (await this.modalController.create({
+                component: QrModalComponent,
+                componentProps: {
+                    party,
+                },
+            })).present();
+        });
+    }
+
+    showInvitesModal() {
+        return this.party$.subscribe(async (party) => {
+            return await (await this.modalController.create({
+                component: InvitesModalComponent,
+                componentProps: {
+                    party,
+                },
+            })).present();
+        });
+    }
+
+    showMembersModal() {
+        return this.party$.subscribe(async (party: Party) => {
+            return await (await this.modalController.create({
+                component: MembersModalComponent,
+                componentProps: {
+                    members: party.members,
+                },
+            })).present();
         });
     }
 }

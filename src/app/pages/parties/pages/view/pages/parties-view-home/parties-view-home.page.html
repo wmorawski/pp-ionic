@@ -20,7 +20,7 @@
                     <ion-col size="12" class="ion-no-padding ion-no-margin" display="flex" fdr aic>
                         <h3 display="inline-flex">{{ party.title }}</h3>
                         <nz-tag [nzColor]="party.isPublic ? 'blue' : 'gold'" marginLeft="1em" display="inline-flex">
-                            <ion-label>{{ party.isPublic ? 'Public' : 'Private' }}</ion-label>
+                            {{ party.isPublic ? 'Public' : 'Private' }}
                         </nz-tag>
                     </ion-col>
                     <ion-col size="12" class="ion-no-padding ion-no-margin">
@@ -39,7 +39,7 @@
         </ion-row>
         <ion-row borderTopWidth="1px" borderTopColor="#CCD0D5">
             <ion-col>
-                <party-nav-button icon="user-plus" title="invites"></party-nav-button>
+                <party-nav-button icon="user-plus" title="invites" (click)="showInvitesModal()"></party-nav-button>
             </ion-col>
             <ion-col>
                 <party-nav-button icon="check-circle" title="going"></party-nav-button>
@@ -48,26 +48,17 @@
                 <party-nav-button icon="share-2" title="share"></party-nav-button>
             </ion-col>
             <ion-col>
-                <party-nav-button icon="hash" title="code"></party-nav-button>
+                <party-nav-button icon="hash" title="code" (click)="showQrModal()" ></party-nav-button>
             </ion-col>
         </ion-row>
         <ion-row borderTopWidth="1px" borderTopColor="#CCD0D5">
             <ion-col size="12" paddingLeft="1em">
-                <party-meta-info icon="users" [content]="partyMembers"></party-meta-info>
+                <party-meta-info icon="users" [content]="partyMembers" (click)="showMembersModal()"></party-meta-info>
                 <party-meta-info icon="calendar" [content]="partyTime"></party-meta-info>
                 <party-meta-info icon="map-pin" *ngIf="location$ | async" [content]="partyLocation"></party-meta-info>
             </ion-col>
         </ion-row>
     </ion-grid>
-    <ion-card>
-        <ion-card-header>
-            <ion-card-title>Invite a friend</ion-card-title>
-            <ion-card-subtitle>Send him this qrcode</ion-card-subtitle>
-        </ion-card-header>
-        <ion-card-content>
-            <qrcode [qrdata]="'partyplanner://parties/join/' + party.inviteSecret" [size]="256" [level]="'M'"></qrcode>
-        </ion-card-content>
-    </ion-card>
     <ng-template #partyMembers>
         <strong>{{ party.members.length | shortNumber }}</strong>
         {{ party.members.length | i18nPlural: itemPluralMapping.member }} going

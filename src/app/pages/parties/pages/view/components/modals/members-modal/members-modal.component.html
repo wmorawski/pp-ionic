@@ -1,0 +1,15 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-searchbar showCancelButton="focus"></ion-searchbar>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+    <ion-list>
+        <ion-item *ngFor="let member of members">
+            <ion-avatar>
+                <ngx-avatar [name]="member.firstName" textSizeRatio="2" size="32"></ngx-avatar>
+            </ion-avatar>
+            <ion-label>{{ member.firstName }} {{ member.lastName }}</ion-label>
+        </ion-item>
+    </ion-list>
+</ion-content>

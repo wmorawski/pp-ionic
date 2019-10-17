@@ -4,6 +4,9 @@
         <ion-card-title>{{ party.title }}</ion-card-title>
         <ion-card-subtitle>
             <ion-icon name="user"></ion-icon> {{ party.author.firstName }} {{ party.author.lastName }} &nbsp;
+            <nz-tag [nzColor]="party.isPublic ? 'blue' : 'gold'" display="inline-flex">
+                    {{ party.isPublic ? 'Public' : 'Private' }}
+                </nz-tag>
         </ion-card-subtitle>
         <ion-card-subtitle>
             <i nz-icon nzType="clock-circle"></i> {{ party.start | date: 'dd MMM HH:mm' }} to
