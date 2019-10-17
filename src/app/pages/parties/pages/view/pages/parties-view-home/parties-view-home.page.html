@@ -3,17 +3,31 @@
         src="/assets/img/having-fun.svg"
         style="width: auto; display: block; margin: 0 auto; background: rgba(24,144,255,0.1);"
     ></ion-img>
-    <ion-grid style="background: white;">
-        <ion-row class="ion-justify-content-center">
-            <ion-col size="12" class="ion-justify-content-center ion-text-center">
-                <h3>{{ party.title }}</h3>
+    <ion-grid style="background: white;" class="ion-no-padding">
+        <ion-row class="ion-justify-content-center" paddingTop="1em" paddingBottom="1em">
+            <ion-col size="3">
+                <ion-text color="primary">
+                    <small>{{party.start | date: "MM" }}</small>
+                </ion-text>
             </ion-col>
-            <ion-col size="12" class="ion-text-center">
-                <small>
-                    {{ party.isPublic ? 'Public' : 'Private' }} party &bull;
-                    {{ party.members.length | i18nPlural: itemPluralMapping.member }}
-                </small>
+            <ion-col size="9">
+                
+                <ion-row>
+                    
+                    <ion-col size="12" class="ion-justify-content-center ion-text-center">
+                        <h3>{{ party.title }}</h3>
+                    </ion-col>
+                    <ion-col size="12" class="ion-text-center">
+                        <small>
+                            {{ party.members.length | i18nPlural: itemPluralMapping.member }} &bull;
+                            Organized by {{ party.author.firstName }} {{party.author.lastName}}
+                        </small>
+                    </ion-col>
+                </ion-row>
             </ion-col>
+        </ion-row>
+        <ion-row borderTopWidth="1px" borderTopColor="#c3c3c3">
+            <ion-col size="12"></ion-col>
         </ion-row>
     </ion-grid>
     <ion-card>

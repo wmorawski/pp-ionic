@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { QRCodeModule } from 'angularx-qrcode';
 
 import { PartiesViewHomePage } from './parties-view-home.page';
+import { StyledComponentsModule } from 'angular-styled-components';
 
 const routes: Routes = [
     {
@@ -16,7 +17,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    imports: [CommonModule, FormsModule, IonicModule, RouterModule.forChild(routes), QRCodeModule],
+    imports: [CommonModule, FormsModule, IonicModule, RouterModule.forChild(routes), QRCodeModule, StyledComponentsModule],
     providers: [I18nPluralPipe],
     declarations: [PartiesViewHomePage],
 })
