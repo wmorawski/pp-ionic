@@ -42,13 +42,18 @@
                 <party-nav-button icon="user-plus" title="invites" (click)="showInvitesModal()"></party-nav-button>
             </ion-col>
             <ion-col>
-                <party-nav-button icon="check-circle" title="going"></party-nav-button>
+                <party-nav-button
+                    icon="check-circle"
+                    title="going"
+                    *ngIf="party$ | async"
+                    [color]="goingColor"
+                ></party-nav-button>
             </ion-col>
             <ion-col>
                 <party-nav-button icon="share-2" title="share"></party-nav-button>
             </ion-col>
             <ion-col>
-                <party-nav-button icon="hash" title="code" (click)="showQrModal()" ></party-nav-button>
+                <party-nav-button icon="hash" title="code" (click)="showQrModal()"></party-nav-button>
             </ion-col>
         </ion-row>
         <ion-row borderTopWidth="1px" borderTopColor="#CCD0D5">
@@ -84,7 +89,7 @@
                 <ion-text color="medium">
                     <small>
                         {{ location.routes[0].distance | shortNumber }}m &bull;
-                        {{ location.routes[0].duration | amDuration: 'seconds' }}
+                        {{ location.routes[0].distance / 13.88 | amDuration: 'seconds' }}
                         <small style="font-size: 80%">(by car)</small>
                     </small>
                 </ion-text>

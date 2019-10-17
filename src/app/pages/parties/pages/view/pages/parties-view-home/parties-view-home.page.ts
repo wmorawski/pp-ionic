@@ -1,3 +1,4 @@
+import { PP_USER_ID } from './../../../../../../constants';
 import { MembersModalComponent } from './../../components/modals/members-modal/members-modal.component';
 import { InvitesModalComponent } from './../../components/modals/invites-modal/invites-modal.component';
 import { QrModalComponent } from './../../components/modals/qr-modal/qr-modal.component';
@@ -27,13 +28,14 @@ export class PartiesViewHomePage implements OnInit {
             other: ' members',
         },
     };
+    party;
     constructor(
         private appService: AppService,
         private router: Router,
         private partyQueryGQL: PartyQueryGQL,
         private mabpox: MapboxService,
         private geo: Geolocation,
-        private modalController: ModalController
+        private modalController: ModalController,
     ) {}
 
     ngOnInit() {}
@@ -43,6 +45,7 @@ export class PartiesViewHomePage implements OnInit {
             .watch(getPartyVariables(this.id))
             .valueChanges.pipe(map((result) => result.data.party));
         this.party$.subscribe(async (party: Party) => {
+            this.party = party;
             const userPosition = await this.geo.getCurrentPosition();
             this.location$ = this.mabpox.getDrivingTraffic({
                 from: {
@@ -88,5 +91,11 @@ export class PartiesViewHomePage implements OnInit {
                 },
             })).present();
         });
+    }
+
+    get goingColor() {
+        return this.party.members.some((member) => member.id === localStorage.getItem(PP_USER_ID))
+            ? 'primary'
+            : 'medium';
     }
 }

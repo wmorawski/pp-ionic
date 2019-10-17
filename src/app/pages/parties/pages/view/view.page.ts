@@ -1,3 +1,4 @@
+import { PP_USER_ID } from './../../../../constants';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AppService } from 'src/app/services/app.service';
@@ -5,6 +6,7 @@ import { PartyQueryGQL, Party } from 'src/app/graphql/types';
 import { Observable } from 'rxjs';
 import { getPartyVariables } from 'src/app/shared/helpers/graphql-utils';
 import { map } from 'rxjs/operators';
+import { NavController } from '@ionic/angular';
 
 @Component({
     selector: 'app-view',
@@ -14,12 +16,24 @@ import { map } from 'rxjs/operators';
 export class ViewPage implements OnInit {
     id;
     party: Observable<any>;
-    constructor(private router: ActivatedRoute, private appService: AppService, private partyQueryGQL: PartyQueryGQL) {}
+    constructor(
+        private router: ActivatedRoute,
+        private appService: AppService,
+        private partyQueryGQL: PartyQueryGQL,
+        private navCtrl: NavController,
+    ) {}
 
     ngOnInit() {}
     ionViewWillEnter() {
         this.id = this.router.snapshot.params.id;
-        this.party = this.partyQueryGQL.watch(getPartyVariables(this.id)).valueChanges.pipe(map(result => result.data.party));
+        this.party = this.partyQueryGQL
+            .watch(getPartyVariables(this.id))
+            .valueChanges.pipe(map((result) => result.data.party));
+        this.party.subscribe((party: Party) => {
+            if (!party.members.some((member) => member.id === localStorage.getItem(PP_USER_ID)) && !party.isPublic) {
+                this.navCtrl.navigateRoot('/parties');
+            }
+        });
         this.appService.hideMainNav();
     }
     ionViewWillLeave() {
