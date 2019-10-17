@@ -19,11 +19,20 @@ export class MapboxService implements OnInit {
 
     public searchLocation(query = '') {
         return this.http.get(
-            `${this.baseURL}/geocoding/v5/mapbox.places/${query}.json?${this.tokenParam}&types=address&country=PL&limit=10`
+            `${this.baseURL}/geocoding/v5/mapbox.places/${query}.json?${this.tokenParam}&types=address&country=PL&limit=10`,
         );
     }
 
     public searchByPosition(longitude, latitude) {
-        return this.http.get(`${this.baseURL}/geocoding/v5/mapbox.places/${longitude},${latitude}.json?${this.tokenParam}&types=address`);
+        return this.http.get(
+            `${this.baseURL}/geocoding/v5/mapbox.places/${longitude},${latitude}.json?${this.tokenParam}&types=address`,
+        );
+    }
+
+    public getDrivingTraffic({ from: { fLongitude, fLatitude }, to: { tLongitude, tLatitude } }) {
+        return this.http.get(
+            // tslint:disable-next-line: max-line-length
+            `${this.baseURL}/directions/v5/mapbox/driving-traffic/${fLongitude},${fLatitude};${tLongitude},${tLatitude}.json?${this.tokenParam}&overview=full&annotations=duration,distance`,
+        );
     }
 }
