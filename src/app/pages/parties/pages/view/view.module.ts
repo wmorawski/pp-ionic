@@ -9,8 +9,14 @@ import { ViewPage } from './view.page';
 
 const routes: Routes = [
     {
-        path: '',
+        path: '/',
         component: ViewPage,
+        children: [
+            {
+                path: 'home',
+                loadChildren: './pages/parties-view-home/parties-view-home.module#PartiesViewHomePageModule',
+            },
+        ],
     },
 ];
 

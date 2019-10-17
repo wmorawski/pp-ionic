@@ -3,7 +3,7 @@
     <name>PartyPlanner</name>
     <description>An awesome Ionic/Cordova app.</description>
     <author email="hi@ionicframework.com" href="http://ionicframework.com/">Ionic Framework Team</author>
-    <content src="index.html" />
+    <content original-src="index.html" src="https://localhost:8100" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -105,5 +105,5 @@
         <variable name="FACEBOOK_HYBRID_APP_EVENTS" value="false" />
         <variable name="FACEBOOK_ANDROID_SDK_VERSION" value="5.2.0" />
     </plugin>
-    <engine name="android" spec="~7.0.0" />
+    <allow-navigation href="https://localhost:8100" sessionid="584e6b39" />
 </widget>

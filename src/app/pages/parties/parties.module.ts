@@ -23,13 +23,6 @@ const routes: Routes = [
     {
         path: ':id',
         loadChildren: './pages/view/view.module#ViewPageModule',
-        children: [
-            { path: '', redirectTo: 'home' },
-            {
-                path: 'home',
-                loadChildren: './pages/view/pages/parties-view-home/parties-view-home.module#PartiesViewHomePageModule',
-            },
-        ],
     },
 ];
 
