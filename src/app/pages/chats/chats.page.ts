@@ -12,7 +12,7 @@ import { map } from 'rxjs/operators';
     styleUrls: ['./chats.page.scss'],
 })
 export class ChatsPage implements OnInit {
-    private hasChats: Observable<boolean>;
+    public hasChats: Observable<boolean>;
     constructor(private apollo: Apollo, private hasChatsGQL: HasChatsQueryGQL) {}
 
     ngOnInit() {}

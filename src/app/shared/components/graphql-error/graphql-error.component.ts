@@ -6,7 +6,7 @@ import { Component, OnInit, Input } from '@angular/core';
     styleUrls: ['./graphql-error.component.scss'],
 })
 export class GraphqlErrorComponent implements OnInit {
-    private _error = null;
+    public _error = null;
     constructor() {}
 
     ngOnInit() {}

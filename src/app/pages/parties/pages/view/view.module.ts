@@ -22,6 +22,5 @@ const routes: Routes = [
 
 @NgModule({
     imports: [CommonModule, FormsModule, IonicModule, RouterModule.forChild(routes)],
-    declarations: [ViewPage],
 })
 export class ViewPageModule {}

@@ -1,6 +1,6 @@
 {
     "/graphql": {
-        "target": "http://localhost:4000",
+        "target": "https://api.partyplanner.fun",
         "secure": false,
         "changeOrigin": true
     }

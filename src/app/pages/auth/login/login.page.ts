@@ -9,6 +9,7 @@ import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook/ngx';
 import { SpotifyAuth } from '@ionic-native/spotify-auth/ngx';
 import * as SpotifyWebApi from 'spotify-web-api-js';
 import { BehaviorSubject } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Component({
     selector: 'app-login',
@@ -103,8 +104,8 @@ export class LoginPage implements OnInit {
             clientId: 'cf6c218047e74336a40b6c1cfe70f35a',
             redirectUrl: 'partyplanner://spotify',
             scopes: ['streaming', 'playlist-read-private', 'user-read-email', 'user-read-private'],
-            tokenExchangeUrl: 'http://localhost:4000/auth/spotify/token',
-            tokenRefreshUrl: 'http://localhost:4000/auth/spotify/refresh',
+            tokenExchangeUrl: environment.backendUrl + '/auth/spotify/token',
+            tokenRefreshUrl: environment.backendUrl + '/auth/spotify/refresh',
         };
 
         this.spotifyAuth

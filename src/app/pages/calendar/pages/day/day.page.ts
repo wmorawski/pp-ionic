@@ -21,7 +21,7 @@ export class DayPage implements OnInit {
     parsedParties: any[] = [];
     calendarPlugins = [timeGridPlugin, interactionPlugin];
     startDateStr: string;
-    constructor(private readonly apollo: Apollo, private readonly router: ActivatedRoute, private readonly navCtrl: NavController) {}
+    constructor(private readonly apollo: Apollo, public readonly router: ActivatedRoute, private readonly navCtrl: NavController) {}
 
     ngOnInit() {}
     ionViewWillEnter() {
