@@ -47,7 +47,7 @@ export class CreatePage implements OnInit {
         private modalService: ModalService,
         private navCtrl: NavController,
         private geolocation: Geolocation,
-        private chr: ChangeDetectorRef
+        private chr: ChangeDetectorRef,
     ) {}
 
     ngOnInit(): void {
@@ -72,14 +72,6 @@ export class CreatePage implements OnInit {
                     isPublic: formData.isPublic,
                     members: {
                         connect: [{ id }],
-                    },
-                    playlist: {
-                        create: {
-                            name: uuid(),
-                            user: {
-                                connect: { id },
-                            },
-                        },
                     },
                     normalizedTitle: formData.title.toLowerCase().replace(/[ -.,]/g, ''),
                     description: '',
@@ -117,7 +109,7 @@ export class CreatePage implements OnInit {
                     },
                 })
                 .subscribe(
-                    res => {
+                    (res) => {
                         this.modalService.alert(
                             'Party created!',
                             'Party has been successfully created and your friends has been notified.',
@@ -128,17 +120,21 @@ export class CreatePage implements OnInit {
                                         await this.navCtrl.navigateBack(['/parties', res.data.createParty.id]);
                                     },
                                 },
-                            ]
+                            ],
                         );
                     },
-                    err => {
-                        this.modalService.alert('Something went wrong', 'We were not able to create a party. Please try again', [
-                            {
-                                text: 'Close',
-                                onPress: () => {},
-                            },
-                        ]);
-                    }
+                    (err) => {
+                        this.modalService.alert(
+                            'Something went wrong',
+                            'We were not able to create a party. Please try again',
+                            [
+                                {
+                                    text: 'Close',
+                                    onPress: () => {},
+                                },
+                            ],
+                        );
+                    },
                 );
         }
     }
@@ -183,7 +179,7 @@ export class CreatePage implements OnInit {
 
     locationSelected(id) {
         if (id) {
-            const location = this.locations.find(loc => loc.id === id);
+            const location = this.locations.find((loc) => loc.id === id);
             if (location) {
                 this.validateForm.controls.location.setValue(location);
                 console.log('selected', this.validateForm.controls.location.value);

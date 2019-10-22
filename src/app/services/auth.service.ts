@@ -2,6 +2,7 @@ import { NavController } from '@ionic/angular';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { PP_USER_ID, PP_AUTH_TOKEN } from 'src/app/constants';
+import { Apollo } from 'apollo-angular';
 
 @Injectable({
     providedIn: 'root',
@@ -10,7 +11,7 @@ export class AuthService {
     private userId: string = null;
     private _isAuthenticated = new BehaviorSubject(false);
 
-    constructor(private readonly navCtrl: NavController) {}
+    constructor(private readonly navCtrl: NavController, private readonly apollo: Apollo) {}
 
     get isAuthenticated(): Observable<boolean> {
         return this._isAuthenticated.asObservable();
@@ -32,11 +33,16 @@ export class AuthService {
     }
 
     logout() {
-        localStorage.removeItem(PP_USER_ID);
-        localStorage.removeItem(PP_AUTH_TOKEN);
-        this.userId = null;
-        this._isAuthenticated.next(false);
-        this.navCtrl.navigateRoot(['/auth/login']);
+        this.apollo
+            .getClient()
+            .resetStore()
+            .then((_) => {
+                localStorage.removeItem(PP_USER_ID);
+                localStorage.removeItem(PP_AUTH_TOKEN);
+                this.userId = null;
+                this._isAuthenticated.next(false);
+                this.navCtrl.navigateRoot(['/auth/login']);
+            });
     }
 
     autoLogin() {

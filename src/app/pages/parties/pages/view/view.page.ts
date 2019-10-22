@@ -6,7 +6,7 @@ import { PartyQueryGQL, Party } from 'src/app/graphql/types';
 import { Observable } from 'rxjs';
 import { getPartyVariables } from 'src/app/shared/helpers/graphql-utils';
 import { map } from 'rxjs/operators';
-import { NavController } from '@ionic/angular';
+import { NavController, Platform } from '@ionic/angular';
 
 @Component({
     selector: 'app-view',
@@ -21,6 +21,7 @@ export class ViewPage implements OnInit {
         private appService: AppService,
         private partyQueryGQL: PartyQueryGQL,
         private navCtrl: NavController,
+        private platform: Platform,
     ) {}
 
     ngOnInit() {}
@@ -35,6 +36,9 @@ export class ViewPage implements OnInit {
             }
         });
         this.appService.hideMainNav();
+        // this.platform.backButton.subscribe((e) => {
+        //     this.navCtrl.navigateRoot('parties');
+        // });
     }
     ionViewWillLeave() {
         this.appService.showMainNav();

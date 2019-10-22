@@ -21,6 +21,7 @@ export class AppComponent implements OnDestroy {
     public isNavbarVisible = true;
     public isMainNavVisible = true;
     public loading = true;
+    private counter = 0;
     public currentUser: any = null;
     private meQuerySubscription: Subscription;
     constructor(
@@ -31,10 +32,10 @@ export class AppComponent implements OnDestroy {
         private appService: AppService,
         private apollo: Apollo,
         private fcm: FcmService,
-        private toastCtrl: ToastController
+        private toastCtrl: ToastController,
     ) {
         this.initializeApp();
-        this.authService.isAuthenticated.subscribe(logged => {
+        this.authService.isAuthenticated.subscribe((logged) => {
             this.isLogged = logged;
             if (logged === true) {
                 this.meQuerySubscription = this.apollo
@@ -48,10 +49,10 @@ export class AppComponent implements OnDestroy {
                     });
             }
         });
-        this.appService.isNavbarVisible.subscribe(visible => {
+        this.appService.isNavbarVisible.subscribe((visible) => {
             this.isNavbarVisible = visible;
         });
-        this.appService.needsMainNavigation.subscribe(visible => {
+        this.appService.needsMainNavigation.subscribe((visible) => {
             this.isMainNavVisible = visible;
         });
         this.authService.autoLogin();
@@ -67,17 +68,38 @@ export class AppComponent implements OnDestroy {
             this.fcm
                 .listenToNotifications()
                 .pipe(
-                    tap(async msg => {
+                    tap(async (msg) => {
                         // show a toast
                         const toast = await this.toastCtrl.create({
                             message: msg.body,
                             duration: 3000,
                         });
                         toast.present();
-                    })
+                    }),
                 )
                 .subscribe();
+            // this.platform.backButton.subscribe(() => {
+            //     if (this.counter === 0) {
+            //         this.counter++;
+            //         this.presentToast();
+            //         setTimeout(() => {
+            //             this.counter = 0;
+            //         }, 3000);
+            //     } else {
+            //         // console.log("exitapp");
+            //         navigator['app'].exitApp();
+            //     }
+            // });
         });
+    }
+    async presentToast() {
+        const toast = await this.toastCtrl.create({
+            message: 'Press again to exit',
+            mode: 'md',
+            duration: 3000,
+            position: 'bottom',
+        });
+        toast.present();
     }
 
     ionViewWillEnter() {}
