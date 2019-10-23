@@ -1,6 +1,5 @@
 import { gql } from 'apollo-angular-boost';
 import { PARTY_FRAGMENT, MESSAGE_FRAGMENT, PARTY_INVITATION_FRAGMENT } from './fragments';
-import { PartyWhereUniqueInput } from '../../../../pp-back/dist/src/prisma/prisma.binding.d';
 
 export const ME_QUERY = gql`
     query MeQuery {

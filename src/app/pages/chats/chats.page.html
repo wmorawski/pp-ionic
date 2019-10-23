@@ -1,3 +1,10 @@
-<ion-content>
-    {{ hasChats | async }}
-</ion-content>
+<ng-container *ngIf="hasChats | async; else noChats">
+    <ion-content color="light">
+        <ion-grid>
+            <chats-chat-item *ngFor="let chat of (chats | async)?.edges" [chat]="chat.node"></chats-chat-item>
+        </ion-grid>
+    </ion-content>
+</ng-container>
+<ng-template #noChats>
+    <nz-empty></nz-empty>
+</ng-template>

@@ -1,3 +1,5 @@
+import { PP_USER_ID } from 'src/app/constants';
+import { PaginateChatsQueryGQL } from './../../graphql/types';
 import { Component, OnInit } from '@angular/core';
 import { Apollo } from 'apollo-angular-boost';
 import { Subscription, Observable } from 'rxjs';
@@ -13,10 +15,25 @@ import { map } from 'rxjs/operators';
 })
 export class ChatsPage implements OnInit {
     public hasChats: Observable<boolean>;
-    constructor(private apollo: Apollo, private hasChatsGQL: HasChatsQueryGQL) {}
+    public chats: any;
+    constructor(
+        private apollo: Apollo,
+        private hasChatsGQL: HasChatsQueryGQL,
+        private paginateChatsQueryGQL: PaginateChatsQueryGQL
+    ) {}
 
     ngOnInit() {}
     ionViewWillEnter() {
-        this.hasChats = this.hasChatsGQL.watch().valueChanges.pipe(map(result => result.data.hasChats));
+        this.hasChats = this.hasChatsGQL.watch().valueChanges.pipe(map((result) => result.data.hasChats));
+        if (this.hasChats) {
+            this.chats = this.paginateChatsQueryGQL
+                .watch({
+                    where: {
+                        members_some: { id: localStorage.getItem(PP_USER_ID) },
+                    },
+                    first: 20,
+                })
+                .valueChanges.pipe(map((result) => result.data.chatsConnection));
+        }
     }
 }

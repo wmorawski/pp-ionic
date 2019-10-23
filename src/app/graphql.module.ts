@@ -1,3 +1,4 @@
+import { LocalResolvers } from './graphql/resolvers';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { ApolloBoostModule, ApolloBoost } from 'apollo-angular-boost';
@@ -12,13 +13,16 @@ export class GraphQLModule {
     constructor(apolloBoost: ApolloBoost) {
         apolloBoost.create({
             uri,
-            request: async operation => {
+            request: async (operation) => {
                 const token = localStorage.getItem(PP_AUTH_TOKEN);
                 operation.setContext({
                     headers: {
                         authorization: token ? `Bearer ${token}` : '',
                     },
                 });
+            },
+            clientState: {
+                resolvers: LocalResolvers,
             },
         });
     }

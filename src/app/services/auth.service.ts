@@ -33,16 +33,12 @@ export class AuthService {
     }
 
     logout() {
-        this.apollo
-            .getClient()
-            .resetStore()
-            .then((_) => {
-                localStorage.removeItem(PP_USER_ID);
-                localStorage.removeItem(PP_AUTH_TOKEN);
-                this.userId = null;
-                this._isAuthenticated.next(false);
-                this.navCtrl.navigateRoot(['/auth/login']);
-            });
+        // TODO: Resetting store makes modals to appear
+        localStorage.removeItem(PP_USER_ID);
+        localStorage.removeItem(PP_AUTH_TOKEN);
+        this.userId = null;
+        this._isAuthenticated.next(false);
+        this.navCtrl.navigateRoot(['/auth/login']);
     }
 
     autoLogin() {

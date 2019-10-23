@@ -2374,6 +2374,7 @@ export type Mutation = {
   deleteManyUsers: BatchPayload,
   deleteManyParties: BatchPayload,
   deleteManyAlbums: BatchPayload,
+  joinParty?: Maybe<Scalars['Boolean']>,
   signup: AuthPayload,
   login: AuthPayload,
   socialLogin: AuthPayload,
@@ -2381,7 +2382,6 @@ export type Mutation = {
   inviteToFriends: User,
   requestReset?: Maybe<SuccessMessage>,
   resetPassword?: Maybe<AuthPayload>,
-  joinParty?: Maybe<Scalars['Boolean']>,
 };
 
 
@@ -2883,6 +2883,11 @@ export type MutationDeleteManyAlbumsArgs = {
 };
 
 
+export type MutationJoinPartyArgs = {
+  partyId: Scalars['ID']
+};
+
+
 export type MutationSignupArgs = {
   email: Scalars['String'],
   password: Scalars['String'],
@@ -2922,11 +2927,6 @@ export type MutationResetPasswordArgs = {
   resetToken: Scalars['String'],
   password: Scalars['String'],
   confirmPassword: Scalars['String']
-};
-
-
-export type MutationJoinPartyArgs = {
-  partyId: Scalars['ID']
 };
 
 export enum MutationType {
@@ -6291,11 +6291,11 @@ export type Query = {
   /** Fetches an object given its ID */
   node?: Maybe<Node>,
   hasChats: Scalars['Boolean'],
+  hasParties: Scalars['Boolean'],
+  canJoinParty?: Maybe<Scalars['Boolean']>,
   me?: Maybe<User>,
   getUsers: Array<Maybe<User>>,
   paginateUsers: UserConnection,
-  hasParties: Scalars['Boolean'],
-  canJoinParty?: Maybe<Scalars['Boolean']>,
   temp__?: Maybe<Scalars['Boolean']>,
 };
 
@@ -6715,6 +6715,18 @@ export type QueryHasChatsArgs = {
 };
 
 
+export type QueryHasPartiesArgs = {
+  where?: Maybe<PartyWhereInput>
+};
+
+
+export type QueryCanJoinPartyArgs = {
+  userId: Scalars['String'],
+  inviteSecret: Scalars['String'],
+  partyId: Scalars['String']
+};
+
+
 export type QueryGetUsersArgs = {
   where?: Maybe<UserWhereInput>,
   orderBy?: Maybe<UserOrderByInput>,
@@ -6734,18 +6746,6 @@ export type QueryPaginateUsersArgs = {
   before?: Maybe<Scalars['String']>,
   first?: Maybe<Scalars['Int']>,
   last?: Maybe<Scalars['Int']>
-};
-
-
-export type QueryHasPartiesArgs = {
-  where?: Maybe<PartyWhereInput>
-};
-
-
-export type QueryCanJoinPartyArgs = {
-  userId: Scalars['String'],
-  inviteSecret: Scalars['String'],
-  partyId: Scalars['String']
 };
 
 export enum SocialMediaType {
