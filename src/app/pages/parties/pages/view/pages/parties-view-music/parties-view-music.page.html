@@ -5,5 +5,14 @@
                 <button nz-button nzType="primary" nzBlock="true" (click)="authWithSpotify()">Authorize us!</button>
             </ion-col>
         </ion-row>
+        <ion-row>
+            <ion-col size="12">
+                <pre>
+                    <code>
+                        {{topTracks | json}}
+                    </code>
+                </pre>
+            </ion-col>
+        </ion-row>
     </ion-grid>
 </ion-content>
