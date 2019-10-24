@@ -21,7 +21,7 @@ export class ViewPage implements OnInit {
         private appService: AppService,
         private partyQueryGQL: PartyQueryGQL,
         private navCtrl: NavController,
-        private platform: Platform,
+        private platform: Platform
     ) {}
 
     ngOnInit() {}
@@ -31,7 +31,10 @@ export class ViewPage implements OnInit {
             .watch(getPartyVariables(this.id))
             .valueChanges.pipe(map((result) => result.data.party));
         this.party.subscribe((party: Party) => {
-            if (!party.members.some((member) => member.id === localStorage.getItem(PP_USER_ID)) && !party.isPublic) {
+            if (
+                !party ||
+                (!party.members.some((member) => member.id === localStorage.getItem(PP_USER_ID)) && !party.isPublic)
+            ) {
                 this.navCtrl.navigateRoot('/parties');
             }
         });

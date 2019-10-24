@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { ApolloBoostModule, ApolloBoost } from 'apollo-angular-boost';
 import { PP_AUTH_TOKEN } from 'src/app/constants';
-import { environment } from 'src/environments/environment.prod';
+import { environment } from 'src/environments/environment';
 
 const uri = (environment.production ? environment.backendUrl : '') + '/graphql'; // <-- add the URL of the GraphQL server here
 @NgModule({
