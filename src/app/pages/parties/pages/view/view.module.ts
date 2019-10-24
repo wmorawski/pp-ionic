@@ -17,6 +17,10 @@ const routes: Routes = [
                 path: 'home',
                 loadChildren: './pages/parties-view-home/parties-view-home.module#PartiesViewHomePageModule',
             },
+            {
+                path: 'music',
+                loadChildren: './pages/parties-view-music/parties-view-music.module#PartiesViewMusicPageModule',
+            },
         ],
     },
 ];

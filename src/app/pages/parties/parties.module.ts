@@ -28,8 +28,12 @@ const routes: Routes = [
             { path: '', redirectTo: 'home', pathMatch: 'full' },
             {
                 path: 'home',
+                loadChildren: 'src/app/pages/parties/pages/view/pages/parties-view-home/parties-view-home.module#PartiesViewHomePageModule',
+            },
+            {
+                path: 'music',
                 loadChildren:
-                    'src/app/pages/parties/pages/view/pages/parties-view-home/parties-view-home.module#PartiesViewHomePageModule',
+                    'src/app/pages/parties/pages/view/pages/parties-view-music/parties-view-music.module#PartiesViewMusicPageModule',
             },
         ],
     },
