@@ -14,8 +14,10 @@ export class GraphqlErrorComponent implements OnInit {
     @Input()
     set error(err: any) {
         if (err) {
-            if (err.graphQLErrors) {
+            if (err.graphQLErrors.length) {
                 this._error = err.graphQLErrors[0].message.message;
+            } else {
+                this._error = err.message;
             }
         }
     }
