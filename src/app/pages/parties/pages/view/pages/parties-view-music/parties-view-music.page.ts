@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { AuthorizationData } from '@ionic-native/spotify-auth/ngx';
 import { environment } from 'src/environments/environment';
 import { Track, init, getCurrentUserTopTracks } from 'spotify-web-sdk';
+import { Media, MediaObject } from '@ionic-native/media/ngx';
 
 declare var cordova: any;
 @Component({
@@ -12,7 +13,9 @@ declare var cordova: any;
 export class PartiesViewMusicPage implements OnInit {
     result: AuthorizationData;
     topTracks: Track[];
-    constructor() {}
+    currentTrack: Track = null;
+    currentTrackMedia: MediaObject;
+    constructor(private readonly media: Media, private readonly chr: ChangeDetectorRef) {}
 
     ngOnInit() {}
     async ionViewWillEnter() {
@@ -22,5 +25,32 @@ export class PartiesViewMusicPage implements OnInit {
     }
     authWithSpotify() {
         return cordova.plugins.spotifyAuth.authorize(environment.spotify.config);
+    }
+
+    handleTrackChange(ev: Track) {
+        if (this.currentTrackMedia) {
+            this.currentTrackMedia.stop();
+        }
+        this.currentTrack = ev;
+        if (ev) {
+            this.currentTrackMedia = this.media.create(ev.previewUrl);
+            this.currentTrackMedia.play();
+            this.currentTrackMedia.onSuccess.subscribe(() => {
+                this.currentTrack = null;
+                this.currentTrackMedia = null;
+            });
+            this.currentTrackMedia.onError.subscribe(error => {
+                this.currentTrack = null;
+                this.currentTrackMedia = null;
+            });
+        } else {
+            this.currentTrackMedia = null;
+        }
+    }
+
+    ionViewWillLeave() {
+        if (this.currentTrackMedia) {
+            this.currentTrackMedia.stop();
+        }
     }
 }

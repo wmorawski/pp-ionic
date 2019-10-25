@@ -8,6 +8,8 @@ import { IonicModule } from '@ionic/angular';
 import { PartiesViewMusicPage } from './parties-view-music.page';
 import { NgZorroAntdModule, NzButtonModule } from 'ng-zorro-antd';
 import { SpotifyAuth } from '@ionic-native/spotify-auth/ngx';
+import { TopTrackComponent } from './components/top-track/top-track.component';
+import { Media } from '@ionic-native/media/ngx';
 
 const routes: Routes = [
     {
@@ -18,7 +20,7 @@ const routes: Routes = [
 
 @NgModule({
     imports: [CommonModule, FormsModule, IonicModule, RouterModule.forChild(routes), NgZorroAntdModule, NzButtonModule],
-    declarations: [PartiesViewMusicPage],
-    providers: [SpotifyAuth],
+    declarations: [PartiesViewMusicPage, TopTrackComponent],
+    providers: [SpotifyAuth, Media],
 })
 export class PartiesViewMusicPageModule {}

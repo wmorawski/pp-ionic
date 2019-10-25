@@ -1,18 +1,13 @@
-<ion-content>
-    <ion-grid fixed>
-        <ion-row>
-            <ion-col size="12">
-                <button nz-button nzType="primary" nzBlock="true" (click)="authWithSpotify()">Authorize us!</button>
-            </ion-col>
-        </ion-row>
-        <ion-row>
-            <ion-col size="12">
-                <pre>
-                    <code>
-                        {{topTracks | json}}
-                    </code>
-                </pre>
-            </ion-col>
-        </ion-row>
-    </ion-grid>
+<ion-content color="light">
+    <ng-container *ngIf="topTracks?.length">
+        <ion-list-header>
+            <ion-label>Your top tracks</ion-label>
+        </ion-list-header>
+        <spotify-top-track
+            [track]="track"
+            [currentTrack]="currentTrack"
+            *ngFor="let track of topTracks"
+            (trackChange)="handleTrackChange($event)"
+        ></spotify-top-track>
+    </ng-container>
 </ion-content>

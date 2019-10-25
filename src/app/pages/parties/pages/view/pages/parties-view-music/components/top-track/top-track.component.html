@@ -1,0 +1,33 @@
+<ion-card style="margin-top: .8em !important; margin-bottom: .8em !important" *ngIf="track; else noTrack">
+    <ion-card-content style="padding: 0">
+        <ion-row aic style="padding: .6em">
+            <ion-col size="2">
+                <ion-img style="border-radius: 6px; box-shadow: 0 4px 16px rgba(0,0,0,.12);" [src]="track.album.images[0].url"></ion-img>
+            </ion-col>
+            <ion-col size="10" display="flex" aic fdc>
+                <ion-card-title style="font-size: 90%">{{ track.name }}</ion-card-title>
+                <ion-card-subtitle style="font-size: 60%">{{ track.artists[0].name }} &bull; {{ track.album.name }}</ion-card-subtitle>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col>
+                <ng-container *ngIf="playing; else timeToStop">
+                    <ion-button (click)="stop()" expand="full" fill="clear" size="small">
+                        <ion-icon name="pause"></ion-icon>
+                    </ion-button>
+                </ng-container>
+                <ng-template #timeToStop>
+                    <ion-button (click)="play()" expand="full" fill="clear" size="small">
+                        <ion-icon name="play"></ion-icon>
+                    </ion-button>
+                </ng-template>
+            </ion-col>
+            <ion-col>
+                <ion-button (click)="playOnSpotify()" expand="full" fill="clear" size="small">
+                    <ion-icon name="spotify"></ion-icon>
+                </ion-button>
+            </ion-col>
+        </ion-row>
+    </ion-card-content>
+</ion-card>
+<ng-template #noTrack>Track error</ng-template>
