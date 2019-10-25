@@ -1,7 +1,7 @@
 import { PARTIES_QUERY } from './../../../../graphql/queries';
 import { CREATE_PARTY_MUTATION } from './../../../../graphql/mutations';
-import { Apollo } from 'apollo-angular-boost';
-import { CreatePartyGQL, CreatePartyMutationVariables } from './../../../../graphql/types';
+import { Apollo } from 'apollo-angular';
+import { CreatePartyGQL, CreatePartyMutationVariables } from './../../../../graphql/generated/types';
 import { MapboxService } from './../../../../services/mapbox.service';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ValidatorFn } from '@angular/forms';

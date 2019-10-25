@@ -8555,7 +8555,7 @@ export type PaginateChatsQueryQuery = (
       { __typename?: 'ChatEdge' }
       & { node: (
         { __typename?: 'Chat' }
-        & Pick<Chat, 'id' | 'hasUnreadMessages'>
+        & Pick<Chat, 'id'>
         & { party: (
           { __typename?: 'Party' }
           & Pick<Party, 'title'>
@@ -9273,7 +9273,6 @@ export const PaginateChatsQueryDocument = gql`
             lastName
           }
         }
-        hasUnreadMessages @client
       }
     }
   }

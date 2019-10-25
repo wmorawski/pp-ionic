@@ -15,6 +15,8 @@ export class PartiesViewMusicPage implements OnInit {
     topTracks: Track[];
     currentTrack: Track = null;
     currentTrackMedia: MediaObject;
+    lastId: string;
+    currentId: string;
     constructor(private readonly media: Media, private readonly chr: ChangeDetectorRef) {}
 
     ngOnInit() {}
@@ -27,24 +29,28 @@ export class PartiesViewMusicPage implements OnInit {
         return cordova.plugins.spotifyAuth.authorize(environment.spotify.config);
     }
 
-    handleTrackChange(ev: Track) {
+    async handleTrackChange(ev: Track) {
         if (this.currentTrackMedia) {
             this.currentTrackMedia.stop();
         }
-        this.currentTrack = ev;
         if (ev) {
+            this.lastId = this.currentTrack ? this.currentTrack.id : null;
+            this.currentTrack = ev;
+            this.lastId = this.lastId || ev.id;
+            this.currentId = ev.id;
             this.currentTrackMedia = this.media.create(ev.previewUrl);
             this.currentTrackMedia.play();
-            this.currentTrackMedia.onSuccess.subscribe(() => {
-                this.currentTrack = null;
-                this.currentTrackMedia = null;
+            this.currentTrackMedia.onSuccess.subscribe(async () => {
+                if (this.currentId === ev.id) {
+                    this.currentTrack = null;
+                }
+                this.chr.detectChanges();
             });
-            this.currentTrackMedia.onError.subscribe(error => {
-                this.currentTrack = null;
-                this.currentTrackMedia = null;
+            this.currentTrackMedia.onError.subscribe((error) => {
+                this.chr.detectChanges();
             });
         } else {
-            this.currentTrackMedia = null;
+            this.currentTrack = null;
         }
     }
 

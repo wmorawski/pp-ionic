@@ -2,7 +2,7 @@ import { NavController } from '@ionic/angular';
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { PP_USER_ID, PP_AUTH_TOKEN } from 'src/app/constants';
-import { ApolloBoost, Apollo } from 'apollo-angular-boost';
+import { Apollo } from 'apollo-angular';
 import { LOGIN_MUTATION, SOCIAL_LOGIN_MUTATION } from 'src/app/graphql/mutations';
 import { Router } from '@angular/router';
 import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook/ngx';
@@ -28,7 +28,7 @@ export class LoginPage implements OnInit {
         private readonly apollo: Apollo,
         private readonly navCtrl: NavController,
         private readonly fb: Facebook,
-        private readonly spotifyAuth: SpotifyAuth
+        private readonly spotifyAuth: SpotifyAuth,
     ) {}
 
     ngOnInit() {}
@@ -44,7 +44,7 @@ export class LoginPage implements OnInit {
                 },
             })
             .subscribe(
-                result => {
+                (result) => {
                     this.loading = false;
                     const id = result.data.login.user.id;
                     const token = result.data.login.token;
@@ -52,10 +52,10 @@ export class LoginPage implements OnInit {
                     this.error = null;
                     this.navCtrl.navigateRoot(['/']);
                 },
-                error => {
+                (error) => {
                     this.loading = false;
                     this.error = error;
-                }
+                },
             );
     }
     saveUserData(id, token) {
@@ -78,7 +78,7 @@ export class LoginPage implements OnInit {
                         },
                     })
                     .subscribe(
-                        result => {
+                        (result) => {
                             console.log(result);
                             const id = result.data.socialLogin.user.id;
                             const token = result.data.socialLogin.token;
@@ -87,13 +87,13 @@ export class LoginPage implements OnInit {
                             this.navCtrl.navigateRoot(['/']);
                             this.facebookLoading = false;
                         },
-                        error => {
+                        (error) => {
                             this.error = error;
                             this.facebookLoading = false;
-                        }
+                        },
                     );
             })
-            .catch(err => {
+            .catch((err) => {
                 console.log('err', err);
                 this.facebookLoading = false;
             });
@@ -110,10 +110,10 @@ export class LoginPage implements OnInit {
 
         this.spotifyAuth
             .authorize(config)
-            .then(res => {
+            .then((res) => {
                 console.log(res);
             })
-            .catch(err => {
+            .catch((err) => {
                 console.log('err', err);
             });
     }

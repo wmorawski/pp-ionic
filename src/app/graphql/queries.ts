@@ -1,4 +1,4 @@
-import { gql } from 'apollo-angular-boost';
+import gql from 'graphql-tag';
 import { PARTY_FRAGMENT, MESSAGE_FRAGMENT, PARTY_INVITATION_FRAGMENT } from './fragments';
 
 export const ME_QUERY = gql`
@@ -169,7 +169,6 @@ export const PAGINATE_CHATS_QUERY = gql`
                             lastName
                         }
                     }
-                    hasUnreadMessages @client
                 }
             }
         }

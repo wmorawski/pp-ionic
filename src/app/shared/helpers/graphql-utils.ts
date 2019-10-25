@@ -1,4 +1,4 @@
-import { PartiesQueryVariables, PartyOrderByInput, PartyQueryVariables } from 'src/app/graphql/types';
+import { PartiesQueryVariables, PartyOrderByInput, PartyQueryVariables } from 'src/app/graphql/generated/types';
 import * as moment from 'moment';
 
 export function getPartiesDateVariables(dateToGetVariablesFor: Date, userId: string): Partial<PartiesQueryVariables> {

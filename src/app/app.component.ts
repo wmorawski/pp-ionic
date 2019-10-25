@@ -8,7 +8,7 @@ import { AuthService } from './services/auth.service';
 import { AppService } from './services/app.service';
 import { Subscription } from 'rxjs';
 import { ME_QUERY } from './graphql/queries';
-import { Apollo } from 'apollo-angular-boost';
+import { Apollo } from 'apollo-angular';
 import { tap } from 'rxjs/operators';
 
 @Component({

@@ -1,4 +1,4 @@
-import { gql } from 'apollo-angular-boost';
+import gql from 'graphql-tag';
 import { PARTY_FRAGMENT } from './fragments';
 
 export const SIGNUP_MUTATION = gql`

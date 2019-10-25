@@ -2,7 +2,7 @@ import { PP_USER_ID } from './../../../../constants';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AppService } from 'src/app/services/app.service';
-import { PartyQueryGQL, Party } from 'src/app/graphql/types';
+import { PartyQueryGQL, Party } from 'src/app/graphql/generated/types';
 import { Observable } from 'rxjs';
 import { getPartyVariables } from 'src/app/shared/helpers/graphql-utils';
 import { map } from 'rxjs/operators';
@@ -21,7 +21,7 @@ export class ViewPage implements OnInit {
         private appService: AppService,
         private partyQueryGQL: PartyQueryGQL,
         private navCtrl: NavController,
-        private platform: Platform
+        private platform: Platform,
     ) {}
 
     ngOnInit() {}

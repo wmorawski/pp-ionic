@@ -1,4 +1,4 @@
-import { Party } from 'src/app/graphql/types';
+import { Party } from 'src/app/graphql/generated/types';
 import { Component, OnInit, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 

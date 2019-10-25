@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import * as mapboxgl from 'mapbox-gl';
 import { MapService } from 'src/app/services/map.service';
 import { GeoJson, FeatureCollection } from '../../classes/map';
-import { PartiesQueryGQL, PartyOrderByInput } from '../../../graphql/types';
+import { PartiesQueryGQL, PartyOrderByInput } from '../../../graphql/generated/types';
 import { PP_USER_ID } from 'src/app/constants';
 import { map } from 'rxjs/operators';
 
@@ -34,14 +34,14 @@ export class MapBoxComponent implements OnInit {
                 orderBy: PartyOrderByInput.CreatedAtDesc,
             })
             .valueChanges.pipe(
-                map(result =>
-                    result.data.parties.map(party => {
+                map((result) =>
+                    result.data.parties.map((party) => {
                         return new GeoJson([party.location.longitude, party.location.latitude], {
                             message: party.title,
                             color: party.colorTint,
                         });
-                    })
-                )
+                    }),
+                ),
             );
         this.initializeMap();
     }
@@ -49,7 +49,7 @@ export class MapBoxComponent implements OnInit {
     private initializeMap() {
         /// locate the user
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(position => {
+            navigator.geolocation.getCurrentPosition((position) => {
                 this.lat = position.coords.latitude;
                 this.lng = position.coords.longitude;
                 this.map.flyTo({
@@ -73,10 +73,10 @@ export class MapBoxComponent implements OnInit {
         this.map.addControl(new mapboxgl.NavigationControl());
 
         /// Add realtime firebase data on map load
-        this.map.on('load', event => {
+        this.map.on('load', (event) => {
             this.map.resize();
-            this.markers.subscribe(markers => {
-                markers.map(marker => {
+            this.markers.subscribe((markers) => {
+                markers.map((marker) => {
                     return new mapboxgl.Marker().setLngLat(marker.geometry.coordinates).addTo(this.map);
                 });
             });

@@ -6,10 +6,10 @@ documents:
     - './src/app/graphql/*.ts'
 pluckConfig:
     modules:
-        - name: 'apollo-angular-boost'
+        - name: 'graphql-tag'
           identifier: 'gql'
 generates:
-    src/app/graphql/types.ts:
+    src/app/graphql/generated/types.ts:
         config:
             noNamespaces: true
         plugins:

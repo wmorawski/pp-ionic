@@ -1,3 +1,4 @@
+import { LocalResolvers } from './graphql/resolvers';
 import { FCM } from '@ionic-native/fcm/ngx';
 import { FcmService } from './services/fcm.service';
 import { NgModule } from '@angular/core';
@@ -24,11 +25,15 @@ import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireModule } from 'angularfire2';
+import { ApolloModule, APOLLO_OPTIONS } from 'apollo-angular';
+import { HttpLinkModule, HttpLink } from 'apollo-angular-link-http';
+import { InMemoryCache } from 'apollo-cache-inmemory';
+import { environment } from 'src/environments/environment';
 
 registerLocaleData(en);
 
 library.add(far);
-
+const uri = (environment.production ? environment.backendUrl : '') + '/graphql';
 const firebase = {
     apiKey: 'AIzaSyC1eMI4ek5ta6zGGRje6NPOnHdtwc-b3nQ',
     authDomain: 'partyplanner-c76a2.firebaseapp.com',

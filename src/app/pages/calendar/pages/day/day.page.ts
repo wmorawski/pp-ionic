@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Party } from 'src/app/graphql/types';
+import { Party } from 'src/app/graphql/generated/types';
 import { Apollo } from 'apollo-angular';
 import { PARTIES_QUERY } from 'src/app/graphql/queries';
 import { getPartiesDateVariables } from 'src/app/shared/helpers/graphql-utils';
@@ -21,7 +21,11 @@ export class DayPage implements OnInit {
     parsedParties: any[] = [];
     calendarPlugins = [timeGridPlugin, interactionPlugin];
     startDateStr: string;
-    constructor(private readonly apollo: Apollo, public readonly router: ActivatedRoute, private readonly navCtrl: NavController) {}
+    constructor(
+        private readonly apollo: Apollo,
+        public readonly router: ActivatedRoute,
+        private readonly navCtrl: NavController,
+    ) {}
 
     ngOnInit() {}
     ionViewWillEnter() {
@@ -31,11 +35,11 @@ export class DayPage implements OnInit {
                 query: PARTIES_QUERY,
                 variables: getPartiesDateVariables(new Date(), localStorage.getItem(PP_USER_ID)),
             })
-            .valueChanges.subscribe(res => {
+            .valueChanges.subscribe((res) => {
                 const { data: partiesData, loading: partiesLoading } = res;
                 this.partiesData = partiesData.parties;
                 this.partiesLoading = partiesLoading;
-                this.parsedParties = partiesData.parties.map(party => ({
+                this.parsedParties = partiesData.parties.map((party) => ({
                     ...party,
                     start: new Date(party!.start),
                     end: new Date(party!.end),

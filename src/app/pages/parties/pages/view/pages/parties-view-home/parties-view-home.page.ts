@@ -6,7 +6,7 @@ import { MapboxService } from './../../../../../../services/mapbox.service';
 import { Component, OnInit } from '@angular/core';
 import { AppService } from 'src/app/services/app.service';
 import { Router } from '@angular/router';
-import { PartyQueryGQL, Party } from 'src/app/graphql/types';
+import { PartyQueryGQL, Party } from 'src/app/graphql/generated/types';
 import { map } from 'rxjs/operators';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { getPartyVariables } from 'src/app/shared/helpers/graphql-utils';

@@ -1,11 +1,11 @@
 import { PP_USER_ID } from 'src/app/constants';
-import { PaginateChatsQueryGQL } from './../../graphql/types';
+import { PaginateChatsQueryGQL } from './../../graphql/generated/types';
 import { Component, OnInit } from '@angular/core';
-import { Apollo } from 'apollo-angular-boost';
+import { Apollo } from 'apollo-angular';
 import { Subscription, Observable } from 'rxjs';
 import { PAGINATE_CHATS_QUERY } from 'src/app/graphql/queries';
 import { HAS_CHATS_QUERY } from '../../graphql/queries';
-import { HasChatsQueryGQL } from 'src/app/graphql/types';
+import { HasChatsQueryGQL } from 'src/app/graphql/generated/types';
 import { map } from 'rxjs/operators';
 
 @Component({
@@ -19,7 +19,7 @@ export class ChatsPage implements OnInit {
     constructor(
         private apollo: Apollo,
         private hasChatsGQL: HasChatsQueryGQL,
-        private paginateChatsQueryGQL: PaginateChatsQueryGQL
+        private paginateChatsQueryGQL: PaginateChatsQueryGQL,
     ) {}
 
     ngOnInit() {}

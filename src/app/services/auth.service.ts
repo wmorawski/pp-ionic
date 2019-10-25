@@ -38,6 +38,7 @@ export class AuthService {
         localStorage.removeItem(PP_AUTH_TOKEN);
         this.userId = null;
         this._isAuthenticated.next(false);
+        this.apollo.getClient().resetStore();
         this.navCtrl.navigateRoot(['/auth/login']);
     }
 

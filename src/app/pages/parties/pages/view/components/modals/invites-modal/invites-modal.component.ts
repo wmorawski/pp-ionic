@@ -1,5 +1,5 @@
 import { map } from 'rxjs/operators';
-import { Party, PartyInvitationsQueryGQL } from './../../../../../../../graphql/types';
+import { Party, PartyInvitationsQueryGQL } from './../../../../../../../graphql/generated/types';
 import { Component, OnInit, Input } from '@angular/core';
 import { Platform } from '@ionic/angular';
 

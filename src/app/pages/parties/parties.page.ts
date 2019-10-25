@@ -1,13 +1,13 @@
 import { PP_USER_ID } from 'src/app/constants';
-import { PartiesQueryGQL, PartyOrderByInput } from './../../graphql/types';
+import { PartiesQueryGQL, PartyOrderByInput } from './../../graphql/generated/types';
 import { NavbarManager } from './../../shared/helpers/navbar-manager';
 import { Component, OnInit } from '@angular/core';
-import { HasPartiesQueryGQL } from 'src/app/graphql/types';
+import { HasPartiesQueryGQL } from 'src/app/graphql/generated/types';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { NavController } from '@ionic/angular';
 import { AppService } from 'src/app/services/app.service';
-import { Apollo } from 'apollo-angular-boost';
+import { Apollo } from 'apollo-angular';
 import { PARTIES_QUERY } from 'src/app/graphql/queries';
 import { Map } from 'mapbox-gl';
 import { getPartiesDateVariables } from 'src/app/shared/helpers/graphql-utils';
