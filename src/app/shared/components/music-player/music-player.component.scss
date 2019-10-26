@@ -1,0 +1,25 @@
+.player {
+    position: absolute;
+    height: 90px;
+    bottom: 0;
+    background: white;
+    width: 100%;
+    border-top-right-radius: 8px;
+    border-top-left-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.22);
+    transition: all 0.3s linear;
+    padding: 0.5em 0.8em;
+    box-sizing: padding-box;
+}
+
+.noTrack {
+    height: 0 !important;
+    padding: 0 !important;
+}
+
+ion-img {
+    border-radius: 6px;
+    img {
+        border-radius: 6px;
+    }
+}

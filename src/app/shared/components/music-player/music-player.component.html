@@ -1,0 +1,40 @@
+<div class="player" [ngClass]="{ noTrack: !_track }">
+    <ng-container *ngIf="_track">
+        <ion-row style="height: 100%" display="flex" aic>
+            <ion-col size="2" display="flex" aic>
+                <ion-img
+                    style="border-radius: 6px; box-shadow: 0 4px 16px rgba(0,0,0,.12);"
+                    [src]="_track.album.images[0].url"
+                ></ion-img>
+            </ion-col>
+            <ion-col size="10">
+                <ion-row no-gutters class="ion-no-padding ion-no-margin">
+                    <ion-col size="9" class="ion-no-padding ion-no-margin">
+                        <ion-text color="dark">
+                            <small style="font-size: 80%"
+                                ><strong>{{ _track.name }}</strong>
+                            </small>
+                        </ion-text>
+                    </ion-col>
+                    <ion-col size="3" class="ion-no-padding ion-no-margin">
+                        <ion-text color="primary">
+                            <small style="font-size: 80%"
+                                >{{ this.duration | minuteSeconds }}/{{ 30 | minuteSeconds }}</small
+                            >
+                        </ion-text>
+                    </ion-col>
+                </ion-row>
+                <ion-row no-gutters class="ion-no-padding ion-no-margin">
+                    <ion-col size="10">
+                        <nz-slider [(ngModel)]="nomralizedDuration"></nz-slider>
+                    </ion-col>
+                    <ion-col size="2">
+                        <ion-button (click)="togglePlay()" expand="full" fill="clear" size="small">
+                            <ion-icon [name]="isPaused ? 'play' : 'pause'"></ion-icon>
+                        </ion-button>
+                    </ion-col>
+                </ion-row>
+            </ion-col>
+        </ion-row>
+    </ng-container>
+</div>

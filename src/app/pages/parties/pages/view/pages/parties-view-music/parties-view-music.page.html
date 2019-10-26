@@ -11,3 +11,5 @@
         ></spotify-top-track>
     </ng-container>
 </ion-content>
+
+<spotify-music-player [track]="currentTrack" (onTrackChange)="handleOnTrackChange($event)"></spotify-music-player>

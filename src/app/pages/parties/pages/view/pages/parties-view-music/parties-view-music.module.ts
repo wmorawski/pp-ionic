@@ -1,3 +1,5 @@
+import { StyledComponentsModule } from 'angular-styled-components';
+import { SharedModule } from './../../../../../../shared/shared.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -19,7 +21,16 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    imports: [CommonModule, FormsModule, IonicModule, RouterModule.forChild(routes), NgZorroAntdModule, NzButtonModule],
+    imports: [
+        CommonModule,
+        FormsModule,
+        IonicModule,
+        RouterModule.forChild(routes),
+        NgZorroAntdModule,
+        NzButtonModule,
+        SharedModule,
+        StyledComponentsModule,
+    ],
     declarations: [PartiesViewMusicPage, TopTrackComponent],
     providers: [SpotifyAuth, Media],
 })

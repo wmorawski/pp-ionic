@@ -14,9 +14,6 @@ export class PartiesViewMusicPage implements OnInit {
     result: AuthorizationData;
     topTracks: Track[];
     currentTrack: Track = null;
-    currentTrackMedia: MediaObject;
-    lastId: string;
-    currentId: string;
     constructor(private readonly media: Media, private readonly chr: ChangeDetectorRef) {}
 
     ngOnInit() {}
@@ -30,33 +27,12 @@ export class PartiesViewMusicPage implements OnInit {
     }
 
     async handleTrackChange(ev: Track) {
-        if (this.currentTrackMedia) {
-            this.currentTrackMedia.stop();
-        }
-        if (ev) {
-            this.lastId = this.currentTrack ? this.currentTrack.id : null;
-            this.currentTrack = ev;
-            this.lastId = this.lastId || ev.id;
-            this.currentId = ev.id;
-            this.currentTrackMedia = this.media.create(ev.previewUrl);
-            this.currentTrackMedia.play();
-            this.currentTrackMedia.onSuccess.subscribe(async () => {
-                if (this.currentId === ev.id) {
-                    this.currentTrack = null;
-                }
-                this.chr.detectChanges();
-            });
-            this.currentTrackMedia.onError.subscribe((error) => {
-                this.chr.detectChanges();
-            });
-        } else {
-            this.currentTrack = null;
-        }
+        this.currentTrack = ev;
     }
 
-    ionViewWillLeave() {
-        if (this.currentTrackMedia) {
-            this.currentTrackMedia.stop();
-        }
+    async handleOnTrackChange(track: Track) {
+        console.log(track);
     }
+
+    ionViewWillLeave() {}
 }
