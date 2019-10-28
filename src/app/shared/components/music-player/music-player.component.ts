@@ -32,7 +32,7 @@ export class MusicPlayerComponent implements OnInit, OnDestroy {
             this.currentTrackMedia = this.media.create(newTrack.previewUrl);
             this.currentTrackMedia.play();
             this.isPaused = false;
-            this.durationInterval = interval(100).subscribe(async (_) => {
+            this.durationInterval = interval(30).subscribe(async (_) => {
                 this.duration = await this.currentTrackMedia.getCurrentPosition();
                 this.nomralizedDuration = (this.duration / 30.0) * 100;
             });
@@ -44,11 +44,13 @@ export class MusicPlayerComponent implements OnInit, OnDestroy {
             if (this.tracks) {
                 if (this.tracks) {
                     this.tracks.map((track) => {
-                        this.tracksDLL.add(track);
+                        if (track.previewUrl) {
+                            this.tracksDLL.add(track);
+                        }
                     });
                 }
                 this._trackOfDLL = this.tracksDLL.head;
-                while (this._trackOfDLL.value.id === this._track.id) {
+                while (this._trackOfDLL.value.id !== this._track.id) {
                     this._trackOfDLL = this._trackOfDLL.next;
                 }
             }

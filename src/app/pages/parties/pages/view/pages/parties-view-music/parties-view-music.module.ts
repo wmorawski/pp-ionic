@@ -1,3 +1,4 @@
+import { NgZorroAntdMobileModule } from 'ng-zorro-antd-mobile';
 import { StyledComponentsModule } from 'angular-styled-components';
 import { SharedModule } from './../../../../../../shared/shared.module';
 import { NgModule } from '@angular/core';
@@ -27,6 +28,7 @@ const routes: Routes = [
         IonicModule,
         RouterModule.forChild(routes),
         NgZorroAntdModule,
+        NgZorroAntdMobileModule,
         NzButtonModule,
         SharedModule,
         StyledComponentsModule,

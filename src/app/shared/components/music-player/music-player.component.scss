@@ -1,15 +1,22 @@
 .player {
     position: absolute;
-    height: 90px;
+    height: auto;
     bottom: 0;
     background: white;
     width: 100%;
-    border-top-right-radius: 8px;
-    border-top-left-radius: 8px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.22);
+    border-top-right-radius: 12px;
+    border-top-left-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.33);
     transition: all 0.3s linear;
-    padding: 0.5em 0.8em;
-    box-sizing: padding-box;
+
+    margin-left: 0 !important;
+    padding-top: 1em;
+    // padding-bottom: 1em;
+}
+
+.withPadding {
+    padding-left: 1em;
+    padding-right: 1em;
 }
 
 .noTrack {
@@ -17,9 +24,26 @@
     padding: 0 !important;
 }
 
-ion-img {
-    border-radius: 6px;
-    img {
-        border-radius: 6px;
+::ng-deep .ant-slider {
+    padding: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    margin-bottom: 0;
+
+    .ant-slider-handle,
+    nz-slider-handle {
+        display: none;
+    }
+}
+.control-button {
+    margin: 0;
+    padding: 0;
+    ion-icon {
+        font-size: 80%;
+    }
+}
+.control-button-main {
+    ion-icon {
+        font-size: 130%;
     }
 }

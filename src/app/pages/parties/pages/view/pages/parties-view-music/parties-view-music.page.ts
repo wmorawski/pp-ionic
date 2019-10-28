@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { AuthorizationData } from '@ionic-native/spotify-auth/ngx';
 import { environment } from 'src/environments/environment';
-import { Track, init, getCurrentUserTopTracks } from 'spotify-web-sdk';
+import { Track, init, getCurrentUserTopTracks, searchTracks } from 'spotify-web-sdk';
 import { Media, MediaObject } from '@ionic-native/media/ngx';
 
 declare var cordova: any;
@@ -13,7 +13,9 @@ declare var cordova: any;
 export class PartiesViewMusicPage implements OnInit {
     result: AuthorizationData;
     topTracks: Track[];
+    searchedTracks: Track[];
     currentTrack: Track = null;
+    currentTrackSearched: Track = null;
     constructor(private readonly media: Media, private readonly chr: ChangeDetectorRef) {}
 
     ngOnInit() {}
@@ -29,12 +31,23 @@ export class PartiesViewMusicPage implements OnInit {
     async handleTrackChange(ev: Track) {
         this.currentTrack = ev;
     }
+    async handleTrackChangeSearched(ev: Track) {
+        this.currentTrackSearched = ev;
+    }
 
     async handleOnTrackChange(track: Track) {
         this.currentTrack = track;
     }
+    async handleOnTrackChangeSearched(track: Track) {
+        this.currentTrackSearched = track;
+    }
 
     ionViewWillLeave() {
         this.currentTrack = null;
+        this.currentTrackSearched = null;
+    }
+
+    async handleSearch(event) {
+        this.searchedTracks = (await searchTracks(event, { limit: 10 })).items;
     }
 }
