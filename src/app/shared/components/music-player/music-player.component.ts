@@ -30,9 +30,9 @@ export class MusicPlayerComponent implements OnInit, OnDestroy {
             this.currentId = newTrack.id;
             this._track = newTrack;
             this.currentTrackMedia = this.media.create(newTrack.previewUrl);
-            this.currentTrackMedia.play();
+            this.currentTrackMedia.play({ playAudioWhenScreenIsLocked: true });
             this.isPaused = false;
-            this.durationInterval = interval(30).subscribe(async (_) => {
+            this.durationInterval = interval(100).subscribe(async (_) => {
                 this.duration = await this.currentTrackMedia.getCurrentPosition();
                 this.nomralizedDuration = (this.duration / 30.0) * 100;
             });
@@ -87,15 +87,15 @@ export class MusicPlayerComponent implements OnInit, OnDestroy {
     }
 
     goNext() {
-        if (this._trackOfDLL) {
+        if (this._trackOfDLL && this._trackOfDLL.next) {
             // tslint:disable-next-line: no-non-null-assertion
-            this.onTrackChange.emit(this._trackOfDLL.next!.value);
+            this.onTrackChange.emit(this._trackOfDLL.next.value);
         }
     }
 
     goPrev() {
-        if (this._trackOfDLL) {
-            this.onTrackChange.emit(this._trackOfDLL.prev!.value);
+        if (this._trackOfDLL && this._trackOfDLL.prev) {
+            this.onTrackChange.emit(this._trackOfDLL.prev.value);
         }
     }
 }
