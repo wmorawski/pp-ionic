@@ -31,8 +31,10 @@ export class PartiesViewMusicPage implements OnInit {
     }
 
     async handleOnTrackChange(track: Track) {
-        console.log(track);
+        this.currentTrack = track;
     }
 
-    ionViewWillLeave() {}
+    ionViewWillLeave() {
+        this.currentTrack = null;
+    }
 }
