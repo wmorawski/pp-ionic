@@ -20,6 +20,7 @@ import { getPartiesDateVariables } from 'src/app/shared/helpers/graphql-utils';
 export class PartiesPage extends NavbarManager implements OnInit {
     hasParties: Observable<boolean>;
     parties: any;
+    hasPartiesLoading = false;
     showMap = false;
     map: Map;
 
@@ -36,11 +37,37 @@ export class PartiesPage extends NavbarManager implements OnInit {
     ngOnInit() {}
 
     ionViewWillEnter() {
-        this.hasParties = this.hasPartiesGQL.watch().valueChanges.pipe(map((result) => result.data.hasParties));
+        this.hasParties = this.hasPartiesGQL
+            .watch(
+                {},
+                {
+                    fetchPolicy: 'cache-and-network',
+                },
+            )
+            .valueChanges.pipe(
+                map((result) => {
+                    this.hasPartiesLoading = result.loading;
+                    if (result.data) {
+                        return result.data.hasParties;
+                    } else {
+                        return false;
+                    }
+                }),
+            );
         if (this.hasParties) {
             this.parties = this.partiesQueryGQL
-                .watch(getPartiesDateVariables(new Date(), localStorage.getItem(PP_USER_ID)))
-                .valueChanges.pipe(map((result) => result.data.parties));
+                .watch(getPartiesDateVariables(new Date(), localStorage.getItem(PP_USER_ID)), {
+                    fetchPolicy: 'cache-and-network',
+                })
+                .valueChanges.pipe(
+                    map((result) => {
+                        if (result.data) {
+                            return result.data.parties;
+                        } else {
+                            return [];
+                        }
+                    }),
+                );
         }
     }
 
