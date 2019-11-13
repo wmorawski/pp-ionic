@@ -96,7 +96,7 @@
         "ngx-moment": "^3.4.0",
         "rxjs": "~6.5.1",
         "spotify-web-api-js": "^1.2.0",
-        "spotify-web-sdk": "github:WojciechMatuszewski/spotify-web-sdk",
+        "spotify-web-sdk": "^0.5.2",
         "tslib": "^1.9.0",
         "uuid": "^3.3.3",
         "zone.js": "~0.9.1"

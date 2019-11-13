@@ -32,6 +32,6 @@ export class TopTrackComponent implements OnInit {
     }
 
     playOnSpotify() {
-        startUserPlayback({ uris: [this.track.uri, 'spotify:track:3SmUKvWEaTViTxmVYJzMIK'] });
+        startUserPlayback({ uris: [this.track.uri] });
     }
 }

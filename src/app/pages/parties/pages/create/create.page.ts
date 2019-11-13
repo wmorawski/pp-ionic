@@ -78,6 +78,9 @@ export class CreatePage implements OnInit {
                     author: {
                         connect: { id },
                     },
+                    cart: {
+                        create: {},
+                    },
                     location: {
                         create: {
                             placeName: formData.location.place_name,
