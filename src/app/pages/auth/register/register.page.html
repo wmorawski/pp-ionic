@@ -1,0 +1,81 @@
+<div class="flex-container" display="flex" height="100%" acc jcc>
+    <ion-grid fixed class="ion-no-padding">
+        <ion-row class="ion-text-center" marginBottom="1.33em">
+            <ion-col size="12" class="animated zoomIn durations-300ms delay-500ms"></ion-col>
+            <ion-icon name="logo" size="large" style="width: 64px; height: 64px"></ion-icon>
+        </ion-row>
+        <ion-row>
+            <ion-col size="12">
+                <app-graphql-error [error]="error"></app-graphql-error>
+            </ion-col>
+        </ion-row>
+        <form [formGroup]="signupForm" (ngSubmit)="registerSubmit()">
+            <ion-row class="ion-text-center" paddingLeft="2em" paddingRight="2em">
+                <ion-col size="12" class="animated fadeInUp duration-400ms delay-800ms">
+                    <ion-input
+                        class="ion-text-left"
+                        inputmode="email"
+                        type="email"
+                        formControlName="email"
+                        placeholder="Your e-mail address"
+                    ></ion-input>
+                </ion-col>
+                <ion-col size="12" class="animated fadeInUp duration-400ms delay-800ms">
+                    <ion-input
+                        class="ion-text-left"
+                        inputmode="password"
+                        type="password"
+                        formControlName="password"
+                        placeholder="Type your password"
+                    ></ion-input>
+                </ion-col>
+                <ion-col size="12" class="animated fadeInUp duration-400ms delay-800ms">
+                    <ion-input
+                        class="ion-text-left"
+                        inputmode="password"
+                        type="password"
+                        formControlName="repeatPassword"
+                        placeholder="Repeat your password"
+                    ></ion-input>
+                </ion-col>
+                <ion-col size="12" class="animated fadeInUp duration-400ms delay-800ms">
+                    <ion-input
+                        class="ion-text-left"
+                        inputmode="text"
+                        type="text"
+                        formControlName="firstName"
+                        placeholder="Your first name"
+                    ></ion-input>
+                </ion-col>
+                <ion-col size="12" class="animated fadeInUp duration-400ms delay-800ms">
+                    <ion-input
+                        class="ion-text-left"
+                        inputmode="text"
+                        type="text"
+                        formControlName="lastName"
+                        placeholder="Your last name"
+                    ></ion-input>
+                </ion-col>
+                <ion-col size="12" style="margin-top: 1em;" class="animated fadeInUp duration-400ms delay-1s">
+                    <div
+                        Button
+                        [loading]="loading"
+                        [disabled]="loading"
+                        style="color: var(--ion-color-primary)"
+                        type="submit"
+                    >
+                        Sign{{ loading ? 'ing' : '' }} up
+                    </div>
+                </ion-col>
+                <ion-col
+                    size="12"
+                    style="margin-top: 1em;"
+                    [routerLink]="['../login']"
+                    class="animated fadeInUp duration-400ms delay-1s"
+                >
+                    <a style="color: white; padding-top: .66em; display: block;">Login to an existing account</a>
+                </ion-col>
+            </ion-row>
+        </form>
+    </ion-grid>
+</div>

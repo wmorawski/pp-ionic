@@ -31,7 +31,13 @@
                 ></ion-input>
             </ion-col>
             <ion-col size="12" style="margin-top: 1em;" class="animated fadeInUp duration-400ms delay-1s">
-                <div Button [loading]="loading" [disabled]="loading" style="color: var(--ion-color-primary)" (onClick)="confirm()">
+                <div
+                    Button
+                    [loading]="loading"
+                    [disabled]="loading"
+                    style="color: var(--ion-color-primary)"
+                    (onClick)="confirm()"
+                >
                     Sign{{ loading ? 'ing' : '' }} in
                 </div>
             </ion-col>
@@ -57,7 +63,12 @@
                     Sign{{ spotifyLoading ? 'ing' : '' }} in by Spotify
                 </div>
             </ion-col>
-            <ion-col size="12" style="margin-top: 1em;" class="animated fadeInUp duration-400ms delay-1s">
+            <ion-col
+                size="12"
+                style="margin-top: 1em;"
+                [routerLink]="['../register']"
+                class="animated fadeInUp duration-400ms delay-1s"
+            >
                 <a style="color: white; padding-top: .66em; display: block;">Create new account</a>
             </ion-col>
         </ion-row>

@@ -22,13 +22,14 @@ export class LoginPage implements OnInit {
     public loading = false;
     public facebookLoading = false;
     public spotifyLoading = false;
+    public twitterLoading = false;
     public error = null;
     constructor(
         private authService: AuthService,
         private readonly apollo: Apollo,
         private readonly navCtrl: NavController,
         private readonly fb: Facebook,
-        private readonly spotifyAuth: SpotifyAuth,
+        private readonly spotifyAuth: SpotifyAuth
     ) {}
 
     ngOnInit() {}
@@ -55,7 +56,7 @@ export class LoginPage implements OnInit {
                 (error) => {
                     this.loading = false;
                     this.error = error;
-                },
+                }
             );
     }
     saveUserData(id, token) {
@@ -90,7 +91,7 @@ export class LoginPage implements OnInit {
                         (error) => {
                             this.error = error;
                             this.facebookLoading = false;
-                        },
+                        }
                     );
             })
             .catch((err) => {

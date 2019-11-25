@@ -34,6 +34,7 @@ export class CreatePage implements OnInit {
         title: [null, [Validators.required]],
         dateStart: [null, [Validators.required]],
         dateEnd: [null, [Validators.required]],
+        decription: [null, [Validators.required]],
         isPublic: false,
         colorTint: '#4caf50',
         location: [null, [Validators.required]],
@@ -74,7 +75,7 @@ export class CreatePage implements OnInit {
                         connect: [{ id }],
                     },
                     normalizedTitle: formData.title.toLowerCase().replace(/[ -.,]/g, ''),
-                    description: '',
+                    description: formData.description,
                     author: {
                         connect: { id },
                     },

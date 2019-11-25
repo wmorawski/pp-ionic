@@ -10,6 +10,10 @@ export const routes: Routes = [
         loadChildren: './pages/auth/login/login.module#LoginPageModule',
     },
     {
+        path: 'auth/register',
+        loadChildren: './pages/auth/register/register.module#RegisterPageModule',
+    },
+    {
         path: 'calendar',
         loadChildren: './pages/calendar/calendar.module#CalendarPageModule',
         canActivate: [AuthGuard],

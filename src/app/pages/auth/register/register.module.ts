@@ -1,20 +1,19 @@
+import { NgZorroAntdMobileModule } from 'ng-zorro-antd-mobile';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { StyledComponentsModule } from 'angular-styled-components';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
-import { LoginPage } from './login.page';
-import { NgZorroAntdMobileModule } from 'ng-zorro-antd-mobile';
-import { Facebook } from '@ionic-native/facebook/ngx';
-import { SpotifyAuth } from '@ionic-native/spotify-auth/ngx';
+import { RegisterPage } from './register.page';
 
 const routes: Routes = [
     {
         path: '',
-        component: LoginPage,
+        component: RegisterPage,
     },
 ];
 
@@ -24,10 +23,11 @@ const routes: Routes = [
         FormsModule,
         IonicModule,
         RouterModule.forChild(routes),
-        NgZorroAntdMobileModule,
+        StyledComponentsModule,
         SharedModule,
+        ReactiveFormsModule,
+        NgZorroAntdMobileModule,
     ],
-    providers: [Facebook, SpotifyAuth],
-    declarations: [LoginPage],
+    declarations: [RegisterPage],
 })
-export class LoginPageModule {}
+export class RegisterPageModule {}

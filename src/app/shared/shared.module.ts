@@ -1,3 +1,4 @@
+import { GraphqlErrorComponent } from 'src/app/shared/components/graphql-error/graphql-error.component';
 import { FormsModule } from '@angular/forms';
 import { NzSliderModule } from 'ng-zorro-antd/slider';
 import { StyledComponentsModule } from 'angular-styled-components';
@@ -12,9 +13,23 @@ import { Media } from '@ionic-native/media/ngx';
 import { MinuteSecondsPipe } from './pipes/minute-seconds.pipe';
 
 @NgModule({
-    declarations: [LogoComponent, ShortNumberPipe, AvatarComponent, MusicPlayerComponent, MinuteSecondsPipe],
+    declarations: [
+        LogoComponent,
+        ShortNumberPipe,
+        AvatarComponent,
+        MusicPlayerComponent,
+        MinuteSecondsPipe,
+        GraphqlErrorComponent,
+    ],
     imports: [CommonModule, IonicModule, StyledComponentsModule, FormsModule, NzSliderModule],
     providers: [Media],
-    exports: [LogoComponent, ShortNumberPipe, AvatarComponent, MusicPlayerComponent, MinuteSecondsPipe],
+    exports: [
+        LogoComponent,
+        ShortNumberPipe,
+        AvatarComponent,
+        MusicPlayerComponent,
+        MinuteSecondsPipe,
+        GraphqlErrorComponent,
+    ],
 })
 export class SharedModule {}
