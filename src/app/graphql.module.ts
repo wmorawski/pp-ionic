@@ -19,13 +19,16 @@ export function provideApollo(httpLink: HttpLink) {
         },
     }));
     // Get the authentication token from local storage if it exists
-    const token = localStorage.getItem(PP_AUTH_TOKEN);
-    console.log(localStorage.getItem(PP_AUTH_TOKEN));
-    const auth = setContext((operation, context) => ({
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-    }));
+    console.log('Item: ', localStorage.getItem(PP_AUTH_TOKEN));
+    const auth = setContext((operation, context) => {
+        const token = localStorage.getItem(PP_AUTH_TOKEN);
+        console.log('Item: ', token);
+        return {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        };
+    });
     const link = ApolloLink.from([basic, auth, httpLink.create({ uri })]);
     const cache = new InMemoryCache();
     const client = new ApolloClient({

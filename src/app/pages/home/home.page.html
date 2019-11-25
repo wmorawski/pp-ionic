@@ -1,9 +1,5 @@
 <ion-content [scrollEvents]="true" (ionScroll)="onScroll($event)" no-bounce color="light">
-    <ion-grid fixed>
-        <ion-row>
-            <ion-col size="12">
-                <nz-empty></nz-empty>
-            </ion-col>
-        </ion-row>
-    </ion-grid>
+    <ion-virtual-scroll [items]="publicParties | async" approxItemHeight="330px">
+        <app-party-item *virtualItem="let party" [party]="party"></app-party-item>
+    </ion-virtual-scroll>
 </ion-content>

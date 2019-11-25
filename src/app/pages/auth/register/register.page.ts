@@ -1,13 +1,14 @@
 import { NavController } from '@ionic/angular';
-import { AuthService } from 'src/app/services/auth.service';
 import { SIGNUP_MUTATION } from './../../../graphql/mutations';
 import { Apollo } from 'apollo-angular';
 import { Validators, ValidatorFn, FormGroup, FormBuilder } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { PP_USER_ID, PP_AUTH_TOKEN } from 'src/app/constants';
+import { AuthService } from 'src/app/services/auth.service';
 
 const samePasswordsValidator: ValidatorFn = (fg: FormGroup) => {
-    return { samePasswords: fg.get('password').value === fg.get('passwordRepeat').value };
+    console.log(fg);
+    return null;
 };
 
 @Component({
@@ -20,7 +21,7 @@ export class RegisterPage implements OnInit {
     public initialGroup = {
         email: [null, [Validators.required]],
         password: [null, [Validators.required]],
-        passwordRepeat: [null, [Validators.required, samePasswordsValidator]],
+        passwordRepeat: [null, [Validators.required]],
         firstName: [null, [Validators.required]],
         lastName: [null, [Validators.required]],
     };
@@ -31,12 +32,12 @@ export class RegisterPage implements OnInit {
     constructor(
         private readonly apollo: Apollo,
         private readonly fb: FormBuilder,
-        private readonly authService: AuthService,
-        private readonly navCtrl: NavController
+        private authService: AuthService,
+        private readonly navCtrl: NavController,
     ) {}
 
     ngOnInit() {
-        this.signupForm = this.fb.group({ ...this.initialGroup });
+        this.signupForm = this.fb.group({ ...this.initialGroup }, samePasswordsValidator);
     }
 
     registerSubmit() {
@@ -61,7 +62,7 @@ export class RegisterPage implements OnInit {
                 (error) => {
                     this.loading = false;
                     this.error = error;
-                }
+                },
             );
     }
 

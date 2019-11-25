@@ -1,4 +1,5 @@
 import { NgZorroAntdMobileModule } from 'ng-zorro-antd-mobile';
+import { NgZorroAntdModule } from 'ng-zorro-antd';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { StyledComponentsModule } from 'angular-styled-components';
 import { NgModule } from '@angular/core';
@@ -7,7 +8,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
-
 import { RegisterPage } from './register.page';
 
 const routes: Routes = [
@@ -27,6 +27,7 @@ const routes: Routes = [
         SharedModule,
         ReactiveFormsModule,
         NgZorroAntdMobileModule,
+        NgZorroAntdModule,
     ],
     declarations: [RegisterPage],
 })

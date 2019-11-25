@@ -34,7 +34,7 @@ export class CreatePage implements OnInit {
         title: [null, [Validators.required]],
         dateStart: [null, [Validators.required]],
         dateEnd: [null, [Validators.required]],
-        decription: [null, [Validators.required]],
+        description: [null, [Validators.required]],
         isPublic: false,
         colorTint: '#4caf50',
         location: [null, [Validators.required]],
@@ -145,7 +145,7 @@ export class CreatePage implements OnInit {
 
     ionViewWillEnter() {
         this.minDate = new Date().toISOString();
-        this.maxYear = this.addDays(20).toISOString();
+        this.maxYear = this.addDays(120).toISOString();
         this.validateForm.reset({ colorTint: this.initialGroup.colorTint });
     }
 
@@ -186,7 +186,6 @@ export class CreatePage implements OnInit {
             const location = this.locations.find((loc) => loc.id === id);
             if (location) {
                 this.validateForm.controls.location.setValue(location);
-                console.log('selected', this.validateForm.controls.location.value);
             }
         }
     }

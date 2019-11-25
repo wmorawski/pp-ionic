@@ -9,6 +9,7 @@ import { NgZorroAntdMobileModule } from 'ng-zorro-antd-mobile';
 import { AvatarComponent } from 'src/app/shared/components/avatar/avatar.component';
 import { NgZorroAntdModule } from 'ng-zorro-antd';
 import { MainNavModule } from 'src/app/shared/components/navigation/main/main.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
     imports: [
@@ -18,6 +19,7 @@ import { MainNavModule } from 'src/app/shared/components/navigation/main/main.mo
         NgZorroAntdMobileModule,
         NgZorroAntdModule,
         MainNavModule,
+        SharedModule,
         RouterModule.forChild([
             {
                 path: '',

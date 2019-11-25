@@ -8,12 +8,12 @@ import { IonicModule } from '@ionic/angular';
 import { PartiesPage } from './parties.page';
 import { NgZorroAntdMobileModule } from 'ng-zorro-antd-mobile';
 import { NzIconModule, NzButtonModule, NgZorroAntdModule } from 'ng-zorro-antd';
-import { PartyItemComponent } from './components/party-item/party-item.component';
 import { MapBoxComponent } from '../../shared/components/map-box/map-box.component';
 import { NgxMapboxGLModule } from 'ngx-mapbox-gl';
 import { environment } from 'src/environments/environment';
 import { MomentModule } from 'ngx-moment';
 import { ViewPage } from './pages/view/view.page';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 const routes: Routes = [
     {
@@ -28,7 +28,8 @@ const routes: Routes = [
             { path: '', redirectTo: 'home', pathMatch: 'full' },
             {
                 path: 'home',
-                loadChildren: 'src/app/pages/parties/pages/view/pages/parties-view-home/parties-view-home.module#PartiesViewHomePageModule',
+                loadChildren:
+                    'src/app/pages/parties/pages/view/pages/parties-view-home/parties-view-home.module#PartiesViewHomePageModule',
             },
             {
                 path: 'music',
@@ -53,8 +54,9 @@ const routes: Routes = [
             accessToken: environment.mapbox.accessToken,
         }),
         MomentModule,
+        SharedModule,
     ],
     exports: [RouterModule],
-    declarations: [PartiesPage, PartyItemComponent, MapBoxComponent, ViewPage],
+    declarations: [PartiesPage, MapBoxComponent, ViewPage],
 })
 export class PartiesPageModule {}

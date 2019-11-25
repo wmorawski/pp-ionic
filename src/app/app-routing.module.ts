@@ -6,13 +6,19 @@ export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
     { path: 'home', loadChildren: './pages/home/home.module#HomePageModule', canActivate: [AuthGuard] },
     {
-        path: 'auth/login',
-        loadChildren: './pages/auth/login/login.module#LoginPageModule',
+        path: 'auth',
+        children: [
+            {
+                path: 'login',
+                loadChildren: './pages/auth/login/login.module#LoginPageModule',
+            },
+            {
+                path: 'register',
+                loadChildren: './pages/auth/register/register.module#RegisterPageModule',
+            },
+        ],
     },
-    {
-        path: 'auth/register',
-        loadChildren: './pages/auth/register/register.module#RegisterPageModule',
-    },
+
     {
         path: 'calendar',
         loadChildren: './pages/calendar/calendar.module#CalendarPageModule',

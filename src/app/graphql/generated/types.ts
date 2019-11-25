@@ -6753,8 +6753,8 @@ export type Query = {
   albumsConnection: AlbumConnection,
   /** Fetches an object given its ID */
   node?: Maybe<Node>,
-  authenticateParty: PartyAuthenticationResult,
   hasChats: Scalars['Boolean'],
+  authenticateParty: PartyAuthenticationResult,
   hasParties: Scalars['Boolean'],
   canJoinParty?: Maybe<Scalars['Boolean']>,
   partyCartCost: Scalars['Float'],
@@ -7203,13 +7203,13 @@ export type QueryNodeArgs = {
 };
 
 
-export type QueryAuthenticatePartyArgs = {
-  partyId: Scalars['ID']
+export type QueryHasChatsArgs = {
+  where?: Maybe<ChatWhereInput>
 };
 
 
-export type QueryHasChatsArgs = {
-  where?: Maybe<ChatWhereInput>
+export type QueryAuthenticatePartyArgs = {
+  partyId: Scalars['ID']
 };
 
 
@@ -8945,6 +8945,10 @@ export type SignupMutation = (
   & { signup: (
     { __typename?: 'AuthPayload' }
     & Pick<AuthPayload, 'token'>
+    & { user: (
+      { __typename?: 'User' }
+      & Pick<User, 'id'>
+    ) }
   ) }
 );
 
@@ -9455,6 +9459,7 @@ export type Last_Chat_Message_FragmentMessages = Last_Chat_Message_FragmentFragm
 export type Last_Chat_Message_FragmentAuthor = Last_Chat_Message_FragmentFragment['messages'][0]['author'];
 export type SignupVariables = SignupMutationVariables;
 export type SignupSignup = SignupMutation['signup'];
+export type SignupUser = SignupMutation['signup']['user'];
 export type LoginVariables = LoginMutationVariables;
 export type LoginLogin = LoginMutation['login'];
 export type LoginUser = LoginMutation['login']['user'];
@@ -9622,6 +9627,9 @@ export const Last_Chat_Message_FragmentFragmentDoc = gql`
 export const SignupDocument = gql`
     mutation Signup($email: String!, $password: String!, $firstName: String!, $lastName: String!) {
   signup(email: $email, password: $password, firstName: $firstName, lastName: $lastName) {
+    user {
+      id
+    }
     token
   }
 }
