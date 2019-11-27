@@ -335,3 +335,27 @@ export const CAN_JOIN_PARTY_QUERY = gql`
         canJoinParty(userId: $userId, inviteSecret: $inviteSecret, partyId: $partyId)
     }
 `;
+
+export const PARTY_SAVED_TRACKS_QUERY = gql`
+    query Party_SavedTracks(
+        $where: PartySavedTrackWhereInput
+        $orderBy: PartySavedTrackOrderByInput
+        $skip: Int
+        $after: String
+        $before: String
+        $first: Int
+        $last: Int
+    ) {
+        partySavedTracks(
+            where: $where
+            orderBy: $orderBy
+            after: $after
+            skip: $skip
+            before: $before
+            first: $first
+            last: $last
+        ) {
+            spotifyId
+        }
+    }
+`;

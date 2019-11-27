@@ -1,3 +1,5 @@
+import { PlaylistsComponent } from './components/playlists/playlists.component';
+import { SavedTracksComponent } from './components/saved-tracks/saved-tracks.component';
 import { NgZorroAntdMobileModule } from 'ng-zorro-antd-mobile';
 import { StyledComponentsModule } from 'angular-styled-components';
 import { SharedModule } from './../../../../../../shared/shared.module';
@@ -33,7 +35,7 @@ const routes: Routes = [
         SharedModule,
         StyledComponentsModule,
     ],
-    declarations: [PartiesViewMusicPage, TopTrackComponent],
+    declarations: [PartiesViewMusicPage, TopTrackComponent, SavedTracksComponent, PlaylistsComponent],
     providers: [SpotifyAuth, Media],
 })
 export class PartiesViewMusicPageModule {}

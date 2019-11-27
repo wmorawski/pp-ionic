@@ -2698,9 +2698,9 @@ export type Mutation = {
   deleteManyUsers: BatchPayload,
   deleteManyParties: BatchPayload,
   deleteManyAlbums: BatchPayload,
+  joinParty?: Maybe<Scalars['Boolean']>,
   importPlaylistsToParty: Scalars['Boolean'],
   combinePlaylists: Playlist,
-  joinParty?: Maybe<Scalars['Boolean']>,
   signup: AuthPayload,
   login: AuthPayload,
   socialLogin: AuthPayload,
@@ -3244,6 +3244,11 @@ export type MutationDeleteManyAlbumsArgs = {
 };
 
 
+export type MutationJoinPartyArgs = {
+  partyId: Scalars['ID']
+};
+
+
 export type MutationImportPlaylistsToPartyArgs = {
   playlists: Scalars['String'],
   partyId: Scalars['ID']
@@ -3253,11 +3258,6 @@ export type MutationImportPlaylistsToPartyArgs = {
 export type MutationCombinePlaylistsArgs = {
   partyPlannerData: CombinePlaylistPartyPlannerData,
   spotifyData: CombinePlaylistCreatedSpotifyPlaylistInput
-};
-
-
-export type MutationJoinPartyArgs = {
-  partyId: Scalars['ID']
 };
 
 
@@ -3474,7 +3474,7 @@ export type PartyCartItem = Node & {
   cart: PartyCart,
   user: User,
   name: Scalars['String'],
-  description: Scalars['String'],
+  description?: Maybe<Scalars['String']>,
   price: Scalars['Float'],
   status: PartyCartItemStatus,
   quantity: Scalars['Int'],
@@ -3493,7 +3493,7 @@ export type PartyCartItemConnection = {
 export type PartyCartItemCreateInput = {
   id?: Maybe<Scalars['ID']>,
   name: Scalars['String'],
-  description: Scalars['String'],
+  description?: Maybe<Scalars['String']>,
   price: Scalars['Float'],
   status: PartyCartItemStatus,
   quantity?: Maybe<Scalars['Int']>,
@@ -3514,7 +3514,7 @@ export type PartyCartItemCreateManyWithoutUserInput = {
 export type PartyCartItemCreateWithoutCartInput = {
   id?: Maybe<Scalars['ID']>,
   name: Scalars['String'],
-  description: Scalars['String'],
+  description?: Maybe<Scalars['String']>,
   price: Scalars['Float'],
   status: PartyCartItemStatus,
   quantity?: Maybe<Scalars['Int']>,
@@ -3524,7 +3524,7 @@ export type PartyCartItemCreateWithoutCartInput = {
 export type PartyCartItemCreateWithoutUserInput = {
   id?: Maybe<Scalars['ID']>,
   name: Scalars['String'],
-  description: Scalars['String'],
+  description?: Maybe<Scalars['String']>,
   price: Scalars['Float'],
   status: PartyCartItemStatus,
   quantity?: Maybe<Scalars['Int']>,
@@ -3559,7 +3559,7 @@ export type PartyCartItemPreviousValues = {
    __typename?: 'PartyCartItemPreviousValues',
   id: Scalars['ID'],
   name: Scalars['String'],
-  description: Scalars['String'],
+  description?: Maybe<Scalars['String']>,
   price: Scalars['Float'],
   status: PartyCartItemStatus,
   quantity: Scalars['Int'],
@@ -8932,6 +8932,41 @@ export type Last_Chat_Message_FragmentFragment = (
   )>> }
 );
 
+export type Full_Saved_Track_FragmentFragment = (
+  { __typename?: 'PartySavedTrack' }
+  & Pick<PartySavedTrack, 'id' | 'name' | 'length' | 'uri' | 'popularity' | 'durationMs' | 'previewUrl' | 'stringArtists' | 'explicit'>
+  & { album: (
+    { __typename?: 'Album' }
+    & Pick<Album, 'id' | 'name' | 'uri' | 'imageUrl' | 'releaseDate'>
+  ) }
+);
+
+export type Party_Playlists_Connection_Node_FragmentFragment = (
+  { __typename?: 'Playlist' }
+  & Pick<Playlist, 'id' | 'spotifyExternalUrl' | 'name' | 'spotifyId' | 'imageUrl' | 'importable'>
+  & { user: (
+    { __typename?: 'User' }
+    & Pick<User, 'id' | 'firstName' | 'lastName' | 'avatar'>
+  ), tracks: Maybe<Array<(
+    { __typename?: 'PartySavedTrack' }
+    & Pick<PartySavedTrack, 'id' | 'uri'>
+  )>> }
+);
+
+export type Party_Cart_Items_Connection_Node_FragmentFragment = (
+  { __typename?: 'PartyCartItem' }
+  & Pick<PartyCartItem, 'id' | 'name' | 'price' | 'quantity' | 'status'>
+  & { user: (
+    { __typename?: 'User' }
+    & Pick<User, 'firstName' | 'lastName'>
+  ) }
+);
+
+export type Party_Authentication_Minimal_Party_FragmentFragment = (
+  { __typename?: 'Party' }
+  & Pick<Party, 'id'>
+);
+
 export type SignupMutationVariables = {
   email: Scalars['String'],
   password: Scalars['String'],
@@ -9105,6 +9140,34 @@ export type JoinPartyMutationMutationVariables = {
 export type JoinPartyMutationMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'joinParty'>
+);
+
+export type AddTrackToPartyMutationVariables = {
+  data: PartySavedTrackCreateInput
+};
+
+
+export type AddTrackToPartyMutation = (
+  { __typename?: 'Mutation' }
+  & { createPartySavedTrack: (
+    { __typename?: 'PartySavedTrack' }
+    & Pick<PartySavedTrack, 'spotifyId'>
+  )
+    & Full_Saved_Track_FragmentFragment
+   }
+);
+
+export type User_DeleteFriendInvitationMutationVariables = {
+  where: FriendInvitationWhereUniqueInput
+};
+
+
+export type User_DeleteFriendInvitationMutation = (
+  { __typename?: 'Mutation' }
+  & { deleteFriendInvitation: Maybe<(
+    { __typename?: 'FriendInvitation' }
+    & Pick<FriendInvitation, 'id'>
+  )> }
 );
 
 export type MeQueryQueryVariables = {};
@@ -9407,6 +9470,25 @@ export type CanJoinPartyQueryQuery = (
   & Pick<Query, 'canJoinParty'>
 );
 
+export type Party_SavedTracksQueryVariables = {
+  where?: Maybe<PartySavedTrackWhereInput>,
+  orderBy?: Maybe<PartySavedTrackOrderByInput>,
+  skip?: Maybe<Scalars['Int']>,
+  after?: Maybe<Scalars['String']>,
+  before?: Maybe<Scalars['String']>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>
+};
+
+
+export type Party_SavedTracksQuery = (
+  { __typename?: 'Query' }
+  & { partySavedTracks: Array<Maybe<(
+    { __typename?: 'PartySavedTrack' }
+    & Pick<PartySavedTrack, 'spotifyId'>
+  )>> }
+);
+
 export type ChatMessagesSubscriptionSubscriptionVariables = {
   where?: Maybe<MessageSubscriptionWhereInput>
 };
@@ -9457,6 +9539,10 @@ export type Party_Invitation_FragmentUser = Party_Invitation_FragmentFragment['u
 export type Party_Invitation_FragmentParty = Party_Invitation_FragmentFragment['party'];
 export type Last_Chat_Message_FragmentMessages = Last_Chat_Message_FragmentFragment['messages'][0];
 export type Last_Chat_Message_FragmentAuthor = Last_Chat_Message_FragmentFragment['messages'][0]['author'];
+export type Full_Saved_Track_FragmentAlbum = Full_Saved_Track_FragmentFragment['album'];
+export type Party_Playlists_Connection_Node_FragmentUser = Party_Playlists_Connection_Node_FragmentFragment['user'];
+export type Party_Playlists_Connection_Node_FragmentTracks = Party_Playlists_Connection_Node_FragmentFragment['tracks'][0];
+export type Party_Cart_Items_Connection_Node_FragmentUser = Party_Cart_Items_Connection_Node_FragmentFragment['user'];
 export type SignupVariables = SignupMutationVariables;
 export type SignupSignup = SignupMutation['signup'];
 export type SignupUser = SignupMutation['signup']['user'];
@@ -9484,6 +9570,10 @@ export type DeleteManyPartyInvitationsDeleteManyPartyInvitations = DeleteManyPar
 export type DeletePartyInvitationMutationVariables = DeletePartyInvitationMutationMutationVariables;
 export type DeletePartyInvitationMutationDeletePartyInvitation = DeletePartyInvitationMutationMutation['deletePartyInvitation'];
 export type JoinPartyMutationVariables = JoinPartyMutationMutationVariables;
+export type AddTrackToPartyVariables = AddTrackToPartyMutationVariables;
+export type AddTrackToPartyCreatePartySavedTrack = Full_Saved_Track_FragmentFragment;
+export type User_DeleteFriendInvitationVariables = User_DeleteFriendInvitationMutationVariables;
+export type User_DeleteFriendInvitationDeleteFriendInvitation = User_DeleteFriendInvitationMutation['deleteFriendInvitation'];
 export type MeQueryVariables = MeQueryQueryVariables;
 export type MeQueryMe = MeQueryQuery['me'];
 export type PaginateUsersQueryVariables = PaginateUsersQueryQueryVariables;
@@ -9536,6 +9626,8 @@ export type HasPartiesQueryVariables = HasPartiesQueryQueryVariables;
 export type PartyInvitationsQueryVariables = PartyInvitationsQueryQueryVariables;
 export type PartyInvitationsQueryPartyInvitations = Party_Invitation_FragmentFragment;
 export type CanJoinPartyQueryVariables = CanJoinPartyQueryQueryVariables;
+export type Party_SavedTracksVariables = Party_SavedTracksQueryVariables;
+export type Party_SavedTracksPartySavedTracks = Party_SavedTracksQuery['partySavedTracks'][0];
 export type ChatMessagesSubscriptionVariables = ChatMessagesSubscriptionSubscriptionVariables;
 export type ChatMessagesSubscriptionMessage = ChatMessagesSubscriptionSubscription['message'];
 export type ChatMessagesSubscriptionNode = ChatMessagesSubscriptionSubscription['message']['node'];
@@ -9622,6 +9714,65 @@ export const Last_Chat_Message_FragmentFragmentDoc = gql`
     }
   }
   hasUnreadMessages @client
+}
+    `;
+export const Full_Saved_Track_FragmentFragmentDoc = gql`
+    fragment FULL_SAVED_TRACK_FRAGMENT on PartySavedTrack {
+  id
+  name
+  length
+  uri
+  popularity
+  durationMs
+  previewUrl
+  stringArtists
+  explicit
+  popularity
+  album {
+    id
+    name
+    uri
+    imageUrl
+    releaseDate
+  }
+}
+    `;
+export const Party_Playlists_Connection_Node_FragmentFragmentDoc = gql`
+    fragment PARTY_PLAYLISTS_CONNECTION_NODE_FRAGMENT on Playlist {
+  id
+  spotifyExternalUrl
+  name
+  spotifyId
+  imageUrl
+  importable
+  user {
+    id
+    firstName
+    lastName
+    avatar
+  }
+  tracks {
+    id
+    uri
+  }
+}
+    `;
+export const Party_Cart_Items_Connection_Node_FragmentFragmentDoc = gql`
+    fragment PARTY_CART_ITEMS_CONNECTION_NODE_FRAGMENT on PartyCartItem {
+  id
+  name
+  price
+  quantity
+  status
+  user {
+    firstName
+    lastName
+  }
+}
+    `;
+export const Party_Authentication_Minimal_Party_FragmentFragmentDoc = gql`
+    fragment PARTY_AUTHENTICATION_MINIMAL_PARTY_FRAGMENT on Party {
+  id
 }
     `;
 export const SignupDocument = gql`
@@ -9821,6 +9972,37 @@ export const JoinPartyMutationDocument = gql`
   })
   export class JoinPartyMutationGQL extends Apollo.Mutation<JoinPartyMutationMutation, JoinPartyMutationMutationVariables> {
     document = JoinPartyMutationDocument;
+    
+  }
+export const AddTrackToPartyDocument = gql`
+    mutation AddTrackToParty($data: PartySavedTrackCreateInput!) {
+  createPartySavedTrack(data: $data) {
+    ...FULL_SAVED_TRACK_FRAGMENT
+    spotifyId
+  }
+}
+    ${Full_Saved_Track_FragmentFragmentDoc}`;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class AddTrackToPartyGQL extends Apollo.Mutation<AddTrackToPartyMutation, AddTrackToPartyMutationVariables> {
+    document = AddTrackToPartyDocument;
+    
+  }
+export const User_DeleteFriendInvitationDocument = gql`
+    mutation User_DeleteFriendInvitation($where: FriendInvitationWhereUniqueInput!) {
+  deleteFriendInvitation(where: $where) {
+    id
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class User_DeleteFriendInvitationGQL extends Apollo.Mutation<User_DeleteFriendInvitationMutation, User_DeleteFriendInvitationMutationVariables> {
+    document = User_DeleteFriendInvitationDocument;
     
   }
 export const MeQueryDocument = gql`
@@ -10112,6 +10294,21 @@ export const CanJoinPartyQueryDocument = gql`
   })
   export class CanJoinPartyQueryGQL extends Apollo.Query<CanJoinPartyQueryQuery, CanJoinPartyQueryQueryVariables> {
     document = CanJoinPartyQueryDocument;
+    
+  }
+export const Party_SavedTracksDocument = gql`
+    query Party_SavedTracks($where: PartySavedTrackWhereInput, $orderBy: PartySavedTrackOrderByInput, $skip: Int, $after: String, $before: String, $first: Int, $last: Int) {
+  partySavedTracks(where: $where, orderBy: $orderBy, after: $after, skip: $skip, before: $before, first: $first, last: $last) {
+    spotifyId
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class Party_SavedTracksGQL extends Apollo.Query<Party_SavedTracksQuery, Party_SavedTracksQueryVariables> {
+    document = Party_SavedTracksDocument;
     
   }
 export const ChatMessagesSubscriptionDocument = gql`

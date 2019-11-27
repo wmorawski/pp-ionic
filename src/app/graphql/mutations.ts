@@ -1,5 +1,5 @@
 import gql from 'graphql-tag';
-import { PARTY_FRAGMENT } from './fragments';
+import { PARTY_FRAGMENT, FULL_SAVED_TRACK_FRAGMENT } from './fragments';
 
 export const SIGNUP_MUTATION = gql`
     mutation Signup($email: String!, $password: String!, $firstName: String!, $lastName: String!) {
@@ -114,5 +114,22 @@ export const DELETE_PARTY_INVITATION_MUTATION = gql`
 export const JOIN_PARTY_MUTATION = gql`
     mutation JoinPartyMutation($partyId: ID!) {
         joinParty(partyId: $partyId)
+    }
+`;
+
+export const ADD_TRACK_TO_PARTY_MUTATION = gql`
+    mutation AddTrackToParty($data: PartySavedTrackCreateInput!) {
+        createPartySavedTrack(data: $data) {
+            ...FULL_SAVED_TRACK_FRAGMENT
+            spotifyId
+        }
+    }
+    ${FULL_SAVED_TRACK_FRAGMENT}
+`;
+export const DELETE_FRIEND_INVITATION_MUTATION = gql`
+    mutation User_DeleteFriendInvitation($where: FriendInvitationWhereUniqueInput!) {
+        deleteFriendInvitation(where: $where) {
+            id
+        }
     }
 `;

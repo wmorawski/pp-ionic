@@ -1,3 +1,4 @@
+import { HeaderComponent } from './components/header/header.component';
 import { RouterModule } from '@angular/router';
 import { GraphqlErrorComponent } from 'src/app/shared/components/graphql-error/graphql-error.component';
 import { FormsModule } from '@angular/forms';
@@ -26,6 +27,7 @@ import { MomentModule } from 'ngx-moment';
         MinuteSecondsPipe,
         GraphqlErrorComponent,
         PartyItemComponent,
+        HeaderComponent,
     ],
     imports: [
         CommonModule,
@@ -52,6 +54,7 @@ import { MomentModule } from 'ngx-moment';
         MinuteSecondsPipe,
         GraphqlErrorComponent,
         PartyItemComponent,
+        HeaderComponent,
     ],
 })
 export class SharedModule {}

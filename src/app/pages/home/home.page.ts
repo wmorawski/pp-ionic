@@ -27,7 +27,7 @@ export class HomePage extends NavbarManager {
     ionViewWillEnter() {
         this.appService.showNavbar();
         this.publicParties = this.partiesQueryGQL
-            .watch(getPublicPartiesVariables(new Date()))
+            .watch(getPublicPartiesVariables(new Date()), { fetchPolicy: 'cache-and-network' })
             .valueChanges.pipe(map((result) => (result.data ? result.data.parties : [])));
     }
 }

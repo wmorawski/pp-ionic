@@ -1,5 +1,5 @@
 <ion-content color="light">
-    <Tabs [useOnPan]="true" [swipeable]="true" activeTab="0" [page]="2" [tabBarActiveTextColor]="'#1890ff'">
+    <Tabs [useOnPan]="true" [swipeable]="true" activeTab="0" [page]="3" [tabBarActiveTextColor]="'#1890ff'">
         <TabPane [title]="titleTemplate">
             <ng-template #titleTemplate>
                 <div>Your top tracks</div>
@@ -39,6 +39,18 @@
                 ></spotify-top-track>
             </ng-container>
             <ng-container *ngTemplateOutlet="searchedTracksSpotify"></ng-container>
+        </TabPane>
+        <TabPane [title]="savedTracksTitle">
+            <ng-template #savedTracksTitle>
+                <div>Saved tracks</div>
+            </ng-template>
+            <party-saved-tracks></party-saved-tracks>
+        </TabPane>
+        <TabPane [title]="playlistsTitle">
+            <ng-template #playlistsTitle>
+                <div>Playlists</div>
+            </ng-template>
+            <party-playlists [id]="id"></party-playlists>
         </TabPane>
     </Tabs>
 </ion-content>

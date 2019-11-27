@@ -1,3 +1,4 @@
+import { StyledComponentsModule } from 'angular-styled-components';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
@@ -26,6 +27,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
                 component: HomePage,
             },
         ]),
+        StyledComponentsModule,
     ],
     declarations: [HomePage],
 })

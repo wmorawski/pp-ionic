@@ -1,4 +1,5 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { Component, OnInit, ChangeDetectorRef, Input } from '@angular/core';
 import { AuthorizationData } from '@ionic-native/spotify-auth/ngx';
 import { environment } from 'src/environments/environment';
 import { Track, init, getCurrentUserTopTracks, searchTracks } from 'spotify-web-sdk';
@@ -13,6 +14,7 @@ declare var cordova: any;
     styleUrls: ['./parties-view-music.page.scss'],
 })
 export class PartiesViewMusicPage implements OnInit {
+    id: string;
     result: AuthorizationData;
     topTracks: Track[];
     searchedTracks: Track[];
@@ -20,30 +22,31 @@ export class PartiesViewMusicPage implements OnInit {
     searchQueryWrapper: Subscription;
     currentTrack: Track = null;
     currentTrackSearched: Track = null;
-    constructor(private readonly media: Media, private readonly chr: ChangeDetectorRef) {}
+    constructor(
+        private readonly media: Media,
+        private readonly chr: ChangeDetectorRef,
+        private readonly router: Router,
+    ) {}
 
-    ngOnInit() {}
+    ngOnInit() {
+        this.id = this.router.url.split('/')[2];
+    }
     async ionViewWillEnter() {
         this.result = await this.authWithSpotify();
         init({ token: this.result.accessToken });
         this.topTracks = (await getCurrentUserTopTracks({ limit: 50 })).items;
-        this.searchQueryChanged
-            .pipe(
-                distinctUntilChanged(),
-                debounceTime(800)
-            )
-            .subscribe((event) => {
-                if (this.searchQueryWrapper && !this.searchQueryWrapper.closed) {
-                    this.searchQueryWrapper.unsubscribe();
-                }
-                if (event.length >= 3) {
-                    this.searchQueryWrapper = from(searchTracks(event, { limit: 10 })).subscribe((res) => {
-                        this.searchedTracks = res.items || [];
-                    });
-                } else {
-                    this.searchedTracks = [];
-                }
-            });
+        this.searchQueryChanged.pipe(distinctUntilChanged(), debounceTime(800)).subscribe((event) => {
+            if (this.searchQueryWrapper && !this.searchQueryWrapper.closed) {
+                this.searchQueryWrapper.unsubscribe();
+            }
+            if (event.length >= 3) {
+                this.searchQueryWrapper = from(searchTracks(event, { limit: 10 })).subscribe((res) => {
+                    this.searchedTracks = res.items || [];
+                });
+            } else {
+                this.searchedTracks = [];
+            }
+        });
     }
     authWithSpotify() {
         return cordova.plugins.spotifyAuth.authorize(environment.spotify.config);
