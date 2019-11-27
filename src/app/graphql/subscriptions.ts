@@ -1,4 +1,4 @@
-import { gql } from 'apollo-angular-boost';
+import gql from 'graphql-tag';
 import { PARTY_INVITATION_FRAGMENT } from './fragments';
 
 export const CHAT_MESSAGES_SUBSCRIPTION = gql`

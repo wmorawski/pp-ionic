@@ -1,9 +1,19 @@
 <ion-content [scrollEvents]="true" (ionScroll)="onScroll($event)" no-bounce color="light">
-    <ion-grid fixed>
-        <ion-row>
-            <ion-col size="12">
-                <nz-empty></nz-empty>
-            </ion-col>
-        </ion-row>
-    </ion-grid>
+    <ng-container *ngIf="(publicParties | async) && (publicParties | async)?.length; else noPublic">
+        <app-header title="Public parties"></app-header>
+        <ion-virtual-scroll [items]="publicParties | async" approxItemHeight="330px">
+            <app-party-item *virtualItem="let party" [party]="party"></app-party-item>
+        </ion-virtual-scroll>
+    </ng-container>
+    <ng-template #noPublic>
+        <nz-empty [nzNotFoundContent]="contentTpl" [nzNotFoundFooter]="footerTpl"></nz-empty>
+    </ng-template>
+    <ng-template #contentTpl>
+        There is no public parties available yet
+    </ng-template>
+    <ng-template #footerTpl>
+        <button nz-button nzType="primary" [routerLink]="['/parties', 'create']" routerDirection="forward">
+            Create Now
+        </button>
+    </ng-template>
 </ion-content>

@@ -1,13 +1,13 @@
 import { PP_USER_ID } from 'src/app/constants';
-import { PartiesQueryGQL, PartyOrderByInput } from './../../graphql/types';
+import { PartiesQueryGQL, PartyOrderByInput } from './../../graphql/generated/types';
 import { NavbarManager } from './../../shared/helpers/navbar-manager';
 import { Component, OnInit } from '@angular/core';
-import { HasPartiesQueryGQL } from 'src/app/graphql/types';
+import { HasPartiesQueryGQL } from 'src/app/graphql/generated/types';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { NavController } from '@ionic/angular';
 import { AppService } from 'src/app/services/app.service';
-import { Apollo } from 'apollo-angular-boost';
+import { Apollo } from 'apollo-angular';
 import { PARTIES_QUERY } from 'src/app/graphql/queries';
 import { Map } from 'mapbox-gl';
 import { getPartiesDateVariables } from 'src/app/shared/helpers/graphql-utils';
@@ -20,6 +20,7 @@ import { getPartiesDateVariables } from 'src/app/shared/helpers/graphql-utils';
 export class PartiesPage extends NavbarManager implements OnInit {
     hasParties: Observable<boolean>;
     parties: any;
+    hasPartiesLoading = false;
     showMap = false;
     map: Map;
 
@@ -28,7 +29,7 @@ export class PartiesPage extends NavbarManager implements OnInit {
         private hasPartiesGQL: HasPartiesQueryGQL,
         private partiesQueryGQL: PartiesQueryGQL,
         private navCtrl: NavController,
-        private apollo: Apollo
+        private apollo: Apollo,
     ) {
         super(appService);
     }
@@ -36,21 +37,38 @@ export class PartiesPage extends NavbarManager implements OnInit {
     ngOnInit() {}
 
     ionViewWillEnter() {
-        this.hasParties = this.hasPartiesGQL.watch().valueChanges.pipe(map(result => result.data.hasParties));
+        this.hasParties = this.hasPartiesGQL
+            .watch(
+                {},
+                {
+                    fetchPolicy: 'cache-and-network',
+                },
+            )
+            .valueChanges.pipe(
+                map((result) => {
+                    this.hasPartiesLoading = result.loading;
+                    if (result.data) {
+                        return result.data.hasParties;
+                    } else {
+                        return false;
+                    }
+                }),
+            );
         if (this.hasParties) {
             this.parties = this.partiesQueryGQL
-                .watch(getPartiesDateVariables(new Date(), localStorage.getItem(PP_USER_ID)))
-                .valueChanges.pipe(map(result => result.data.parties));
+                .watch(getPartiesDateVariables(new Date(), localStorage.getItem(PP_USER_ID)), {
+                    fetchPolicy: 'cache-and-network',
+                })
+                .valueChanges.pipe(
+                    map((result) => {
+                        if (result.data) {
+                            return result.data.parties;
+                        } else {
+                            return [];
+                        }
+                    }),
+                );
         }
-    }
-
-    fetchParties() {
-        return this.partiesQueryGQL.fetch({
-            where: {
-                members_some: { id: localStorage.getItem(PP_USER_ID) },
-            },
-            orderBy: PartyOrderByInput.CreatedAtDesc,
-        });
     }
 
     create() {

@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { getPartiesDateVariables } from 'src/app/shared/helpers/graphql-utils';
 import { PP_USER_ID } from '../../constants';
-import { Apollo } from 'apollo-angular-boost';
+import { Apollo } from 'apollo-angular';
 import { PARTIES_QUERY } from 'src/app/graphql/queries';
 import { map } from 'rxjs/operators';
-import { Party } from 'src/app/graphql/types';
+import { Party } from 'src/app/graphql/generated/types';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timelinePlugin from '@fullcalendar/timeline';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -31,11 +31,11 @@ export class CalendarPage implements OnInit {
                 query: PARTIES_QUERY,
                 variables: getPartiesDateVariables(new Date(), localStorage.getItem(PP_USER_ID)),
             })
-            .valueChanges.subscribe(res => {
+            .valueChanges.subscribe((res) => {
                 const { data: partiesData, loading: partiesLoading } = res;
                 this.partiesData = partiesData.parties;
                 this.partiesLoading = partiesLoading;
-                this.parsedParties = partiesData.parties.map(party => ({
+                this.parsedParties = partiesData.parties.map((party) => ({
                     ...party,
                     allDay: new Date(party!.start).getDate() !== new Date(party!.end).getDate(),
                     start: new Date(party!.start),

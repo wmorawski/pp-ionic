@@ -1,3 +1,4 @@
+import { LocalResolvers } from './graphql/resolvers';
 import { FCM } from '@ionic-native/fcm/ngx';
 import { FcmService } from './services/fcm.service';
 import { NgModule } from '@angular/core';
@@ -19,20 +20,20 @@ import { SharedModule } from './shared/shared.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { far } from '@fortawesome/free-regular-svg-icons';
-import { NgZorroAntdModule, NZ_I18N, pl_PL, en_US } from 'ng-zorro-antd';
+import { NgZorroAntdModule, NZ_I18N, en_US } from 'ng-zorro-antd';
 import { registerLocaleData } from '@angular/common';
-import pl from '@angular/common/locales/pl';
 import en from '@angular/common/locales/en';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
-import { FirebaseX } from '@ionic-native/firebase-x/ngx';
 import { AngularFireModule } from 'angularfire2';
-import { AngularFireMessagingModule } from '@angular/fire/messaging';
-import { AngularFireFunctionsModule } from '@angular/fire/functions';
+import { ApolloModule, APOLLO_OPTIONS } from 'apollo-angular';
+import { HttpLinkModule, HttpLink } from 'apollo-angular-link-http';
+import { InMemoryCache } from 'apollo-cache-inmemory';
+import { environment } from 'src/environments/environment';
 
 registerLocaleData(en);
 
 library.add(far);
-
+const uri = (environment.production ? environment.backendUrl : '') + '/graphql';
 const firebase = {
     apiKey: 'AIzaSyC1eMI4ek5ta6zGGRje6NPOnHdtwc-b3nQ',
     authDomain: 'partyplanner-c76a2.firebaseapp.com',

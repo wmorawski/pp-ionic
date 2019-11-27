@@ -1,0 +1,7 @@
+{
+    "/graphql": {
+        "target": "https://api.partyplanner.fun",
+        "secure": false,
+        "changeOrigin": true
+    }
+}

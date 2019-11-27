@@ -2,13 +2,14 @@ import { NavController } from '@ionic/angular';
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { PP_USER_ID, PP_AUTH_TOKEN } from 'src/app/constants';
-import { ApolloBoost, Apollo } from 'apollo-angular-boost';
+import { Apollo } from 'apollo-angular';
 import { LOGIN_MUTATION, SOCIAL_LOGIN_MUTATION } from 'src/app/graphql/mutations';
 import { Router } from '@angular/router';
 import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook/ngx';
 import { SpotifyAuth } from '@ionic-native/spotify-auth/ngx';
 import * as SpotifyWebApi from 'spotify-web-api-js';
 import { BehaviorSubject } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Component({
     selector: 'app-login',
@@ -21,6 +22,7 @@ export class LoginPage implements OnInit {
     public loading = false;
     public facebookLoading = false;
     public spotifyLoading = false;
+    public twitterLoading = false;
     public error = null;
     constructor(
         private authService: AuthService,
@@ -43,7 +45,7 @@ export class LoginPage implements OnInit {
                 },
             })
             .subscribe(
-                result => {
+                (result) => {
                     this.loading = false;
                     const id = result.data.login.user.id;
                     const token = result.data.login.token;
@@ -51,7 +53,7 @@ export class LoginPage implements OnInit {
                     this.error = null;
                     this.navCtrl.navigateRoot(['/']);
                 },
-                error => {
+                (error) => {
                     this.loading = false;
                     this.error = error;
                 }
@@ -77,7 +79,7 @@ export class LoginPage implements OnInit {
                         },
                     })
                     .subscribe(
-                        result => {
+                        (result) => {
                             console.log(result);
                             const id = result.data.socialLogin.user.id;
                             const token = result.data.socialLogin.token;
@@ -86,13 +88,13 @@ export class LoginPage implements OnInit {
                             this.navCtrl.navigateRoot(['/']);
                             this.facebookLoading = false;
                         },
-                        error => {
+                        (error) => {
                             this.error = error;
                             this.facebookLoading = false;
                         }
                     );
             })
-            .catch(err => {
+            .catch((err) => {
                 console.log('err', err);
                 this.facebookLoading = false;
             });
@@ -103,16 +105,16 @@ export class LoginPage implements OnInit {
             clientId: 'cf6c218047e74336a40b6c1cfe70f35a',
             redirectUrl: 'partyplanner://spotify',
             scopes: ['streaming', 'playlist-read-private', 'user-read-email', 'user-read-private'],
-            tokenExchangeUrl: 'http://localhost:4000/auth/spotify/token',
-            tokenRefreshUrl: 'http://localhost:4000/auth/spotify/refresh',
+            tokenExchangeUrl: environment.backendUrl + '/auth/spotify/token',
+            tokenRefreshUrl: environment.backendUrl + '/auth/spotify/refresh',
         };
 
         this.spotifyAuth
             .authorize(config)
-            .then(res => {
+            .then((res) => {
                 console.log(res);
             })
-            .catch(err => {
+            .catch((err) => {
                 console.log('err', err);
             });
     }

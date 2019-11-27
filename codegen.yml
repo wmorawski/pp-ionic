@@ -1,15 +1,11 @@
 overwrite: true
 schema:
     - 'http://localhost:4000/graphql'
-    - 'src/app/graphql/client-schema.graphql'
+    - './src/app/graphql/client-schema.graphql'
 documents:
     - './src/app/graphql/*.ts'
-pluckConfig:
-    modules:
-        - name: 'apollo-angular-boost'
-          identifier: 'gql'
 generates:
-    src/app/graphql/types.ts:
+    src/app/graphql/generated/types.ts:
         config:
             noNamespaces: true
         plugins:

@@ -4,39 +4,96 @@
         style="width: auto; display: block; margin: 0 auto; background: rgba(24,144,255,0.1);"
     ></ion-img>
     <ion-grid style="background: white;" class="ion-no-padding">
-        <ion-row class="ion-justify-content-center" paddingTop="1em" paddingBottom="1em">
-            <ion-col size="3">
+        <ion-row class="ion-justify-content-center" paddingTop="1em" paddingBottom="1em" aic>
+            <ion-col size="3" tac fdc aic asc>
                 <ion-text color="primary">
-                    <small>{{party.start | date: "MM" }}</small>
+                    <small style="font-size: 70%; font-weight: 800" textTransform="uppercase">{{
+                        party.start | date: 'MMM' | uppercase
+                    }}</small>
+                </ion-text>
+                <ion-text color="secondary">
+                    <h1>{{ party.start | date: 'dd' }}</h1>
                 </ion-text>
             </ion-col>
             <ion-col size="9">
-                
                 <ion-row>
-                    
-                    <ion-col size="12" class="ion-justify-content-center ion-text-center">
-                        <h3>{{ party.title }}</h3>
+                    <ion-col size="12" class="ion-no-padding ion-no-margin" display="flex" fdr aic>
+                        <h3 display="inline-flex">{{ party.title }}</h3>
+                        <nz-tag [nzColor]="party.isPublic ? 'blue' : 'gold'" marginLeft="1em" display="inline-flex">
+                            {{ party.isPublic ? 'Public' : 'Private' }}
+                        </nz-tag>
                     </ion-col>
-                    <ion-col size="12" class="ion-text-center">
+                    <ion-col size="12" class="ion-no-padding ion-no-margin">
                         <small>
-                            {{ party.members.length | i18nPlural: itemPluralMapping.member }} &bull;
-                            Organized by {{ party.author.firstName }} {{party.author.lastName}}
+                            Hosted by
+                            <ion-text color="primary">
+                                <strong
+                                    >{{ party.author.firstName | titlecase }}
+                                    {{ party.author.lastName | titlecase }}</strong
+                                >
+                            </ion-text>
                         </small>
                     </ion-col>
                 </ion-row>
             </ion-col>
         </ion-row>
-        <ion-row borderTopWidth="1px" borderTopColor="#c3c3c3">
-            <ion-col size="12"></ion-col>
+        <ion-row borderTopWidth="1px" borderTopColor="#CCD0D5">
+            <ion-col>
+                <party-nav-button icon="user-plus" title="invites" (click)="showInvitesModal()"></party-nav-button>
+            </ion-col>
+            <ion-col>
+                <party-nav-button
+                    icon="check-circle"
+                    title="going"
+                    *ngIf="party$ | async"
+                    [color]="goingColor"
+                ></party-nav-button>
+            </ion-col>
+            <ion-col>
+                <party-nav-button icon="share-2" title="share"></party-nav-button>
+            </ion-col>
+            <ion-col>
+                <party-nav-button icon="hash" title="code" (click)="showQrModal()"></party-nav-button>
+            </ion-col>
+        </ion-row>
+        <ion-row borderTopWidth="1px" borderTopColor="#CCD0D5">
+            <ion-col size="12" paddingLeft="1em">
+                <party-meta-info icon="users" [content]="partyMembers" (click)="showMembersModal()"></party-meta-info>
+                <party-meta-info icon="calendar" [content]="partyTime"></party-meta-info>
+                <party-meta-info icon="map-pin" *ngIf="location$ | async" [content]="partyLocation"></party-meta-info>
+            </ion-col>
         </ion-row>
     </ion-grid>
-    <ion-card>
-        <ion-card-header>
-            <ion-card-title>Invite a friend</ion-card-title>
-            <ion-card-subtitle>Send him this qrcode</ion-card-subtitle>
-        </ion-card-header>
-        <ion-card-content>
-            <qrcode [qrdata]="'partyplanner://parties/join/' + party.inviteSecret" [size]="256" [level]="'M'"></qrcode>
-        </ion-card-content>
-    </ion-card>
+    <ng-template #partyMembers>
+        <strong>{{ party.members.length | shortNumber }}</strong>
+        {{ party.members.length | i18nPlural: itemPluralMapping.member }} going
+    </ng-template>
+    <ng-template #partyTime>
+        <ion-row no-gutters class="ion-no-margin ion-no-padding">
+            <ion-col size="12" class="ion-no-margin ion-no-padding">
+                {{ party.start | date: 'EE, dd.MM HH:mm' }} - {{ party.end | date: 'EE, dd.MM HH:mm' }}
+            </ion-col>
+            <ion-col size="12" class="ion-no-margin ion-no-padding">
+                <ion-text color="medium">
+                    <small>{{ party.start | amCalendar }}</small>
+                </ion-text>
+            </ion-col>
+        </ion-row>
+    </ng-template>
+    <ng-template #partyLocation>
+        <ion-row no-gutters class="ion-no-margin ion-no-padding" *ngIf="location$ | async as location">
+            <ion-col size="12" class="ion-no-margin ion-no-padding">
+                {{ party.location.placeName }}
+            </ion-col>
+            <ion-col size="12" class="ion-no-margin ion-no-padding">
+                <ion-text color="medium">
+                    <small>
+                        {{ location.routes[0].distance | shortNumber }}m &bull;
+                        {{ location.routes[0].distance / 13.88 | amDuration: 'seconds' }}
+                        <small style="font-size: 80%">(by car)</small>
+                    </small>
+                </ion-text>
+            </ion-col>
+        </ion-row>
+    </ng-template>
 </ion-content>

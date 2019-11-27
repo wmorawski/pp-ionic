@@ -1,7 +1,7 @@
 import { PARTIES_QUERY } from './../../../../graphql/queries';
 import { CREATE_PARTY_MUTATION } from './../../../../graphql/mutations';
-import { Apollo } from 'apollo-angular-boost';
-import { CreatePartyGQL, CreatePartyMutationVariables } from './../../../../graphql/types';
+import { Apollo } from 'apollo-angular';
+import { CreatePartyGQL, CreatePartyMutationVariables } from './../../../../graphql/generated/types';
 import { MapboxService } from './../../../../services/mapbox.service';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ValidatorFn } from '@angular/forms';
@@ -34,6 +34,7 @@ export class CreatePage implements OnInit {
         title: [null, [Validators.required]],
         dateStart: [null, [Validators.required]],
         dateEnd: [null, [Validators.required]],
+        description: [null, [Validators.required]],
         isPublic: false,
         colorTint: '#4caf50',
         location: [null, [Validators.required]],
@@ -47,7 +48,7 @@ export class CreatePage implements OnInit {
         private modalService: ModalService,
         private navCtrl: NavController,
         private geolocation: Geolocation,
-        private chr: ChangeDetectorRef
+        private chr: ChangeDetectorRef,
     ) {}
 
     ngOnInit(): void {
@@ -73,18 +74,13 @@ export class CreatePage implements OnInit {
                     members: {
                         connect: [{ id }],
                     },
-                    playlist: {
-                        create: {
-                            name: uuid(),
-                            user: {
-                                connect: { id },
-                            },
-                        },
-                    },
                     normalizedTitle: formData.title.toLowerCase().replace(/[ -.,]/g, ''),
-                    description: '',
+                    description: formData.description,
                     author: {
                         connect: { id },
+                    },
+                    cart: {
+                        create: {},
                     },
                     location: {
                         create: {
@@ -117,7 +113,7 @@ export class CreatePage implements OnInit {
                     },
                 })
                 .subscribe(
-                    res => {
+                    (res) => {
                         this.modalService.alert(
                             'Party created!',
                             'Party has been successfully created and your friends has been notified.',
@@ -128,24 +124,28 @@ export class CreatePage implements OnInit {
                                         await this.navCtrl.navigateBack(['/parties', res.data.createParty.id]);
                                     },
                                 },
-                            ]
+                            ],
                         );
                     },
-                    err => {
-                        this.modalService.alert('Something went wrong', 'We were not able to create a party. Please try again', [
-                            {
-                                text: 'Close',
-                                onPress: () => {},
-                            },
-                        ]);
-                    }
+                    (err) => {
+                        this.modalService.alert(
+                            'Something went wrong',
+                            'We were not able to create a party. Please try again',
+                            [
+                                {
+                                    text: 'Close',
+                                    onPress: () => {},
+                                },
+                            ],
+                        );
+                    },
                 );
         }
     }
 
     ionViewWillEnter() {
         this.minDate = new Date().toISOString();
-        this.maxYear = this.addDays(20).toISOString();
+        this.maxYear = this.addDays(120).toISOString();
         this.validateForm.reset({ colorTint: this.initialGroup.colorTint });
     }
 
@@ -183,10 +183,9 @@ export class CreatePage implements OnInit {
 
     locationSelected(id) {
         if (id) {
-            const location = this.locations.find(loc => loc.id === id);
+            const location = this.locations.find((loc) => loc.id === id);
             if (location) {
                 this.validateForm.controls.location.setValue(location);
-                console.log('selected', this.validateForm.controls.location.value);
             }
         }
     }

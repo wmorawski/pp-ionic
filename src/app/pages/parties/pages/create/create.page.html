@@ -21,8 +21,8 @@
                     <nz-form-item>
                         <nz-form-control nzErrorTip="This field is required!">
                             <nz-input-group>
-                                <nz-form-label [nzMd]="6" nzFor="location">
-                                    <ion-icon slot="start" name="calendar"></ion-icon>&nbsp; Select dates
+                                <nz-form-label [nzMd]="6">
+                                    <ion-icon slot="start" name="calendar" for="location"></ion-icon>&nbsp; Select dates
                                 </nz-form-label>
                                 <ion-row>
                                     <ion-col size="6">
@@ -54,6 +54,19 @@
                                 </ion-row>
                             </nz-input-group>
                         </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item>
+                        <nz-input-group>
+                            <nz-form-label>
+                                <i nz-icon nzType="form" nzTheme="outline"></i>&nbsp; Description
+                            </nz-form-label>
+                            <textarea
+                                nz-input
+                                placeholder="description of the party..."
+                                formControlName="description"
+                                [nzAutosize]="{ minRows: 2, maxRows: 6 }"
+                            ></textarea>
+                        </nz-input-group>
                     </nz-form-item>
                     <nz-form-item>
                         <nz-form-control>

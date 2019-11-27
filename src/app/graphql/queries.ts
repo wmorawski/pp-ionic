@@ -1,6 +1,5 @@
-import { gql } from 'apollo-angular-boost';
+import gql from 'graphql-tag';
 import { PARTY_FRAGMENT, MESSAGE_FRAGMENT, PARTY_INVITATION_FRAGMENT } from './fragments';
-import { PartyWhereUniqueInput } from '../../../../pp-back/dist/src/prisma/prisma.binding.d';
 
 export const ME_QUERY = gql`
     query MeQuery {
@@ -24,7 +23,15 @@ export const PAGINATE_USERS_QUERY = gql`
         $first: Int
         $last: Int
     ) {
-        paginateUsers(where: $where, skip: $skip, after: $after, before: $before, first: $first, last: $last, orderBy: $orderBy) {
+        paginateUsers(
+            where: $where
+            skip: $skip
+            after: $after
+            before: $before
+            first: $first
+            last: $last
+            orderBy: $orderBy
+        ) {
             edges {
                 node {
                     id
@@ -53,7 +60,15 @@ export const PARTIES_QUERY = gql`
         $first: Int
         $last: Int
     ) {
-        parties(where: $where, orderBy: $orderBy, skip: $skip, after: $after, before: $before, first: $first, last: $last) {
+        parties(
+            where: $where
+            orderBy: $orderBy
+            skip: $skip
+            after: $after
+            before: $before
+            first: $first
+            last: $last
+        ) {
             location {
                 placeName
                 latitude
@@ -89,7 +104,15 @@ export const PAGINATE_PARTIES_QUERY = gql`
         $first: Int
         $last: Int
     ) {
-        partiesConnection(where: $where, orderBy: $orderBy, skip: $skip, after: $after, before: $before, first: $first, last: $last) {
+        partiesConnection(
+            where: $where
+            orderBy: $orderBy
+            skip: $skip
+            after: $after
+            before: $before
+            first: $first
+            last: $last
+        ) {
             pageInfo {
                 hasNextPage
                 endCursor
@@ -114,7 +137,15 @@ export const PAGINATE_CHATS_QUERY = gql`
         $first: Int
         $last: Int
     ) {
-        chatsConnection(where: $where, orderBy: $orderBy, skip: $skip, after: $after, before: $before, first: $first, last: $last) {
+        chatsConnection(
+            where: $where
+            orderBy: $orderBy
+            skip: $skip
+            after: $after
+            before: $before
+            first: $first
+            last: $last
+        ) {
             pageInfo {
                 hasNextPage
                 endCursor
@@ -138,7 +169,6 @@ export const PAGINATE_CHATS_QUERY = gql`
                             lastName
                         }
                     }
-                    hasUnreadMessages @client
                 }
             }
         }
@@ -155,7 +185,15 @@ export const PAGINATE_MESSAGES_QUERY = gql`
         $first: Int
         $last: Int
     ) {
-        messagesConnection(where: $where, orderBy: $orderBy, skip: $skip, after: $after, before: $before, first: $first, last: $last) {
+        messagesConnection(
+            where: $where
+            orderBy: $orderBy
+            skip: $skip
+            after: $after
+            before: $before
+            first: $first
+            last: $last
+        ) {
             pageInfo {
                 startCursor
                 hasPreviousPage
@@ -181,7 +219,15 @@ export const PAGINATE_USERS_INVITE_TO_PARTY_QUERY = gql`
         $last: Int
         $partyInvitationWhere: PartyInvitationWhereInput
     ) {
-        paginateUsers(where: $where, skip: $skip, after: $after, before: $before, first: $first, last: $last, orderBy: $orderBy) {
+        paginateUsers(
+            where: $where
+            skip: $skip
+            after: $after
+            before: $before
+            first: $first
+            last: $last
+            orderBy: $orderBy
+        ) {
             edges {
                 node {
                     id
@@ -269,14 +315,47 @@ export const PARTY_INVITATIONS_QUERY = gql`
         $first: Int
         $last: Int
     ) {
-        partyInvitations(where: $where, orderBy: $orderBy, skip: $skip, after: $after, before: $before, first: $first, last: $last) {
-            id
+        partyInvitations(
+            where: $where
+            orderBy: $orderBy
+            skip: $skip
+            after: $after
+            before: $before
+            first: $first
+            last: $last
+        ) {
+            ...PARTY_INVITATION_FRAGMENT
         }
     }
+    ${PARTY_INVITATION_FRAGMENT}
 `;
 
 export const CAN_JOIN_PARTY_QUERY = gql`
     query CanJoinPartyQuery($userId: String!, $inviteSecret: String!, $partyId: String!) {
         canJoinParty(userId: $userId, inviteSecret: $inviteSecret, partyId: $partyId)
+    }
+`;
+
+export const PARTY_SAVED_TRACKS_QUERY = gql`
+    query Party_SavedTracks(
+        $where: PartySavedTrackWhereInput
+        $orderBy: PartySavedTrackOrderByInput
+        $skip: Int
+        $after: String
+        $before: String
+        $first: Int
+        $last: Int
+    ) {
+        partySavedTracks(
+            where: $where
+            orderBy: $orderBy
+            after: $after
+            skip: $skip
+            before: $before
+            first: $first
+            last: $last
+        ) {
+            spotifyId
+        }
     }
 `;

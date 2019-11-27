@@ -1,3 +1,4 @@
+import { StyledComponentsModule } from 'angular-styled-components';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
@@ -9,6 +10,7 @@ import { NgZorroAntdMobileModule } from 'ng-zorro-antd-mobile';
 import { AvatarComponent } from 'src/app/shared/components/avatar/avatar.component';
 import { NgZorroAntdModule } from 'ng-zorro-antd';
 import { MainNavModule } from 'src/app/shared/components/navigation/main/main.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
     imports: [
@@ -18,12 +20,14 @@ import { MainNavModule } from 'src/app/shared/components/navigation/main/main.mo
         NgZorroAntdMobileModule,
         NgZorroAntdModule,
         MainNavModule,
+        SharedModule,
         RouterModule.forChild([
             {
                 path: '',
                 component: HomePage,
             },
         ]),
+        StyledComponentsModule,
     ],
     declarations: [HomePage],
 })

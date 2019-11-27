@@ -1,0 +1,25 @@
+<ion-row
+    style="background: white; border-radius: 8px; box-shadow: 0 4px 16px rgba(0,0,0,.12);"
+    marginBottom="1em"
+    paddingTop=".8em"
+    paddingBottom=".8em"
+    paddingLeft=".5em"
+    paddingRight=".5em"
+    [class]="'animated fadeInUp ' + duration"
+    jcc
+    aic
+>
+    <ion-col size="2">
+        <ngx-avatar [name]="chat.party.title"></ngx-avatar>
+    </ion-col>
+    <ion-col size="10" class="ion-no-margin">
+        <ion-row no-gutters class="ion-no-margin ion-no-padding">
+            <ion-col size="12">
+                <h4>{{ chat.party.title }}</h4>
+            </ion-col>
+            <ion-col size="12">
+                <small color="light"><i>Currently no messages in chat...</i></small>
+            </ion-col>
+        </ion-row>
+    </ion-col>
+</ion-row>

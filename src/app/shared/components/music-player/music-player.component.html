@@ -1,0 +1,78 @@
+<div class="player" [ngClass]="{ noTrack: !_track }">
+    <ng-container *ngIf="_track">
+        <ion-row style="height: 100%" display="flex" aic>
+            <ion-col size="12" class="ion-no-padding ion-no-margin">
+                <ion-row no-gutters class="ion-no-padding ion-no-margin withPadding">
+                    <ion-col size="7" class="ion-no-padding ion-no-margin">
+                        <ion-row no-gutters class="ion-no-padding ion-no-margin">
+                            <ion-col size="12" class="ion-no-padding ion-no-margin">
+                                <small style="font-size: 80%"
+                                    ><strong>{{ _track.name }}</strong>
+                                </small>
+                            </ion-col>
+                            <ion-col size="12" class="ion-no-padding ion-no-margin">
+                                <ion-text color="dark">
+                                    <small style="font-size: 70%"
+                                        ><strong>{{ _track.artists[0].name }}</strong>
+                                    </small>
+                                </ion-text>
+                            </ion-col>
+                        </ion-row>
+                    </ion-col>
+                    <ion-col size="5" class="ion-no-padding ion-no-margin">
+                        <ion-row no-gutters class="ion-no-padding ion-no-margin">
+                            <ion-col size="4">
+                                <ion-button (click)="goPrev()" expand="full" fill="clear" size="small">
+                                    <ion-icon slot="icon-only" name="ios-skip-back-pp"></ion-icon>
+                                </ion-button>
+                            </ion-col>
+                            <ion-col size="4">
+                                <ion-button (click)="togglePlay()" expand="full" fill="clear" size="small">
+                                    <ion-icon
+                                        slot="icon-only"
+                                        [name]="isPaused ? 'ios-play-pp' : 'ios-pause-pp'"
+                                    ></ion-icon>
+                                </ion-button>
+                            </ion-col>
+                            <ion-col size="4">
+                                <ion-button (click)="goNext()" expand="full" fill="clear" size="small">
+                                    <ion-icon slot="icon-only" name="ios-skip-forward-pp"></ion-icon>
+                                </ion-button>
+                            </ion-col>
+                        </ion-row>
+                    </ion-col>
+                    <!-- <ion-row style="width: 100%; justify-content: flex-end">
+                        <ion-col size="5" jcc class="ion-text-center">
+                            <ion-text color="primary">
+                                <small style="font-size: 80%">
+                                    {{ this.duration | minuteSeconds }}/{{ 30 | minuteSeconds }}
+                                </small>
+                            </ion-text>
+                        </ion-col>
+                    </ion-row> -->
+                </ion-row>
+                <ion-row no-gutters class="ion-no-padding ion-no-margin">
+                    <ion-col size="12" class="ion-no-padding ion-no-margin">
+                        <nz-slider
+                            class="ion-no-padding ion-no-margin"
+                            [(ngModel)]="nomralizedDuration"
+                            (nzOnAfterChange)="sliderChanged($event)"
+                        ></nz-slider>
+                    </ion-col>
+                </ion-row>
+                <ion-row class="ion-no-padding">
+                    <ion-col size="6" class="ion-no-padding">
+                        <ion-button disabled expand="full" fill="clear" size="small">
+                            <ion-icon slot="icon-only" name="add"></ion-icon>
+                        </ion-button>
+                    </ion-col>
+                    <ion-col size="6" class="ion-no-padding">
+                        <ion-button disabled expand="full" fill="clear" size="small">
+                            <ion-icon slot="icon-only" name="heart" color="danger"></ion-icon>
+                        </ion-button>
+                    </ion-col>
+                </ion-row>
+            </ion-col>
+        </ion-row>
+    </ng-container>
+</div>

@@ -1,4 +1,4 @@
-import { PartiesQueryVariables, PartyOrderByInput, PartyQueryVariables } from 'src/app/graphql/types';
+import { PartiesQueryVariables, PartyOrderByInput, PartyQueryVariables } from 'src/app/graphql/generated/types';
 import * as moment from 'moment';
 
 export function getPartiesDateVariables(dateToGetVariablesFor: Date, userId: string): Partial<PartiesQueryVariables> {
@@ -25,5 +25,22 @@ export function getPartyVariables(id: string): PartyQueryVariables {
         where: {
             id,
         },
+    };
+}
+
+export function getPublicPartiesVariables(dateToGetVariablesFor: Date): Partial<PartiesQueryVariables> {
+    return {
+        where: {
+            isPublic: true,
+            start_gte: moment(dateToGetVariablesFor)
+                .startOf('month')
+                .subtract(7, 'days')
+                .format(),
+            end_lte: moment(dateToGetVariablesFor)
+                .endOf('month')
+                .add(7, 'days')
+                .format(),
+        },
+        orderBy: PartyOrderByInput.CreatedAtDesc,
     };
 }
