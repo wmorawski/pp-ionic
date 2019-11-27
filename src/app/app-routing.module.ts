@@ -4,38 +4,50 @@ import { AuthGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
-    { path: 'home', loadChildren: './pages/home/home.module#HomePageModule', canActivate: [AuthGuard] },
+    {
+        path: 'home',
+        loadChildren: () => import('./pages/home/home.module').then((m) => m.HomePageModule),
+        canActivate: [AuthGuard],
+    },
     {
         path: 'auth',
         children: [
             {
                 path: 'login',
-                loadChildren: './pages/auth/login/login.module#LoginPageModule',
+                loadChildren: () => import('./pages/auth/login/login.module').then((m) => m.LoginPageModule),
             },
             {
                 path: 'register',
-                loadChildren: './pages/auth/register/register.module#RegisterPageModule',
+                loadChildren: () => import('./pages/auth/register/register.module').then((m) => m.RegisterPageModule),
             },
         ],
     },
 
     {
         path: 'calendar',
-        loadChildren: './pages/calendar/calendar.module#CalendarPageModule',
+        loadChildren: () => import('./pages/calendar/calendar.module').then((m) => m.CalendarPageModule),
         canActivate: [AuthGuard],
     },
     {
         path: 'parties',
-        loadChildren: './pages/parties/parties.module#PartiesPageModule',
+        loadChildren: () => import('./pages/parties/parties.module').then((m) => m.PartiesPageModule),
         canActivate: [AuthGuard],
     },
-    { path: 'chats', loadChildren: './pages/chats/chats.module#ChatsPageModule', canActivate: [AuthGuard] },
+    {
+        path: 'chats',
+        loadChildren: () => import('./pages/chats/chats.module').then((m) => m.ChatsPageModule),
+        canActivate: [AuthGuard],
+    },
     {
         path: 'profile',
-        loadChildren: './pages/profile/profile.module#ProfilePageModule',
+        loadChildren: () => import('./pages/profile/profile.module').then((m) => m.ProfilePageModule),
         canActivate: [AuthGuard],
     },
-    { path: 'more', loadChildren: './pages/more/more.module#MorePageModule', canActivate: [AuthGuard] },
+    {
+        path: 'more',
+        loadChildren: () => import('./pages/more/more.module').then((m) => m.MorePageModule),
+        canActivate: [AuthGuard],
+    },
 ];
 
 @NgModule({

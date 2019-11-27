@@ -16,7 +16,7 @@ export class AuthGuard implements CanActivate {
     canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         const isLogged = this.authService.isAuthenticatedSync;
         if (!isLogged) {
-            this.navCtrl.navigateRoot(['auth', 'login']);
+            this.navCtrl.navigateRoot(['/auth', 'login']);
             return false;
         }
         return true;

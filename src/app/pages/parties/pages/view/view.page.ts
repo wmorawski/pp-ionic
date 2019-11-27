@@ -16,6 +16,7 @@ import { NavController, Platform } from '@ionic/angular';
 export class ViewPage implements OnInit {
     id;
     party: Observable<any>;
+    loading = true;
     constructor(
         private router: ActivatedRoute,
         private appService: AppService,
@@ -27,9 +28,12 @@ export class ViewPage implements OnInit {
     ngOnInit() {}
     ionViewWillEnter() {
         this.id = this.router.snapshot.params.id;
-        this.party = this.partyQueryGQL
-            .watch(getPartyVariables(this.id))
-            .valueChanges.pipe(map((result) => result.data.party));
+        this.party = this.partyQueryGQL.watch(getPartyVariables(this.id)).valueChanges.pipe(
+            map((result) => {
+                this.loading = result.loading;
+                return result.data.party;
+            }),
+        );
         this.party.subscribe((party: Party) => {
             if (
                 !party ||

@@ -22,6 +22,7 @@ export class PartiesViewMusicPage implements OnInit {
     searchQueryWrapper: Subscription;
     currentTrack: Track = null;
     currentTrackSearched: Track = null;
+    authorized = false;
     constructor(
         private readonly media: Media,
         private readonly chr: ChangeDetectorRef,
@@ -32,8 +33,27 @@ export class PartiesViewMusicPage implements OnInit {
         this.id = this.router.url.split('/')[2];
     }
     async ionViewWillEnter() {
+        const spotifyData = JSON.parse(localStorage.getItem('SpotifyOAuthData') || '{}');
+        if (spotifyData) {
+            if (spotifyData.expiresAt > Date.now() / 1000) {
+                init({ token: spotifyData.accessToken });
+                this.authorized = true;
+                this.afterAuthorization();
+            }
+        }
+    }
+    authWithSpotify() {
+        return cordova.plugins.spotifyAuth.authorize(environment.spotify.config);
+    }
+
+    async handleAuthorization() {
         this.result = await this.authWithSpotify();
         init({ token: this.result.accessToken });
+        this.authorized = true;
+        this.afterAuthorization();
+    }
+
+    async afterAuthorization() {
         this.topTracks = (await getCurrentUserTopTracks({ limit: 50 })).items;
         this.searchQueryChanged.pipe(distinctUntilChanged(), debounceTime(800)).subscribe((event) => {
             if (this.searchQueryWrapper && !this.searchQueryWrapper.closed) {
@@ -47,9 +67,6 @@ export class PartiesViewMusicPage implements OnInit {
                 this.searchedTracks = [];
             }
         });
-    }
-    authWithSpotify() {
-        return cordova.plugins.spotifyAuth.authorize(environment.spotify.config);
     }
 
     async handleTrackChange(ev: Track) {

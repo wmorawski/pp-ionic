@@ -16,6 +16,10 @@ const routes: Routes = [
         path: '',
         component: LoginPage,
     },
+    {
+        path: '**',
+        component: LoginPage,
+    },
 ];
 
 @NgModule({

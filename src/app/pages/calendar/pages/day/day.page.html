@@ -1,12 +1,13 @@
 <ion-content style="height: 100%;">
     <ion-grid fixed>
         <ion-row>
-            <ion-col size="12" *ngIf="partiesData && partiesData.length">
+            <ion-col size="12">
                 <full-calendar
                     schedulerLicenseKey="GPL-My-Project-Is-Open-Source"
                     defaultView="timeGridDay"
+                    #calendar
                     [plugins]="calendarPlugins"
-                    [defaultDate]="router.snapshot.params.date"
+                    [defaultDate]="'2019-11-29'"
                     [events]="parsedParties"
                     [minTime]="'06:00:00'"
                     deepChangeDetection="true"

@@ -1,7 +1,7 @@
 import { FcmService } from './services/fcm.service';
 import { Component, OnDestroy } from '@angular/core';
 
-import { Platform, IonApp, ToastController } from '@ionic/angular';
+import { Platform, IonApp, ToastController, NavController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AuthService } from './services/auth.service';
@@ -33,6 +33,7 @@ export class AppComponent implements OnDestroy {
         private apollo: Apollo,
         private fcm: FcmService,
         private toastCtrl: ToastController,
+        private navCtrl: NavController,
     ) {
         this.initializeApp();
         this.authService.isAuthenticated.subscribe((logged) => {

@@ -3,6 +3,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { StyledComponentsModule } from 'angular-styled-components';
 
 import { IonicModule } from '@ionic/angular';
 
@@ -15,17 +17,31 @@ const routes: Routes = [
         children: [
             {
                 path: 'home',
-                loadChildren: './pages/parties-view-home/parties-view-home.module#PartiesViewHomePageModule',
+                loadChildren: () =>
+                    import('./pages/parties-view-home/parties-view-home.module').then(
+                        (m) => m.PartiesViewHomePageModule,
+                    ),
             },
             {
                 path: 'music',
-                loadChildren: './pages/parties-view-music/parties-view-music.module#PartiesViewMusicPageModule',
+                loadChildren: () =>
+                    import('./pages/parties-view-music/parties-view-music.module').then(
+                        (m) => m.PartiesViewMusicPageModule,
+                    ),
             },
         ],
     },
 ];
 
 @NgModule({
-    imports: [CommonModule, FormsModule, IonicModule, RouterModule.forChild(routes), NgZorroAntdModule],
+    imports: [
+        CommonModule,
+        FormsModule,
+        IonicModule,
+        RouterModule.forChild(routes),
+        NgZorroAntdModule,
+        NzSpinModule,
+        StyledComponentsModule,
+    ],
 })
 export class ViewPageModule {}

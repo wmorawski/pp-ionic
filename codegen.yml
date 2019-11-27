@@ -4,6 +4,7 @@ schema:
     - './src/app/graphql/client-schema.graphql'
 documents:
     - './src/app/graphql/*.ts'
+    - './src/app/pages/**/*.ts'
 generates:
     src/app/graphql/generated/types.ts:
         config:

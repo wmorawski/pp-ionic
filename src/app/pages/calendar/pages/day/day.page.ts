@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Party } from 'src/app/graphql/generated/types';
 import { Apollo } from 'apollo-angular';
 import { PARTIES_QUERY } from 'src/app/graphql/queries';
@@ -9,13 +9,15 @@ import interactionPlugin from '@fullcalendar/interaction';
 import { ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
 import { NavController } from '@ionic/angular';
+import { FullCalendarComponent } from '@fullcalendar/angular';
 
 @Component({
     selector: 'app-day',
     templateUrl: './day.page.html',
     styleUrls: ['./day.page.scss'],
 })
-export class DayPage implements OnInit {
+export class DayPage implements OnInit, AfterViewInit {
+    @ViewChild('calendar', { static: false }) calendarComponent: FullCalendarComponent;
     partiesData: Party[];
     partiesLoading = false;
     parsedParties: any[] = [];
@@ -29,7 +31,9 @@ export class DayPage implements OnInit {
 
     ngOnInit() {}
     ionViewWillEnter() {
-        this.startDateStr = this.router.snapshot.params.date;
+        const date = new Date(this.router.snapshot.params.date);
+        this.startDateStr = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
+        // console.log(this.startDateStr);
         this.apollo
             .watchQuery<any>({
                 query: PARTIES_QUERY,
@@ -47,6 +51,10 @@ export class DayPage implements OnInit {
                     borderColor: party.colorTint,
                 }));
             });
+    }
+
+    ngAfterViewInit() {
+        // this.calendarComponent.getApi().render();
     }
 
     handleEventClick(e) {
