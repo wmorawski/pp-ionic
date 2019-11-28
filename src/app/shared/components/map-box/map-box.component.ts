@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import * as mapboxgl from 'mapbox-gl';
 import { MapService } from 'src/app/services/map.service';
 import { GeoJson, FeatureCollection } from '../../classes/map';
-import { PartiesQueryGQL, PartyOrderByInput } from '../../../graphql/generated/types';
+import { PartiesQueryGQL, PartyOrderByInput } from 'src/app/graphql/generated/types';
 import { PP_USER_ID } from 'src/app/constants';
 import { map } from 'rxjs/operators';
 

@@ -8,9 +8,10 @@ import { Router } from '@angular/router';
 import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook/ngx';
 import { SpotifyAuth } from '@ionic-native/spotify-auth/ngx';
 import * as SpotifyWebApi from 'spotify-web-api-js';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { environment } from 'src/environments/environment';
-
+import { init, getUserProfile, getCurrentUserProfile } from 'spotify-web-sdk';
+declare var cordova: any;
 @Component({
     selector: 'app-login',
     templateUrl: './login.page.html',
@@ -24,19 +25,20 @@ export class LoginPage implements OnInit {
     public spotifyLoading = false;
     public twitterLoading = false;
     public error = null;
+    private loginSubscription: Subscription;
     constructor(
         private authService: AuthService,
         private readonly apollo: Apollo,
         private readonly navCtrl: NavController,
         private readonly fb: Facebook,
-        private readonly spotifyAuth: SpotifyAuth
+        private readonly spotifyAuth: SpotifyAuth,
     ) {}
 
     ngOnInit() {}
 
     confirm() {
         this.loading = true;
-        this.apollo
+        this.loginSubscription = this.apollo
             .mutate<any>({
                 mutation: LOGIN_MUTATION,
                 variables: {
@@ -56,7 +58,7 @@ export class LoginPage implements OnInit {
                 (error) => {
                     this.loading = false;
                     this.error = error;
-                }
+                },
             );
     }
     saveUserData(id, token) {
@@ -69,18 +71,25 @@ export class LoginPage implements OnInit {
         this.facebookLoading = true;
         this.fb
             .login(['public_profile', 'email'])
-            .then((res: FacebookLoginResponse) => {
-                console.log(res);
-                this.apollo
+            .then(async (res: FacebookLoginResponse) => {
+                const me = await this.fb.api('me?fields=id,name,email,picture{url},first_name,last_name', [
+                    'public_profile',
+                    'email',
+                ]);
+                this.loginSubscription = this.apollo
                     .mutate<any>({
                         mutation: SOCIAL_LOGIN_MUTATION,
                         variables: {
                             id: res.authResponse.userID,
+                            email: me.email,
+                            avatar: me.picture.data.url,
+                            firstName: me.first_name,
+                            lastName: me.last_name,
+                            provider: 'FACEBOOK',
                         },
                     })
                     .subscribe(
                         (result) => {
-                            console.log(result);
                             const id = result.data.socialLogin.user.id;
                             const token = result.data.socialLogin.token;
                             this.saveUserData(id, token);
@@ -91,31 +100,54 @@ export class LoginPage implements OnInit {
                         (error) => {
                             this.error = error;
                             this.facebookLoading = false;
-                        }
+                        },
                     );
             })
             .catch((err) => {
-                console.log('err', err);
                 this.facebookLoading = false;
             });
     }
 
     async spotifyLogin() {
-        const config = {
-            clientId: 'cf6c218047e74336a40b6c1cfe70f35a',
-            redirectUrl: 'partyplanner://spotify',
-            scopes: ['streaming', 'playlist-read-private', 'user-read-email', 'user-read-private'],
-            tokenExchangeUrl: environment.backendUrl + '/auth/spotify/token',
-            tokenRefreshUrl: environment.backendUrl + '/auth/spotify/refresh',
-        };
-
-        this.spotifyAuth
-            .authorize(config)
-            .then((res) => {
-                console.log(res);
+        this.spotifyLoading = true;
+        const authRes = await this.authWithSpotify();
+        init({ token: authRes.accessToken });
+        const profile = await getCurrentUserProfile();
+        const [firstName, lastName] = profile.displayName.split(' ');
+        this.loginSubscription = this.apollo
+            .mutate<any>({
+                mutation: SOCIAL_LOGIN_MUTATION,
+                variables: {
+                    id: profile.id,
+                    email: profile.email,
+                    avatar: profile.images && profile.images.length ? profile.images[0].url : null,
+                    firstName,
+                    lastName,
+                    provider: 'SPOTIFY',
+                },
             })
-            .catch((err) => {
-                console.log('err', err);
-            });
+            .subscribe(
+                (result) => {
+                    const id = result.data.socialLogin.user.id;
+                    const token = result.data.socialLogin.token;
+                    this.saveUserData(id, token);
+                    this.error = null;
+                    this.navCtrl.navigateRoot(['/']);
+                    this.spotifyLoading = false;
+                },
+                (error) => {
+                    this.error = error;
+                    this.spotifyLoading = false;
+                },
+            );
+    }
+
+    authWithSpotify() {
+        return cordova.plugins.spotifyAuth.authorize(environment.spotify.config);
+    }
+    ionViewWillLeave() {
+        if (this.loginSubscription) {
+            this.loginSubscription.unsubscribe();
+        }
     }
 }

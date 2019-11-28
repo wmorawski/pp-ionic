@@ -10,7 +10,8 @@ import { interval, Subscription } from 'rxjs';
     styleUrls: ['./music-player.component.scss'],
 })
 export class MusicPlayerComponent implements OnInit, OnDestroy {
-    // tslint:disable-next-line: variable-name
+    alreadySaved = false;
+    // tslint:disable: variable-name
     public _track: Track;
     public _trackOfDLL: DoublyLinkedListNode<Track>;
     @Input() tracks: Track[];
@@ -21,10 +22,16 @@ export class MusicPlayerComponent implements OnInit, OnDestroy {
     isPaused = true;
     nomralizedDuration = 0;
     durationInterval: Subscription;
+    savedTracksSubscription: Subscription;
+    @Output() addToSaved = new EventEmitter();
+    @Input() savedTracks: any;
     @Input()
     set track(newTrack: Track) {
         if (this.currentTrackMedia) {
             this.currentTrackMedia.stop();
+        }
+        if (this.savedTracksSubscription) {
+            this.savedTracksSubscription.unsubscribe();
         }
         if (newTrack) {
             this.currentId = newTrack.id;
@@ -54,6 +61,12 @@ export class MusicPlayerComponent implements OnInit, OnDestroy {
                     this._trackOfDLL = this._trackOfDLL.next;
                 }
             }
+            this.savedTracksSubscription = this.savedTracks.subscribe((tracks) => {
+                console.log('From player', tracks, this._track);
+                if (tracks) {
+                    this.alreadySaved = this._track && tracks.some((track) => track.spotifyId === this._track.id);
+                }
+            });
         } else {
             this._track = null;
         }
@@ -68,6 +81,9 @@ export class MusicPlayerComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         if (this.currentTrackMedia) {
             this.currentTrackMedia.stop();
+        }
+        if (this.savedTracksSubscription) {
+            this.savedTracksSubscription.unsubscribe();
         }
     }
     togglePlay() {
@@ -97,5 +113,9 @@ export class MusicPlayerComponent implements OnInit, OnDestroy {
         if (this._trackOfDLL && this._trackOfDLL.prev) {
             this.onTrackChange.emit(this._trackOfDLL.prev.value);
         }
+    }
+
+    addToSavedTracks() {
+        this.addToSaved.emit(this._track);
     }
 }

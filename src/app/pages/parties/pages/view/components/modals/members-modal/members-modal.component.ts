@@ -1,4 +1,4 @@
-import { User } from './../../../../../../../graphql/generated/types';
+import { User } from 'src/app/graphql/generated/types';
 import { Component, OnInit, Input } from '@angular/core';
 
 @Component({

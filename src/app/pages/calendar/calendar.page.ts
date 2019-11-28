@@ -11,6 +11,7 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { NavController } from '@ionic/angular';
 import * as moment from 'moment';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-calendar',
@@ -22,11 +23,12 @@ export class CalendarPage implements OnInit {
     partiesLoading = false;
     parsedParties: any[] = [];
     calendarPlugins = [dayGridPlugin, timelinePlugin, timeGridPlugin, interactionPlugin];
+    private partiesSubscription: Subscription;
     constructor(private readonly apollo: Apollo, private readonly navCtrl: NavController) {}
 
     ngOnInit() {}
     ionViewWillEnter() {
-        this.apollo
+        this.partiesSubscription = this.apollo
             .watchQuery<any>({
                 query: PARTIES_QUERY,
                 variables: getPartiesDateVariables(new Date(), localStorage.getItem(PP_USER_ID)),
@@ -50,7 +52,11 @@ export class CalendarPage implements OnInit {
         this.navCtrl.navigateForward(['/calendar/day', e.dateStr]);
     }
 
-    handleEventClick(e) {
-        console.log(e);
+    handleEventClick(e) {}
+
+    ionViewWillLeave() {
+        if (this.partiesSubscription) {
+            this.partiesSubscription.unsubscribe();
+        }
     }
 }

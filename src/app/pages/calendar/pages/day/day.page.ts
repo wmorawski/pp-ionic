@@ -1,3 +1,4 @@
+import { Subscription } from 'rxjs';
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Party } from 'src/app/graphql/generated/types';
 import { Apollo } from 'apollo-angular';
@@ -23,6 +24,7 @@ export class DayPage implements OnInit, AfterViewInit {
     parsedParties: any[] = [];
     calendarPlugins = [timeGridPlugin, interactionPlugin];
     startDateStr: string;
+    private partiesSubscription: Subscription;
     constructor(
         private readonly apollo: Apollo,
         public readonly router: ActivatedRoute,
@@ -34,7 +36,7 @@ export class DayPage implements OnInit, AfterViewInit {
         const date = new Date(this.router.snapshot.params.date);
         this.startDateStr = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
         // console.log(this.startDateStr);
-        this.apollo
+        this.partiesSubscription = this.apollo
             .watchQuery<any>({
                 query: PARTIES_QUERY,
                 variables: getPartiesDateVariables(new Date(), localStorage.getItem(PP_USER_ID)),
@@ -59,5 +61,11 @@ export class DayPage implements OnInit, AfterViewInit {
 
     handleEventClick(e) {
         this.navCtrl.navigateForward(['/parties', e.event.id]);
+    }
+
+    ionViewWillLeave() {
+        if (this.partiesSubscription) {
+            this.partiesSubscription.unsubscribe();
+        }
     }
 }

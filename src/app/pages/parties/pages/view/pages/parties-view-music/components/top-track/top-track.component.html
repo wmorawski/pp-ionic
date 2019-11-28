@@ -32,6 +32,18 @@
                     <ion-icon name="spotify"></ion-icon>
                 </ion-button>
             </ion-col>
+            <ion-col>
+                <ion-button
+                    (click)="addToSavedTracks()"
+                    expand="full"
+                    fill="clear"
+                    size="small"
+                    color="primary"
+                    [disabled]="alreadySaved"
+                >
+                    <ion-icon name="add"></ion-icon>
+                </ion-button>
+            </ion-col>
         </ion-row>
     </ion-card-content>
 </ion-card>

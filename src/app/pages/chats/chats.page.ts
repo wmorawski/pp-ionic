@@ -1,5 +1,5 @@
 import { PP_USER_ID } from 'src/app/constants';
-import { PaginateChatsQueryGQL } from './../../graphql/generated/types';
+import { PaginateChatsQueryGQL } from 'src/app/graphql/generated/types';
 import { Component, OnInit } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { Subscription, Observable } from 'rxjs';

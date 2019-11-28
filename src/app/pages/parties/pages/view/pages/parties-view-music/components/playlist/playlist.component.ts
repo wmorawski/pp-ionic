@@ -1,4 +1,4 @@
-import { PlaylistEdge } from './../../../../../../../../graphql/generated/types';
+import { PlaylistEdge } from 'src/app/graphql/generated/types';
 import { Component, OnInit, Input } from '@angular/core';
 import { getPlaylist, startUserPlayback } from 'spotify-web-sdk';
 

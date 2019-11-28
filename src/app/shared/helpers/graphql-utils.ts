@@ -8,10 +8,6 @@ export function getPartiesDateVariables(dateToGetVariablesFor: Date, userId: str
                 .startOf('month')
                 .subtract(7, 'days')
                 .format(),
-            end_lte: moment(dateToGetVariablesFor)
-                .endOf('month')
-                .add(7, 'days')
-                .format(),
             members_some: {
                 id: userId,
             },

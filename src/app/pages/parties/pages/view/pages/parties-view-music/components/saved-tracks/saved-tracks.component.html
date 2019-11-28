@@ -1,22 +1,37 @@
-<ng-container *ngIf="(savedTracks$ | async)?.data?.partySavedTracks as savedTracks; else noSavedTracksOrLoading">
-    <saved-track
-        [track]="track"
-        *ngFor="let track of savedTracks"
-        (trackChange)="handleTrackChange($event)"
-    ></saved-track>
-    <spotify-music-player
-        [track]="currentTrack"
-        (onTrackChange)="changed($event)"
-        [tracks]="savedTracks"
-    ></spotify-music-player>
-</ng-container>
-<ng-template #noSavedTracksOrLoading>
-    <ng-container *ngIf="(savedTracks$ | async)?.loading; else noSavedTracks">
-        <div display="flex" aic jcc flex="1 1 auto">
-            <nz-spin nzSimple nzSize="large"></nz-spin>
-        </div>
+<ng-container *ngIf="savedTracks$">
+    <ng-container *ngIf="savedTracks$ | async as savedTracks; else noSavedTracksOrLoading">
+        <ion-grid>
+            <ion-row>
+                <ion-col size="6">
+                    <ion-button (click)="toggleSelectMode()" [color]="selectMode ? 'danger' : 'primary'" expand="block">
+                        <ion-icon slot="start" name="check-square"></ion-icon>
+                        {{ selectMode ? 'Cancel selection' : 'Select tracks' }}
+                    </ion-button>
+                </ion-col>
+                <ion-col size="6">
+                    <ion-button (click)="onClick()" color="success" expand="block">
+                        <ion-icon slot="start" name="spotify"></ion-icon>
+                        Create playlist
+                    </ion-button>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+        <saved-track
+            [track]="track"
+            *ngFor="let track of savedTracks"
+            (trackChange)="handleTrackChange($event)"
+            (spotifyPlay)="handleSpotifyPlay($event)"
+            [selectMode]="selectMode"
+        ></saved-track>
     </ng-container>
-    <ng-template #noSavedTracks>
-        <nz-empty></nz-empty>
+    <ng-template #noSavedTracksOrLoading>
+        <ng-container>
+            <div display="flex" aic jcc flex="1 1 auto">
+                <nz-spin nzSimple nzSize="large"></nz-spin>
+            </div>
+        </ng-container>
+        <ng-template #noSavedTracks>
+            <nz-empty></nz-empty>
+        </ng-template>
     </ng-template>
-</ng-template>
+</ng-container>

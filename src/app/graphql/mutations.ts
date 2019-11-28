@@ -1,3 +1,4 @@
+import { SocialMediaType } from './generated/types';
 import gql from 'graphql-tag';
 import { PARTY_FRAGMENT, FULL_SAVED_TRACK_FRAGMENT } from './fragments';
 
@@ -24,8 +25,22 @@ export const LOGIN_MUTATION = gql`
 `;
 
 export const SOCIAL_LOGIN_MUTATION = gql`
-    mutation SocialLogin($id: String!) {
-        socialLogin(id: $id) {
+    mutation SocialLogin(
+        $id: String!
+        $email: String!
+        $avatar: String
+        $firstName: String!
+        $lastName: String!
+        $provider: SocialMediaType!
+    ) {
+        socialLogin(
+            id: $id
+            email: $email
+            avatar: $avatar
+            firstName: $firstName
+            lastName: $lastName
+            provider: $provider
+        ) {
             user {
                 id
             }

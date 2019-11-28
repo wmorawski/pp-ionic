@@ -1,13 +1,14 @@
-import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
-import { Track, startUserPlayback } from 'spotify-web-sdk';
-
+import { Observable } from 'rxjs';
+import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
+import { Track } from 'spotify-web-sdk';
 @Component({
     selector: 'spotify-top-track',
     templateUrl: './top-track.component.html',
     styleUrls: ['./top-track.component.scss'],
     changeDetection: ChangeDetectionStrategy.Default,
 })
-export class TopTrackComponent implements OnInit {
+export class TopTrackComponent implements OnInit, OnDestroy {
+    alreadySaved = false;
     @Input() track: Track;
     @Input()
     set currentTrack(val: Track) {
@@ -18,11 +19,24 @@ export class TopTrackComponent implements OnInit {
         }
     }
     @Output() trackChange = new EventEmitter();
+    @Output() addToSaved = new EventEmitter();
+    @Output() spotifyPlay = new EventEmitter();
+    @Input() savedTracks: any;
     playing = false;
 
     constructor() {}
 
-    ngOnInit() {}
+    ngOnInit() {
+        this.savedTracks.subscribe((tracks) => {
+            if (tracks) {
+                this.alreadySaved = tracks.some((track) => track.spotifyId === this.track.id);
+            }
+        });
+    }
+
+    ngOnDestroy() {
+        this.savedTracks.unsubscribe();
+    }
 
     play() {
         this.trackChange.emit(this.track);
@@ -32,6 +46,10 @@ export class TopTrackComponent implements OnInit {
     }
 
     playOnSpotify() {
-        startUserPlayback({ uris: [this.track.uri] });
+        this.spotifyPlay.emit({ uris: [this.track.uri] });
+    }
+
+    addToSavedTracks() {
+        this.addToSaved.emit(this.track);
     }
 }

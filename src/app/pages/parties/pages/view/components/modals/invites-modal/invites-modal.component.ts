@@ -1,5 +1,5 @@
 import { map } from 'rxjs/operators';
-import { Party, PartyInvitationsQueryGQL } from './../../../../../../../graphql/generated/types';
+import { Party, PartyInvitationsQueryGQL } from 'src/app/graphql/generated/types';
 import { Component, OnInit, Input } from '@angular/core';
 import { Platform } from '@ionic/angular';
 
@@ -18,9 +18,6 @@ export class InvitesModalComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        this.platform.backButton.subscribe(() => {
-            console.log('Back button');
-        });
         this.invitations$ = this.partyInvitationsQueryGQL
             .watch(
                 {

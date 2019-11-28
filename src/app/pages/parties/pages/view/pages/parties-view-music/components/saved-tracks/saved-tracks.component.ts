@@ -1,5 +1,6 @@
-import { Party_SavedTracksGQL } from './../../../../../../../../graphql/generated/types';
-import { Component, OnInit, Input } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Party_SavedTracksGQL } from 'src/app/graphql/generated/types';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
     selector: 'party-saved-tracks',
@@ -7,22 +8,29 @@ import { Component, OnInit, Input } from '@angular/core';
     styleUrls: ['./saved-tracks.component.scss'],
 })
 export class SavedTracksComponent implements OnInit {
+    selectMode = false;
     @Input() id: string;
     @Input() changed: () => void;
-    savedTracks$: any;
+    @Input('savedTracks') savedTracks$: any;
+    @Output() spotifyPlay = new EventEmitter();
+    // savedTracks$: any;
     currentTrack = null;
-    constructor(private readonly partySavedTracksGQL: Party_SavedTracksGQL) {}
+    constructor() {}
 
     ngOnInit() {
-        this.savedTracks$ = this.partySavedTracksGQL.watch({
-            where: {
-                party: { id: this.id },
-            },
-        }).valueChanges;
+        console.log(this.savedTracks$);
     }
 
     handleTrackChange(ev) {
         console.log(ev);
         // this.currentTrack = ev;
+    }
+
+    handleSpotifyPlay(ev) {
+        this.spotifyPlay.emit(ev);
+    }
+
+    toggleSelectMode() {
+        this.selectMode = !this.selectMode;
     }
 }

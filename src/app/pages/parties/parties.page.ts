@@ -1,5 +1,5 @@
 import { PP_USER_ID } from 'src/app/constants';
-import { PartiesQueryGQL, PartyOrderByInput } from './../../graphql/generated/types';
+import { PartiesQueryGQL, PartyOrderByInput } from 'src/app/graphql/generated/types';
 import { NavbarManager } from './../../shared/helpers/navbar-manager';
 import { Component, OnInit } from '@angular/core';
 import { HasPartiesQueryGQL } from 'src/app/graphql/generated/types';

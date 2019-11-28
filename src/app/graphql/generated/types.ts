@@ -2698,9 +2698,9 @@ export type Mutation = {
   deleteManyUsers: BatchPayload,
   deleteManyParties: BatchPayload,
   deleteManyAlbums: BatchPayload,
+  joinParty?: Maybe<Scalars['Boolean']>,
   importPlaylistsToParty: Scalars['Boolean'],
   combinePlaylists: Playlist,
-  joinParty?: Maybe<Scalars['Boolean']>,
   signup: AuthPayload,
   login: AuthPayload,
   socialLogin: AuthPayload,
@@ -3244,6 +3244,11 @@ export type MutationDeleteManyAlbumsArgs = {
 };
 
 
+export type MutationJoinPartyArgs = {
+  partyId: Scalars['ID']
+};
+
+
 export type MutationImportPlaylistsToPartyArgs = {
   playlists: Scalars['String'],
   partyId: Scalars['ID']
@@ -3253,11 +3258,6 @@ export type MutationImportPlaylistsToPartyArgs = {
 export type MutationCombinePlaylistsArgs = {
   partyPlannerData: CombinePlaylistPartyPlannerData,
   spotifyData: CombinePlaylistCreatedSpotifyPlaylistInput
-};
-
-
-export type MutationJoinPartyArgs = {
-  partyId: Scalars['ID']
 };
 
 
@@ -3276,7 +3276,12 @@ export type MutationLoginArgs = {
 
 
 export type MutationSocialLoginArgs = {
-  id: Scalars['String']
+  id: Scalars['String'],
+  email: Scalars['String'],
+  avatar?: Maybe<Scalars['String']>,
+  firstName: Scalars['String'],
+  lastName: Scalars['String'],
+  provider: SocialMediaType
 };
 
 
@@ -6753,8 +6758,8 @@ export type Query = {
   albumsConnection: AlbumConnection,
   /** Fetches an object given its ID */
   node?: Maybe<Node>,
-  hasChats: Scalars['Boolean'],
   authenticateParty: PartyAuthenticationResult,
+  hasChats: Scalars['Boolean'],
   hasParties: Scalars['Boolean'],
   canJoinParty?: Maybe<Scalars['Boolean']>,
   partyCartCost: Scalars['Float'],
@@ -7203,13 +7208,13 @@ export type QueryNodeArgs = {
 };
 
 
-export type QueryHasChatsArgs = {
-  where?: Maybe<ChatWhereInput>
+export type QueryAuthenticatePartyArgs = {
+  partyId: Scalars['ID']
 };
 
 
-export type QueryAuthenticatePartyArgs = {
-  partyId: Scalars['ID']
+export type QueryHasChatsArgs = {
+  where?: Maybe<ChatWhereInput>
 };
 
 
@@ -9006,7 +9011,12 @@ export type LoginMutation = (
 );
 
 export type SocialLoginMutationVariables = {
-  id: Scalars['String']
+  id: Scalars['String'],
+  email: Scalars['String'],
+  avatar?: Maybe<Scalars['String']>,
+  firstName: Scalars['String'],
+  lastName: Scalars['String'],
+  provider: SocialMediaType
 };
 
 
@@ -9847,8 +9857,8 @@ export const LoginDocument = gql`
     
   }
 export const SocialLoginDocument = gql`
-    mutation SocialLogin($id: String!) {
-  socialLogin(id: $id) {
+    mutation SocialLogin($id: String!, $email: String!, $avatar: String, $firstName: String!, $lastName: String!, $provider: SocialMediaType!) {
+  socialLogin(id: $id, email: $email, avatar: $avatar, firstName: $firstName, lastName: $lastName, provider: $provider) {
     user {
       id
     }

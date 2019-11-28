@@ -1,8 +1,9 @@
-import { PARTIES_QUERY } from './../../../../graphql/queries';
-import { CREATE_PARTY_MUTATION } from './../../../../graphql/mutations';
+import { Subscription } from 'rxjs';
+import { PARTIES_QUERY } from 'src/app/graphql/queries';
+import { CREATE_PARTY_MUTATION } from 'src/app/graphql/mutations';
 import { Apollo } from 'apollo-angular';
-import { CreatePartyGQL, CreatePartyMutationVariables } from './../../../../graphql/generated/types';
-import { MapboxService } from './../../../../services/mapbox.service';
+import { CreatePartyGQL, CreatePartyMutationVariables } from 'src/app/graphql/generated/types';
+import { MapboxService } from 'src/app/services/mapbox.service';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ValidatorFn } from '@angular/forms';
 import { PP_USER_ID } from 'src/app/constants';
@@ -39,6 +40,7 @@ export class CreatePage implements OnInit {
         colorTint: '#4caf50',
         location: [null, [Validators.required]],
     };
+    private createPartyMutationSubscription: Subscription;
 
     constructor(
         private fb: FormBuilder,
@@ -93,7 +95,7 @@ export class CreatePage implements OnInit {
                     inviteSecret: uuid(),
                 },
             };
-            this.apollo
+            this.createPartyMutationSubscription = this.apollo
                 .mutate<any>({
                     mutation: CREATE_PARTY_MUTATION,
                     variables,
@@ -199,5 +201,11 @@ export class CreatePage implements OnInit {
             this.chr.detectChanges();
             this.locationSelected(res.features[0].id);
         });
+    }
+
+    ionViewWillLeave() {
+        if (this.createPartyMutationSubscription) {
+            this.createPartyMutationSubscription.unsubscribe();
+        }
     }
 }

@@ -19,10 +19,8 @@ export function provideApollo(httpLink: HttpLink) {
         },
     }));
     // Get the authentication token from local storage if it exists
-    console.log('Item: ', localStorage.getItem(PP_AUTH_TOKEN));
     const auth = setContext((operation, context) => {
         const token = localStorage.getItem(PP_AUTH_TOKEN);
-        console.log('Item: ', token);
         return {
             headers: {
                 Authorization: `Bearer ${token}`,

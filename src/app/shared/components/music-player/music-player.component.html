@@ -62,7 +62,13 @@
                 </ion-row>
                 <ion-row class="ion-no-padding">
                     <ion-col size="6" class="ion-no-padding">
-                        <ion-button disabled expand="full" fill="clear" size="small">
+                        <ion-button
+                            [disabled]="alreadySaved"
+                            (click)="addToSavedTracks()"
+                            expand="full"
+                            fill="clear"
+                            size="small"
+                        >
                             <ion-icon slot="icon-only" name="add"></ion-icon>
                         </ion-button>
                     </ion-col>

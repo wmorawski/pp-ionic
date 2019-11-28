@@ -1,3 +1,4 @@
+import { Subscription } from 'rxjs';
 import { NavController } from '@ionic/angular';
 import { SIGNUP_MUTATION } from './../../../graphql/mutations';
 import { Apollo } from 'apollo-angular';
@@ -7,7 +8,6 @@ import { PP_USER_ID, PP_AUTH_TOKEN } from 'src/app/constants';
 import { AuthService } from 'src/app/services/auth.service';
 
 const samePasswordsValidator: ValidatorFn = (fg: FormGroup) => {
-    console.log(fg);
     return null;
 };
 
@@ -28,6 +28,7 @@ export class RegisterPage implements OnInit {
 
     public signupForm: FormGroup;
     error: any;
+    private registerSubscription: Subscription;
 
     constructor(
         private readonly apollo: Apollo,
@@ -43,7 +44,7 @@ export class RegisterPage implements OnInit {
     registerSubmit() {
         this.loading = true;
         const { passwordRepeat, ...form } = this.signupForm.value;
-        this.apollo
+        this.registerSubscription = this.apollo
             .mutate<any>({
                 mutation: SIGNUP_MUTATION,
                 variables: {
@@ -70,5 +71,11 @@ export class RegisterPage implements OnInit {
         localStorage.setItem(PP_USER_ID, id);
         localStorage.setItem(PP_AUTH_TOKEN, token);
         this.authService.setUserId(id);
+    }
+
+    ionViewWillLeave() {
+        if (this.registerSubscription) {
+            this.registerSubscription.unsubscribe();
+        }
     }
 }
