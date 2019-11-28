@@ -73,5 +73,19 @@
 </ng-template>
 
 <ng-template #noAuthorized>
-    No authorized
+    <ion-grid>
+        <ion-row>
+            <ion-col size="12">
+                <ion-img src="assets/img/require-spotify-auth.svg"></ion-img>
+            </ion-col>
+            <ion-col size="12">
+                <h4>
+                    Authorize us
+                </h4>
+                <p>
+                    We need you to authorize us on Spotify to access this section
+                </p>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
 </ng-template>
