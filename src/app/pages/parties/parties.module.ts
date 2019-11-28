@@ -1,3 +1,4 @@
+import { StyledComponentsModule } from 'angular-styled-components';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -20,7 +21,7 @@ const routes: Routes = [
         path: '',
         component: PartiesPage,
     },
-    { path: 'create', loadChildren: './pages/create/create.module#CreatePageModule' },
+    { path: 'create', loadChildren: () => import('./pages/create/create.module').then((m) => m.CreatePageModule) },
     {
         path: ':id',
         component: ViewPage,
@@ -28,13 +29,17 @@ const routes: Routes = [
             { path: '', redirectTo: 'home', pathMatch: 'full' },
             {
                 path: 'home',
-                loadChildren:
-                    'src/app/pages/parties/pages/view/pages/parties-view-home/parties-view-home.module#PartiesViewHomePageModule',
+                loadChildren: () =>
+                    import('src/app/pages/parties/pages/view/pages/parties-view-home/parties-view-home.module').then(
+                        (m) => m.PartiesViewHomePageModule,
+                    ),
             },
             {
                 path: 'music',
-                loadChildren:
-                    'src/app/pages/parties/pages/view/pages/parties-view-music/parties-view-music.module#PartiesViewMusicPageModule',
+                loadChildren: () =>
+                    import('src/app/pages/parties/pages/view/pages/parties-view-music/parties-view-music.module').then(
+                        (m) => m.PartiesViewMusicPageModule,
+                    ),
             },
         ],
     },
@@ -55,6 +60,7 @@ const routes: Routes = [
         }),
         MomentModule,
         SharedModule,
+        StyledComponentsModule,
     ],
     exports: [RouterModule],
     declarations: [PartiesPage, MapBoxComponent, ViewPage],

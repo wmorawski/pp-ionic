@@ -1,4 +1,4 @@
-<ng-container *ngIf="party | async; else partyNotFound">
+<ng-container *ngIf="(party | async) && !loading; else partyNotFound">
     <ion-header>
         <ion-toolbar>
             <ion-buttons slot="start">
@@ -32,9 +32,16 @@
     </ion-content>
 </ng-container>
 <ng-template #partyNotFound>
-    <nz-result nzStatus="404" nzTitle="404" nzSubTitle="Sorry, the page you visited does not exist.">
-        <div nz-result-extra>
-            <button nz-button nzType="primary" [routerLink]="['/parties']">Back Home</button>
+    <ng-container *ngIf="loading; else show404">
+        <div display="flex" aic jcc flex="1 1 auto">
+            <nz-spin nzSimple nzSize="large"></nz-spin>
         </div>
-    </nz-result>
+    </ng-container>
+    <ng-template #show404>
+        <nz-result nzStatus="404" nzTitle="404" nzSubTitle="Sorry, the page you visited does not exist.">
+            <div nz-result-extra>
+                <button nz-button nzType="primary" [routerLink]="['/parties']">Back Home</button>
+            </div>
+        </nz-result>
+    </ng-template>
 </ng-template>

@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Party_SavedTracksGQL } from './../../../../../../../../graphql/generated/types';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
     selector: 'party-saved-tracks',
@@ -6,7 +7,22 @@ import { Component, OnInit } from '@angular/core';
     styleUrls: ['./saved-tracks.component.scss'],
 })
 export class SavedTracksComponent implements OnInit {
-    constructor() {}
+    @Input() id: string;
+    @Input() changed: () => void;
+    savedTracks$: any;
+    currentTrack = null;
+    constructor(private readonly partySavedTracksGQL: Party_SavedTracksGQL) {}
 
-    ngOnInit() {}
+    ngOnInit() {
+        this.savedTracks$ = this.partySavedTracksGQL.watch({
+            where: {
+                party: { id: this.id },
+            },
+        }).valueChanges;
+    }
+
+    handleTrackChange(ev) {
+        console.log(ev);
+        // this.currentTrack = ev;
+    }
 }

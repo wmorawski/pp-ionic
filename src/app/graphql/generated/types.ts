@@ -2698,9 +2698,9 @@ export type Mutation = {
   deleteManyUsers: BatchPayload,
   deleteManyParties: BatchPayload,
   deleteManyAlbums: BatchPayload,
-  joinParty?: Maybe<Scalars['Boolean']>,
   importPlaylistsToParty: Scalars['Boolean'],
   combinePlaylists: Playlist,
+  joinParty?: Maybe<Scalars['Boolean']>,
   signup: AuthPayload,
   login: AuthPayload,
   socialLogin: AuthPayload,
@@ -3244,11 +3244,6 @@ export type MutationDeleteManyAlbumsArgs = {
 };
 
 
-export type MutationJoinPartyArgs = {
-  partyId: Scalars['ID']
-};
-
-
 export type MutationImportPlaylistsToPartyArgs = {
   playlists: Scalars['String'],
   partyId: Scalars['ID']
@@ -3258,6 +3253,11 @@ export type MutationImportPlaylistsToPartyArgs = {
 export type MutationCombinePlaylistsArgs = {
   partyPlannerData: CombinePlaylistPartyPlannerData,
   spotifyData: CombinePlaylistCreatedSpotifyPlaylistInput
+};
+
+
+export type MutationJoinPartyArgs = {
+  partyId: Scalars['ID']
 };
 
 
@@ -9530,6 +9530,36 @@ export type PartyInvitationSubscriptionSubscription = (
     )> }
   )> }
 );
+
+export type Party_PlaylistsConnectionQueryVariables = {
+  where?: Maybe<PlaylistWhereInput>,
+  orderBy?: Maybe<PlaylistOrderByInput>,
+  skip?: Maybe<Scalars['Int']>,
+  after?: Maybe<Scalars['String']>,
+  before?: Maybe<Scalars['String']>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>
+};
+
+
+export type Party_PlaylistsConnectionQuery = (
+  { __typename?: 'Query' }
+  & { playlistsConnection: (
+    { __typename?: 'PlaylistConnection' }
+    & { pageInfo: (
+      { __typename?: 'PageInfo' }
+      & Pick<PageInfo, 'hasNextPage' | 'endCursor'>
+    ), edges: Array<Maybe<(
+      { __typename?: 'PlaylistEdge' }
+      & { node: (
+        { __typename?: 'Playlist' }
+        & Pick<Playlist, 'createdAt'>
+      )
+        & Party_Playlists_Connection_Node_FragmentFragment
+       }
+    )>> }
+  ) }
+);
 export type Party_FragmentLocation = Party_FragmentFragment['location'];
 export type Party_FragmentAuthor = Party_FragmentFragment['author'];
 export type Party_FragmentMembers = Party_FragmentFragment['members'][0];
@@ -9636,7 +9666,12 @@ export type ChatMessagesSubscriptionChat = ChatMessagesSubscriptionSubscription[
 export type PartyInvitationSubscriptionVariables = PartyInvitationSubscriptionSubscriptionVariables;
 export type PartyInvitationSubscriptionPartyInvitation = PartyInvitationSubscriptionSubscription['partyInvitation'];
 export type PartyInvitationSubscriptionNode = Party_Invitation_FragmentFragment;
-export type PartyInvitationSubscriptionPreviousValues = PartyInvitationSubscriptionSubscription['partyInvitation']['previousValues'];export const Party_FragmentFragmentDoc = gql`
+export type PartyInvitationSubscriptionPreviousValues = PartyInvitationSubscriptionSubscription['partyInvitation']['previousValues'];
+export type Party_PlaylistsConnectionVariables = Party_PlaylistsConnectionQueryVariables;
+export type Party_PlaylistsConnectionPlaylistsConnection = Party_PlaylistsConnectionQuery['playlistsConnection'];
+export type Party_PlaylistsConnectionPageInfo = Party_PlaylistsConnectionQuery['playlistsConnection']['pageInfo'];
+export type Party_PlaylistsConnectionEdges = Party_PlaylistsConnectionQuery['playlistsConnection']['edges'][0];
+export type Party_PlaylistsConnectionNode = Party_Playlists_Connection_Node_FragmentFragment;export const Party_FragmentFragmentDoc = gql`
     fragment PARTY_FRAGMENT on Party {
   id
   title
@@ -10364,5 +10399,29 @@ export const PartyInvitationSubscriptionDocument = gql`
   })
   export class PartyInvitationSubscriptionGQL extends Apollo.Subscription<PartyInvitationSubscriptionSubscription, PartyInvitationSubscriptionSubscriptionVariables> {
     document = PartyInvitationSubscriptionDocument;
+    
+  }
+export const Party_PlaylistsConnectionDocument = gql`
+    query Party_PlaylistsConnection($where: PlaylistWhereInput, $orderBy: PlaylistOrderByInput, $skip: Int, $after: String, $before: String, $first: Int, $last: Int) {
+  playlistsConnection(where: $where, orderBy: $orderBy, skip: $skip, after: $after, before: $before, first: $first, last: $last) {
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+    edges {
+      node {
+        ...PARTY_PLAYLISTS_CONNECTION_NODE_FRAGMENT
+        createdAt
+      }
+    }
+  }
+}
+    ${Party_Playlists_Connection_Node_FragmentFragmentDoc}`;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class Party_PlaylistsConnectionGQL extends Apollo.Query<Party_PlaylistsConnectionQuery, Party_PlaylistsConnectionQueryVariables> {
+    document = Party_PlaylistsConnectionDocument;
     
   }

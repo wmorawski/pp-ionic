@@ -1,58 +1,60 @@
 <ion-content color="light">
-    <Tabs [useOnPan]="true" [swipeable]="true" activeTab="0" [page]="3" [tabBarActiveTextColor]="'#1890ff'">
-        <TabPane [title]="titleTemplate">
-            <ng-template #titleTemplate>
-                <div>Your top tracks</div>
-            </ng-template>
-            <ng-container *ngIf="topTracks?.length">
-                <ion-list-header>
-                    <ion-label>Your top tracks</ion-label>
-                </ion-list-header>
-                <spotify-top-track
-                    [track]="track"
-                    [currentTrack]="currentTrack"
-                    *ngFor="let track of topTracks"
-                    (trackChange)="handleTrackChange($event)"
-                ></spotify-top-track>
-            </ng-container>
-            <ng-container *ngTemplateOutlet="topTracksSpotify"></ng-container>
-        </TabPane>
-        <TabPane [title]="titleTemplate1">
-            <ng-template #titleTemplate1>
-                <div>Search for track</div>
-            </ng-template>
-            <ion-row>
-                <ion-col size="12">
-                    <SearchBar
-                        [placeholder]="'Search'"
-                        cancelText="Cancel"
-                        (onChange)="handleSearch($event)"
-                    ></SearchBar>
-                </ion-col>
-            </ion-row>
-            <ng-container *ngIf="searchedTracks?.length">
-                <spotify-top-track
-                    [track]="track"
-                    [currentTrack]="currentTrackSearched"
-                    *ngFor="let track of searchedTracks"
-                    (trackChange)="handleTrackChangeSearched($event)"
-                ></spotify-top-track>
-            </ng-container>
-            <ng-container *ngTemplateOutlet="searchedTracksSpotify"></ng-container>
-        </TabPane>
-        <TabPane [title]="savedTracksTitle">
-            <ng-template #savedTracksTitle>
-                <div>Saved tracks</div>
-            </ng-template>
-            <party-saved-tracks></party-saved-tracks>
-        </TabPane>
-        <TabPane [title]="playlistsTitle">
-            <ng-template #playlistsTitle>
-                <div>Playlists</div>
-            </ng-template>
-            <party-playlists [id]="id"></party-playlists>
-        </TabPane>
-    </Tabs>
+    <ng-container *ngIf="authorized; else noAuthorized">
+        <Tabs [useOnPan]="true" [swipeable]="true" activeTab="0" [page]="3" [tabBarActiveTextColor]="'#1890ff'">
+            <TabPane [title]="titleTemplate">
+                <ng-template #titleTemplate>
+                    <div>Your top tracks</div>
+                </ng-template>
+                <ng-container *ngIf="topTracks?.length">
+                    <ion-list-header>
+                        <ion-label>Your top tracks</ion-label>
+                    </ion-list-header>
+                    <spotify-top-track
+                        [track]="track"
+                        [currentTrack]="currentTrack"
+                        *ngFor="let track of topTracks"
+                        (trackChange)="handleTrackChange($event)"
+                    ></spotify-top-track>
+                </ng-container>
+                <ng-container *ngTemplateOutlet="topTracksSpotify"></ng-container>
+            </TabPane>
+            <TabPane [title]="titleTemplate1">
+                <ng-template #titleTemplate1>
+                    <div>Search for track</div>
+                </ng-template>
+                <ion-row>
+                    <ion-col size="12">
+                        <SearchBar
+                            [placeholder]="'Search'"
+                            cancelText="Cancel"
+                            (onChange)="handleSearch($event)"
+                        ></SearchBar>
+                    </ion-col>
+                </ion-row>
+                <ng-container *ngIf="searchedTracks?.length">
+                    <spotify-top-track
+                        [track]="track"
+                        [currentTrack]="currentTrackSearched"
+                        *ngFor="let track of searchedTracks"
+                        (trackChange)="handleTrackChangeSearched($event)"
+                    ></spotify-top-track>
+                </ng-container>
+                <ng-container *ngTemplateOutlet="searchedTracksSpotify"></ng-container>
+            </TabPane>
+            <TabPane [title]="savedTracksTitle">
+                <ng-template #savedTracksTitle>
+                    <div>Saved tracks</div>
+                </ng-template>
+                <party-saved-tracks [changed]="handleOnTrackChange" [id]="id"></party-saved-tracks>
+            </TabPane>
+            <TabPane [title]="playlistsTitle">
+                <ng-template #playlistsTitle>
+                    <div>Playlists</div>
+                </ng-template>
+                <party-playlists [id]="id"></party-playlists>
+            </TabPane>
+        </Tabs>
+    </ng-container>
 </ion-content>
 
 <ng-template #topTracksSpotify>
@@ -68,4 +70,8 @@
         (onTrackChange)="handleOnTrackChangeSearched($event)"
         [tracks]="searchedTracks"
     ></spotify-music-player>
+</ng-template>
+
+<ng-template #noAuthorized>
+    No authorized
 </ng-template>

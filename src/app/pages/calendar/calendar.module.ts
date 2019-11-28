@@ -12,7 +12,7 @@ const routes: Routes = [
         path: '',
         component: CalendarPage,
     },
-    { path: 'day/:date', loadChildren: './pages/day/day.module#DayPageModule' },
+    { path: 'day/:date', loadChildren: () => import('./pages/day/day.module').then((m) => m.DayPageModule) },
 ];
 
 @NgModule({

@@ -1,3 +1,22 @@
-<p>
-  saved-tracks works!
-</p>
+<ng-container *ngIf="(savedTracks$ | async)?.data?.partySavedTracks as savedTracks; else noSavedTracksOrLoading">
+    <saved-track
+        [track]="track"
+        *ngFor="let track of savedTracks"
+        (trackChange)="handleTrackChange($event)"
+    ></saved-track>
+    <spotify-music-player
+        [track]="currentTrack"
+        (onTrackChange)="changed($event)"
+        [tracks]="savedTracks"
+    ></spotify-music-player>
+</ng-container>
+<ng-template #noSavedTracksOrLoading>
+    <ng-container *ngIf="(savedTracks$ | async)?.loading; else noSavedTracks">
+        <div display="flex" aic jcc flex="1 1 auto">
+            <nz-spin nzSimple nzSize="large"></nz-spin>
+        </div>
+    </ng-container>
+    <ng-template #noSavedTracks>
+        <nz-empty></nz-empty>
+    </ng-template>
+</ng-template>
