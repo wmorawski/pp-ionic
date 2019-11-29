@@ -1,7 +1,7 @@
 import { map } from 'rxjs/operators';
 import { Party, PartyInvitationsQueryGQL } from 'src/app/graphql/generated/types';
-import { Component, OnInit, Input } from '@angular/core';
-import { Platform } from '@ionic/angular';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Platform, ModalController } from '@ionic/angular';
 
 @Component({
     selector: 'app-invites-modal',
@@ -15,6 +15,7 @@ export class InvitesModalComponent implements OnInit {
     constructor(
         private readonly partyInvitationsQueryGQL: PartyInvitationsQueryGQL,
         private readonly platform: Platform,
+        private readonly modalCtrl: ModalController
     ) {}
 
     ngOnInit() {
@@ -26,9 +27,9 @@ export class InvitesModalComponent implements OnInit {
                     },
                 },
                 {
-                    fetchPolicy: 'network-only',
-                },
+                    fetchPolicy: 'cache-and-network',
+                }
             )
-            .valueChanges.pipe(map((res) => res.data.partyInvitations));
+            .valueChanges.pipe(map(res => res.data));
     }
 }

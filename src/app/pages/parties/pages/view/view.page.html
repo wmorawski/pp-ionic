@@ -5,7 +5,7 @@
                 <ion-back-button defaultHref="parties"></ion-back-button>
             </ion-buttons>
             <ion-buttons slot="end">
-                <ion-button>
+                <ion-button (click)="showActionSheet()">
                     <ion-icon slot="icon-only" name="more-horizontal"></ion-icon>
                 </ion-button>
             </ion-buttons>
@@ -17,15 +17,15 @@
             <ion-tab-bar slot="bottom">
                 <ion-tab-button tab="home">
                     <ion-icon name="alert-circle" size="small"></ion-icon>
+                    About
                 </ion-tab-button>
                 <ion-tab-button tab="music">
                     <ion-icon name="spotify" size="small"></ion-icon>
-                </ion-tab-button>
-                <ion-tab-button tab="entertainment">
-                    <ion-icon name="ent-joystick" size="small"></ion-icon>
+                    Music
                 </ion-tab-button>
                 <ion-tab-button tab="cart">
                     <ion-icon name="shopping-cart" size="small"></ion-icon>
+                    Cart
                 </ion-tab-button>
             </ion-tab-bar>
         </ion-tabs>

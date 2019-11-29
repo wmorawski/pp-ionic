@@ -5,7 +5,7 @@
         </ion-toolbar>
     </ion-header>
     <ion-content>
-        <ion-list *ngIf="(invitations$ | async)?.length; else noInvites">
+        <ion-list *ngIf="(invitations$ | async)?.partyInvitations?.length; else noInvites">
             <ion-item *ngFor="let invitation of invitations$ | async">
                 <ion-avatar>
                     <ngx-avatar [name]="invitation.user.firstName" textSizeRatio="2" size="32"></ngx-avatar>

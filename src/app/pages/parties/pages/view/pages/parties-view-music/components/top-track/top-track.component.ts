@@ -27,9 +27,9 @@ export class TopTrackComponent implements OnInit, OnDestroy {
     constructor() {}
 
     ngOnInit() {
-        this.savedTracks.subscribe((tracks) => {
+        this.savedTracks.subscribe(tracks => {
             if (tracks) {
-                this.alreadySaved = tracks.some((track) => track.spotifyId === this.track.id);
+                this.alreadySaved = tracks.some(track => track.spotifyId === this.track.id);
             }
         });
     }

@@ -2698,9 +2698,9 @@ export type Mutation = {
   deleteManyUsers: BatchPayload,
   deleteManyParties: BatchPayload,
   deleteManyAlbums: BatchPayload,
-  joinParty?: Maybe<Scalars['Boolean']>,
   importPlaylistsToParty: Scalars['Boolean'],
   combinePlaylists: Playlist,
+  joinParty?: Maybe<Scalars['Boolean']>,
   signup: AuthPayload,
   login: AuthPayload,
   socialLogin: AuthPayload,
@@ -3244,11 +3244,6 @@ export type MutationDeleteManyAlbumsArgs = {
 };
 
 
-export type MutationJoinPartyArgs = {
-  partyId: Scalars['ID']
-};
-
-
 export type MutationImportPlaylistsToPartyArgs = {
   playlists: Scalars['String'],
   partyId: Scalars['ID']
@@ -3258,6 +3253,11 @@ export type MutationImportPlaylistsToPartyArgs = {
 export type MutationCombinePlaylistsArgs = {
   partyPlannerData: CombinePlaylistPartyPlannerData,
   spotifyData: CombinePlaylistCreatedSpotifyPlaylistInput
+};
+
+
+export type MutationJoinPartyArgs = {
+  partyId: Scalars['ID']
 };
 
 
@@ -9570,6 +9570,47 @@ export type Party_PlaylistsConnectionQuery = (
     )>> }
   ) }
 );
+
+export type Party_LeavePartyMutationVariables = {
+  data: UserUpdateInput,
+  where: UserWhereUniqueInput
+};
+
+
+export type Party_LeavePartyMutation = (
+  { __typename?: 'Mutation' }
+  & { updateUser: Maybe<(
+    { __typename?: 'User' }
+    & Pick<User, 'id'>
+  )> }
+);
+
+export type Party_JoinPublicPartyMutationVariables = {
+  data: UserUpdateInput,
+  where: UserWhereUniqueInput
+};
+
+
+export type Party_JoinPublicPartyMutation = (
+  { __typename?: 'Mutation' }
+  & { updateUser: Maybe<(
+    { __typename?: 'User' }
+    & Pick<User, 'id'>
+  )> }
+);
+
+export type Party_DeletePartyMutationVariables = {
+  where: PartyWhereUniqueInput
+};
+
+
+export type Party_DeletePartyMutation = (
+  { __typename?: 'Mutation' }
+  & { deleteParty: Maybe<(
+    { __typename?: 'Party' }
+    & Pick<Party, 'id'>
+  )> }
+);
 export type Party_FragmentLocation = Party_FragmentFragment['location'];
 export type Party_FragmentAuthor = Party_FragmentFragment['author'];
 export type Party_FragmentMembers = Party_FragmentFragment['members'][0];
@@ -9681,7 +9722,13 @@ export type Party_PlaylistsConnectionVariables = Party_PlaylistsConnectionQueryV
 export type Party_PlaylistsConnectionPlaylistsConnection = Party_PlaylistsConnectionQuery['playlistsConnection'];
 export type Party_PlaylistsConnectionPageInfo = Party_PlaylistsConnectionQuery['playlistsConnection']['pageInfo'];
 export type Party_PlaylistsConnectionEdges = Party_PlaylistsConnectionQuery['playlistsConnection']['edges'][0];
-export type Party_PlaylistsConnectionNode = Party_Playlists_Connection_Node_FragmentFragment;export const Party_FragmentFragmentDoc = gql`
+export type Party_PlaylistsConnectionNode = Party_Playlists_Connection_Node_FragmentFragment;
+export type Party_LeavePartyVariables = Party_LeavePartyMutationVariables;
+export type Party_LeavePartyUpdateUser = Party_LeavePartyMutation['updateUser'];
+export type Party_JoinPublicPartyVariables = Party_JoinPublicPartyMutationVariables;
+export type Party_JoinPublicPartyUpdateUser = Party_JoinPublicPartyMutation['updateUser'];
+export type Party_DeletePartyVariables = Party_DeletePartyMutationVariables;
+export type Party_DeletePartyDeleteParty = Party_DeletePartyMutation['deleteParty'];export const Party_FragmentFragmentDoc = gql`
     fragment PARTY_FRAGMENT on Party {
   id
   title
@@ -10433,5 +10480,50 @@ export const Party_PlaylistsConnectionDocument = gql`
   })
   export class Party_PlaylistsConnectionGQL extends Apollo.Query<Party_PlaylistsConnectionQuery, Party_PlaylistsConnectionQueryVariables> {
     document = Party_PlaylistsConnectionDocument;
+    
+  }
+export const Party_LeavePartyDocument = gql`
+    mutation Party_LeaveParty($data: UserUpdateInput!, $where: UserWhereUniqueInput!) {
+  updateUser(data: $data, where: $where) {
+    id
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class Party_LeavePartyGQL extends Apollo.Mutation<Party_LeavePartyMutation, Party_LeavePartyMutationVariables> {
+    document = Party_LeavePartyDocument;
+    
+  }
+export const Party_JoinPublicPartyDocument = gql`
+    mutation Party_JoinPublicParty($data: UserUpdateInput!, $where: UserWhereUniqueInput!) {
+  updateUser(data: $data, where: $where) {
+    id
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class Party_JoinPublicPartyGQL extends Apollo.Mutation<Party_JoinPublicPartyMutation, Party_JoinPublicPartyMutationVariables> {
+    document = Party_JoinPublicPartyDocument;
+    
+  }
+export const Party_DeletePartyDocument = gql`
+    mutation Party_DeleteParty($where: PartyWhereUniqueInput!) {
+  deleteParty(where: $where) {
+    id
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class Party_DeletePartyGQL extends Apollo.Mutation<Party_DeletePartyMutation, Party_DeletePartyMutationVariables> {
+    document = Party_DeletePartyDocument;
     
   }

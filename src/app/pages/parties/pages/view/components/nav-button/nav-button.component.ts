@@ -8,6 +8,7 @@ import { Component, OnInit, Input } from '@angular/core';
 export class NavButtonComponent implements OnInit {
     @Input() icon: string;
     @Input() title: string;
+    @Input() disabled: boolean;
     @Input() color = 'medium';
     constructor() {}
 

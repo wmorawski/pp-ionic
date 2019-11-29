@@ -29,7 +29,7 @@ export class PartiesPage extends NavbarManager implements OnInit {
         private hasPartiesGQL: HasPartiesQueryGQL,
         private partiesQueryGQL: PartiesQueryGQL,
         private navCtrl: NavController,
-        private apollo: Apollo,
+        private apollo: Apollo
     ) {
         super(appService);
     }
@@ -42,31 +42,32 @@ export class PartiesPage extends NavbarManager implements OnInit {
                 {},
                 {
                     fetchPolicy: 'cache-and-network',
-                },
+                }
             )
             .valueChanges.pipe(
-                map((result) => {
+                map(result => {
                     this.hasPartiesLoading = result.loading;
                     if (result.data) {
                         return result.data.hasParties;
                     } else {
                         return false;
                     }
-                }),
+                })
             );
+        //TODO: Something bad on logout
         if (this.hasParties) {
             this.parties = this.partiesQueryGQL
                 .watch(getPartiesDateVariables(new Date(), localStorage.getItem(PP_USER_ID)), {
                     fetchPolicy: 'cache-and-network',
                 })
                 .valueChanges.pipe(
-                    map((result) => {
+                    map(result => {
                         if (result.data) {
                             return result.data.parties;
                         } else {
                             return [];
                         }
-                    }),
+                    })
                 );
         }
     }

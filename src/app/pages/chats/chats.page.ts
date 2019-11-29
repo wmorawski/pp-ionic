@@ -16,24 +16,23 @@ import { map } from 'rxjs/operators';
 export class ChatsPage implements OnInit {
     public hasChats: Observable<boolean>;
     public chats: any;
-    constructor(
-        private apollo: Apollo,
-        private hasChatsGQL: HasChatsQueryGQL,
-        private paginateChatsQueryGQL: PaginateChatsQueryGQL,
-    ) {}
+    constructor(private apollo: Apollo, private hasChatsGQL: HasChatsQueryGQL, private paginateChatsQueryGQL: PaginateChatsQueryGQL) {}
 
     ngOnInit() {}
     ionViewWillEnter() {
-        this.hasChats = this.hasChatsGQL.watch().valueChanges.pipe(map((result) => result.data.hasChats));
+        this.hasChats = this.hasChatsGQL.watch().valueChanges.pipe(map(result => result.data.hasChats));
         if (this.hasChats) {
             this.chats = this.paginateChatsQueryGQL
-                .watch({
-                    where: {
-                        members_some: { id: localStorage.getItem(PP_USER_ID) },
+                .watch(
+                    {
+                        where: {
+                            members_some: { id: localStorage.getItem(PP_USER_ID) },
+                        },
+                        first: 20,
                     },
-                    first: 20,
-                })
-                .valueChanges.pipe(map((result) => result.data.chatsConnection));
+                    { fetchPolicy: 'cache-and-network' }
+                )
+                .valueChanges.pipe(map(result => result.data.chatsConnection));
         }
     }
 }

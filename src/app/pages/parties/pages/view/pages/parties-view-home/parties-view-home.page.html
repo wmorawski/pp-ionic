@@ -7,9 +7,9 @@
         <ion-row class="ion-justify-content-center" paddingTop="1em" paddingBottom="1em" aic>
             <ion-col size="3" tac fdc aic asc>
                 <ion-text color="primary">
-                    <small style="font-size: 70%; font-weight: 800" textTransform="uppercase">{{
-                        party.start | date: 'MMM' | uppercase
-                    }}</small>
+                    <small style="font-size: 70%; font-weight: 800" textTransform="uppercase"
+                        >{{ party.start | date: 'MMM' | uppercase }}</small
+                    >
                 </ion-text>
                 <ion-text color="secondary">
                     <h1>{{ party.start | date: 'dd' }}</h1>
@@ -27,10 +27,7 @@
                         <small>
                             Hosted by
                             <ion-text color="primary">
-                                <strong
-                                    >{{ party.author.firstName | titlecase }}
-                                    {{ party.author.lastName | titlecase }}</strong
-                                >
+                                <strong>{{ party.author.firstName | titlecase }} {{ party.author.lastName | titlecase }}</strong>
                             </ion-text>
                         </small>
                     </ion-col>
@@ -42,15 +39,10 @@
                 <party-nav-button icon="user-plus" title="invites" (click)="showInvitesModal()"></party-nav-button>
             </ion-col>
             <ion-col>
-                <party-nav-button
-                    icon="check-circle"
-                    title="going"
-                    *ngIf="party$ | async"
-                    [color]="goingColor"
-                ></party-nav-button>
+                <party-nav-button icon="check-circle" title="going" *ngIf="party$ | async" [color]="goingColor" disabled></party-nav-button>
             </ion-col>
             <ion-col>
-                <party-nav-button icon="share-2" title="share"></party-nav-button>
+                <party-nav-button icon="share-2" title="share" disabled></party-nav-button>
             </ion-col>
             <ion-col>
                 <party-nav-button icon="hash" title="code" (click)="showQrModal()"></party-nav-button>
@@ -88,8 +80,8 @@
             <ion-col size="12" class="ion-no-margin ion-no-padding">
                 <ion-text color="medium">
                     <small>
-                        {{ location.routes[0].distance | shortNumber }}m &bull;
-                        {{ location.routes[0].distance / 13.88 | amDuration: 'seconds' }}
+                        {{ location.routes[0].distance | shortNumber }}m &bull; {{ location.routes[0].distance / 13.88 | amDuration:
+                        'seconds' }}
                         <small style="font-size: 80%">(by car)</small>
                     </small>
                 </ion-text>
