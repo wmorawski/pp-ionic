@@ -1,5 +1,5 @@
 import gql from 'graphql-tag';
-import { PARTY_FRAGMENT, MESSAGE_FRAGMENT, PARTY_INVITATION_FRAGMENT } from './fragments';
+import { PARTY_FRAGMENT, MESSAGE_FRAGMENT, PARTY_INVITATION_FRAGMENT, FULL_SAVED_TRACK_FRAGMENT } from './fragments';
 
 export const ME_QUERY = gql`
     query MeQuery {
@@ -355,7 +355,9 @@ export const PARTY_SAVED_TRACKS_QUERY = gql`
             first: $first
             last: $last
         ) {
+            ...FULL_SAVED_TRACK_FRAGMENT
             spotifyId
         }
     }
+    ${FULL_SAVED_TRACK_FRAGMENT}
 `;

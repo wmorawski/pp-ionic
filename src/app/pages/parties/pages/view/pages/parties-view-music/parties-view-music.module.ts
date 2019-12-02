@@ -1,3 +1,4 @@
+import { CreatePlaylistModalComponent } from './components/create-playlist-modal/create-playlist-modal.component';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { PlaylistComponent } from './components/playlist/playlist.component';
 import { PlaylistsComponent } from './components/playlists/playlists.component';
@@ -8,13 +9,13 @@ import { StyledComponentsModule } from 'angular-styled-components';
 import { SharedModule } from './../../../../../../shared/shared.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
 import { PartiesViewMusicPage } from './parties-view-music.page';
-import { NgZorroAntdModule, NzButtonModule } from 'ng-zorro-antd';
+import { NgZorroAntdModule, NzButtonModule, NzGridModule, NzListModule } from 'ng-zorro-antd';
 import { SpotifyAuth } from '@ionic-native/spotify-auth/ngx';
 import { TopTrackComponent } from './components/top-track/top-track.component';
 import { Media } from '@ionic-native/media/ngx';
@@ -38,6 +39,9 @@ const routes: Routes = [
         SharedModule,
         StyledComponentsModule,
         NzSpinModule,
+        ReactiveFormsModule,
+        NzGridModule,
+        NzListModule,
     ],
     declarations: [
         PartiesViewMusicPage,
@@ -46,7 +50,9 @@ const routes: Routes = [
         PlaylistsComponent,
         PlaylistComponent,
         SavedTrackComponent,
+        CreatePlaylistModalComponent,
     ],
+    entryComponents: [CreatePlaylistModalComponent],
     providers: [SpotifyAuth, Media],
 })
 export class PartiesViewMusicPageModule {}

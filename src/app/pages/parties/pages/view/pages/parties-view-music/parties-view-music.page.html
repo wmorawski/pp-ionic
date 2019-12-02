@@ -53,11 +53,12 @@
                 </ng-container>
                 <ng-container *ngTemplateOutlet="searchedTracksSpotify"></ng-container>
             </TabPane>
-            <TabPane [title]="savedTracksTitle">
+            <TabPane [title]="savedTracksTitle" style="position: relative">
                 <ng-template #savedTracksTitle>
                     <div>Saved tracks</div>
                 </ng-template>
                 <party-saved-tracks
+                    style="position: relative"
                     [savedTracks]="savedTracks$"
                     [changed]="handleOnTrackChange"
                     (spotifyPlay)="handleSpotifyPlay($event)"

@@ -9496,7 +9496,9 @@ export type Party_SavedTracksQuery = (
   & { partySavedTracks: Array<Maybe<(
     { __typename?: 'PartySavedTrack' }
     & Pick<PartySavedTrack, 'spotifyId'>
-  )>> }
+  )
+    & Full_Saved_Track_FragmentFragment
+  >> }
 );
 
 export type ChatMessagesSubscriptionSubscriptionVariables = {
@@ -9539,6 +9541,18 @@ export type PartyInvitationSubscriptionSubscription = (
       & Pick<PartyInvitationPreviousValues, 'id' | 'invitedUserId' | 'partyId'>
     )> }
   )> }
+);
+
+export type Party_CreatePlaylistMutationVariables = {
+  data: PlaylistCreateInput
+};
+
+
+export type Party_CreatePlaylistMutation = (
+  { __typename?: 'Mutation' }
+  & { createPlaylist: { __typename?: 'Playlist' }
+    & Party_Playlists_Connection_Node_FragmentFragment
+   }
 );
 
 export type Party_PlaylistsConnectionQueryVariables = {
@@ -9708,7 +9722,7 @@ export type PartyInvitationsQueryVariables = PartyInvitationsQueryQueryVariables
 export type PartyInvitationsQueryPartyInvitations = Party_Invitation_FragmentFragment;
 export type CanJoinPartyQueryVariables = CanJoinPartyQueryQueryVariables;
 export type Party_SavedTracksVariables = Party_SavedTracksQueryVariables;
-export type Party_SavedTracksPartySavedTracks = Party_SavedTracksQuery['partySavedTracks'][0];
+export type Party_SavedTracksPartySavedTracks = Full_Saved_Track_FragmentFragment;
 export type ChatMessagesSubscriptionVariables = ChatMessagesSubscriptionSubscriptionVariables;
 export type ChatMessagesSubscriptionMessage = ChatMessagesSubscriptionSubscription['message'];
 export type ChatMessagesSubscriptionNode = ChatMessagesSubscriptionSubscription['message']['node'];
@@ -9718,6 +9732,8 @@ export type PartyInvitationSubscriptionVariables = PartyInvitationSubscriptionSu
 export type PartyInvitationSubscriptionPartyInvitation = PartyInvitationSubscriptionSubscription['partyInvitation'];
 export type PartyInvitationSubscriptionNode = Party_Invitation_FragmentFragment;
 export type PartyInvitationSubscriptionPreviousValues = PartyInvitationSubscriptionSubscription['partyInvitation']['previousValues'];
+export type Party_CreatePlaylistVariables = Party_CreatePlaylistMutationVariables;
+export type Party_CreatePlaylistCreatePlaylist = Party_Playlists_Connection_Node_FragmentFragment;
 export type Party_PlaylistsConnectionVariables = Party_PlaylistsConnectionQueryVariables;
 export type Party_PlaylistsConnectionPlaylistsConnection = Party_PlaylistsConnectionQuery['playlistsConnection'];
 export type Party_PlaylistsConnectionPageInfo = Party_PlaylistsConnectionQuery['playlistsConnection']['pageInfo'];
@@ -10391,10 +10407,11 @@ export const CanJoinPartyQueryDocument = gql`
 export const Party_SavedTracksDocument = gql`
     query Party_SavedTracks($where: PartySavedTrackWhereInput, $orderBy: PartySavedTrackOrderByInput, $skip: Int, $after: String, $before: String, $first: Int, $last: Int) {
   partySavedTracks(where: $where, orderBy: $orderBy, after: $after, skip: $skip, before: $before, first: $first, last: $last) {
+    ...FULL_SAVED_TRACK_FRAGMENT
     spotifyId
   }
 }
-    `;
+    ${Full_Saved_Track_FragmentFragmentDoc}`;
 
   @Injectable({
     providedIn: 'root'
@@ -10456,6 +10473,21 @@ export const PartyInvitationSubscriptionDocument = gql`
   })
   export class PartyInvitationSubscriptionGQL extends Apollo.Subscription<PartyInvitationSubscriptionSubscription, PartyInvitationSubscriptionSubscriptionVariables> {
     document = PartyInvitationSubscriptionDocument;
+    
+  }
+export const Party_CreatePlaylistDocument = gql`
+    mutation Party_CreatePlaylist($data: PlaylistCreateInput!) {
+  createPlaylist(data: $data) {
+    ...PARTY_PLAYLISTS_CONNECTION_NODE_FRAGMENT
+  }
+}
+    ${Party_Playlists_Connection_Node_FragmentFragmentDoc}`;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class Party_CreatePlaylistGQL extends Apollo.Mutation<Party_CreatePlaylistMutation, Party_CreatePlaylistMutationVariables> {
+    document = Party_CreatePlaylistDocument;
     
   }
 export const Party_PlaylistsConnectionDocument = gql`

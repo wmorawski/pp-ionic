@@ -37,7 +37,7 @@ export const PARTY_PLAYLISTS_CONNECTION_QUERY = gql`
     ${PARTY_PLAYLISTS_CONNECTION_NODE_FRAGMENT}
 `;
 
-const PLAYLIST_CONNECTION_PAGINATION_SIZE = 20;
+export const PLAYLIST_CONNECTION_PAGINATION_SIZE = 20;
 
 @Component({
     selector: 'party-playlists',

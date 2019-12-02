@@ -29,13 +29,25 @@ export class DayPage implements OnInit, AfterViewInit {
         private readonly apollo: Apollo,
         public readonly router: ActivatedRoute,
         private readonly navCtrl: NavController,
-    ) {}
+    ) {
+        const date = new Date(this.router.snapshot.params.date);
+        this.startDateStr =
+            date
+                .getFullYear()
+                .toString()
+                .padStart(4, '0') +
+            '-' +
+            (date.getMonth() + 1).toString().padStart(2, '0') +
+            '-' +
+            date
+                .getDate()
+                .toString()
+                .padStart(2, '0');
+        console.log(this.startDateStr);
+    }
 
     ngOnInit() {}
     ionViewWillEnter() {
-        const date = new Date(this.router.snapshot.params.date);
-        this.startDateStr = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
-        // console.log(this.startDateStr);
         this.partiesSubscription = this.apollo
             .watchQuery<any>({
                 query: PARTIES_QUERY,

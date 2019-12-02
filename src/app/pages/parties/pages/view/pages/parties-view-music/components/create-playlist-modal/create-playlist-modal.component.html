@@ -1,0 +1,77 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>Create Spotify playlist</ion-title>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+    <ion-grid fixed>
+        <ion-row>
+            <ion-col size="12">
+                <form nz-form [formGroup]="createPlaylistForm" (ngSubmit)="onSubmit()">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="6" nzFor="name">Playlist name</nz-form-label>
+                        <nz-form-control [nzSpan]="14">
+                            <input nz-input formControlName="name" type="text" id="name" placeholder="Playlist name" />
+                        </nz-form-control>
+                    </nz-form-item>
+                    <CheckboxItem formControlName="isPrivate">
+                        Make it private on <ion-text color="success">Spotify</ion-text>
+                    </CheckboxItem>
+                    <CheckboxItem formControlName="restricted">
+                        Restrict to this party
+                    </CheckboxItem>
+                    <button
+                        nz-button
+                        nzType="primary"
+                        [disabled]="createPlaylistForm.invalid"
+                        nzBlock
+                        marginTop="1em"
+                        marginBottom="1.5em"
+                    >
+                        Create
+                    </button>
+                    <nz-list
+                        [nzDataSource]="tracksCopy"
+                        nzBordered
+                        [nzHeader]="'Selected tracks (' + tracksCopy.length + ')'"
+                        [nzFooter]="false"
+                        [nzRenderItem]="defaultItem"
+                        [nzLoading]="false"
+                    >
+                        <ng-template #defaultItem let-item>
+                            <nz-list-item [nzActions]="[deleteButton]">
+                                <ng-template #deleteButton>
+                                    <button
+                                        nz-button
+                                        nzType="default"
+                                        nzShape="circle"
+                                        (click)="onDelete($event, item)"
+                                    >
+                                        <i nz-icon nzType="delete" nzTheme="twotone"></i>
+                                    </button>
+                                </ng-template>
+                                <nz-list-item-meta
+                                    *ngIf="item"
+                                    [nzTitle]="item.name"
+                                    [nzAvatar]="preview"
+                                    [nzDescription]="item.stringArtists"
+                                    paddingLeft="2em"
+                                    paddingTop="1em"
+                                >
+                                    <ng-template #preview>
+                                        <nz-avatar
+                                            [nzShape]="'square'"
+                                            [nzSize]="'large'"
+                                            [nzSrc]="item.album.imageUrl"
+                                        ></nz-avatar>
+                                    </ng-template>
+                                </nz-list-item-meta>
+                            </nz-list-item>
+                        </ng-template>
+                    </nz-list>
+                </form>
+            </ion-col>
+            <ion-col size="6"></ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>

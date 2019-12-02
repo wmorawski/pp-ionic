@@ -8,6 +8,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
     styleUrls: ['./saved-track.component.scss'],
 })
 export class SavedTrackComponent implements OnInit {
+    // tslint:disable-next-line: no-input-rename
     @Input('track') trackDb: PartySavedTrack;
     @Input() selectMode: boolean;
     @Output() trackChange = new EventEmitter();
@@ -21,11 +22,11 @@ export class SavedTrackComponent implements OnInit {
     }
 
     play() {
-        this.trackChange.emit(this.track);
+        // this.trackChange.emit(this.track);
     }
 
     stop() {
-        this.trackChange.emit(null);
+        // this.trackChange.emit(null);
     }
 
     playOnSpotify() {
