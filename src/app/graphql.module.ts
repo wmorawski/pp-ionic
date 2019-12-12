@@ -5,11 +5,13 @@ import { PP_AUTH_TOKEN } from 'src/app/constants';
 import { environment } from 'src/environments/environment';
 import { setContext } from 'apollo-link-context';
 import { HttpLink, HttpLinkModule } from 'apollo-angular-link-http';
-import { ApolloLink } from 'apollo-link';
+import { ApolloLink, split } from 'apollo-link';
+import { WebSocketLink } from 'apollo-link-ws';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloModule, APOLLO_OPTIONS } from 'apollo-angular';
 import ApolloClient from 'apollo-client';
 import gql from 'graphql-tag';
+import { getMainDefinition } from 'apollo-utilities';
 
 const uri = (environment.production ? environment.backendUrl : '') + '/graphql'; // <-- add the URL of the GraphQL server here
 export function provideApollo(httpLink: HttpLink) {
@@ -18,7 +20,7 @@ export function provideApollo(httpLink: HttpLink) {
             Accept: 'charset=utf-8',
         },
     }));
-    // Get the authentication token from local storage if it exists
+
     const auth = setContext((operation, context) => {
         const token = localStorage.getItem(PP_AUTH_TOKEN);
         return {
@@ -27,18 +29,28 @@ export function provideApollo(httpLink: HttpLink) {
             },
         };
     });
-    const link = ApolloLink.from([basic, auth, httpLink.create({ uri })]);
+
+    const http = httpLink.create({ uri });
+    const link = ApolloLink.from([basic, auth, http]);
     const cache = new InMemoryCache();
+
     const client = new ApolloClient({
+        connectToDevTools: true,
         cache,
         link,
         resolvers: LocalResolvers,
     });
+
     cache.writeData({
         data: {
             hasUnreadMessages: false,
+            isSendByMe: false,
+            optimisticallyAdded: false,
+            optimisticallyCreated: false,
+            hasOptimisticError: false,
         },
     });
+
     return client;
 }
 

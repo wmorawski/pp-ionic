@@ -1,5 +1,8 @@
 <ng-container *ngIf="hasChats | async; else noChats">
     <ion-content color="light">
+        <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+            <ion-refresher-content></ion-refresher-content>
+        </ion-refresher>
         <ion-grid paddingTop="1em" paddingLeft="1em" paddingRight="1em">
             <chats-chat-item
                 *ngFor="let chat of (chats | async)?.edges; let i = index"
