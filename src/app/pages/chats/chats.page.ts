@@ -40,11 +40,7 @@ export class ChatsPage implements OnInit {
     ionViewWillEnter() {
         this.hasChats = this.hasChatsGQL.watch().valueChanges.pipe(map((result) => result.data.hasChats));
         if (this.hasChats) {
-            this.query = this.paginateChatsQueryGQL.watch(
-                this.variables,
-
-                { fetchPolicy: 'cache-and-network' },
-            );
+            this.query = this.paginateChatsQueryGQL.watch(this.variables, { fetchPolicy: 'cache-and-network' });
             this.chats = this.query.valueChanges.pipe(
                 map((result) => {
                     this.loading = result.loading;
