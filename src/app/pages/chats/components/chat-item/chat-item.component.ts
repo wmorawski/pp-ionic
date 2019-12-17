@@ -1,3 +1,4 @@
+import { ChatMessagesSubscriptionGQL, Chat } from './../../../../graphql/generated/types';
 import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
@@ -6,12 +7,16 @@ import { Component, OnInit, Input } from '@angular/core';
     styleUrls: ['./chat-item.component.scss'],
 })
 export class ChatItemComponent implements OnInit {
-    @Input() chat: any;
+    @Input() chat: Chat;
     @Input() index: any;
     duration: string;
-    constructor() {}
+    chatMessages: any;
+    constructor(private readonly chatMessagesSubscriptionGQL: ChatMessagesSubscriptionGQL) {}
 
     ngOnInit() {
         this.duration = `duration-200ms delay-${Number(this.index) % 10}00ms`;
+        this.chatMessages = this.chatMessagesSubscriptionGQL
+            .subscribe({ where: { node: { id: this.chat.id } } })
+            .subscribe(console.log);
     }
 }
