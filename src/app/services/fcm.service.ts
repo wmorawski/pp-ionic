@@ -20,7 +20,7 @@ export class FcmService {
         if (!token) {
             return;
         }
-
+        console.log(token);
         const devicesRef = this.afs.collection('devices');
 
         const docData = {
