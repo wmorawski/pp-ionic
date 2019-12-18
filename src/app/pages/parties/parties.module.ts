@@ -41,6 +41,13 @@ const routes: Routes = [
                         (m) => m.PartiesViewMusicPageModule,
                     ),
             },
+            {
+                path: 'cart',
+                loadChildren: () =>
+                    import('src/app/pages/parties/pages/view/pages/parties-view-cart/parties-view-cart.module').then(
+                        (m) => m.PartiesViewCartPageModule,
+                    ),
+            },
         ],
     },
 ];

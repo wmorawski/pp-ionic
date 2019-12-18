@@ -47,7 +47,8 @@ export const routes: Routes = [
         path: 'more',
         loadChildren: () => import('./pages/more/more.module').then((m) => m.MorePageModule),
         canActivate: [AuthGuard],
-    },
+    },  { path: 'parties-view-cart', loadChildren: './pages/parties/pages/view/pages/parties-view-cart/parties-view-cart.module#PartiesViewCartPageModule' },
+
 ];
 
 @NgModule({

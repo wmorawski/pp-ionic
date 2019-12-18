@@ -39,6 +39,27 @@ export function provideApollo(httpLink: HttpLink) {
         cache,
         link,
         resolvers: LocalResolvers,
+        typeDefs: gql`
+            extend type Message {
+                isSendByMe: Boolean!
+                optimisticallyAdded: Boolean!
+                optimisticallyCreated: Boolean!
+                hasOptimisticError: Boolean!
+            }
+
+            extend type Chat {
+                hasUnreadMessages: Boolean!
+            }
+
+            enum UserStatus {
+                OFFLINE
+                ONLINE
+            }
+
+            extend type User {
+                status: UserStatus!
+            }
+        `,
     });
 
     cache.writeData({

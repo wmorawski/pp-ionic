@@ -21,7 +21,9 @@ export const PARTY_FRAGMENT = gql`
             lastName
             id
         }
-
+        cart {
+            id
+        }
         colorTint
         start
         end

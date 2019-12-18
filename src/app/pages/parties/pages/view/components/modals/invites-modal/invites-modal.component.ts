@@ -10,12 +10,12 @@ import { Platform, ModalController } from '@ionic/angular';
 })
 export class InvitesModalComponent implements OnInit {
     @Input() party: Party;
-    invitations$;
+    invitations$: any;
 
     constructor(
         private readonly partyInvitationsQueryGQL: PartyInvitationsQueryGQL,
         private readonly platform: Platform,
-        private readonly modalCtrl: ModalController
+        private readonly modalCtrl: ModalController,
     ) {}
 
     ngOnInit() {
@@ -28,8 +28,8 @@ export class InvitesModalComponent implements OnInit {
                 },
                 {
                     fetchPolicy: 'cache-and-network',
-                }
+                },
             )
-            .valueChanges.pipe(map(res => res.data));
+            .valueChanges.pipe(map((res) => res.data));
     }
 }
