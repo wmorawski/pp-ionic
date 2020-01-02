@@ -5,28 +5,20 @@
         </ion-fab-button>
     </ion-fab>
     <ng-container *ngIf="(cartItems$ | async)?.partyCartItemsConnection?.edges?.length; else noItems">
-        <ion-card *ngFor="let edge of (cartItems$ | async)?.partyCartItemsConnection?.edges">
-            <ion-card-content>
-                <ion-card-title>{{edge.node.name}}</ion-card-title>
-                <ion-card-subtitle
-                    >Added by
-                    <strong
-                        ><ion-text color="primary"
-                            >{{edge.node.user.firstName}} {{edge.node.user.lastName}}</ion-text
-                        ></strong
-                    ></ion-card-subtitle
-                >
-                <ion-card-subtitle
-                    >Quantity: {{edge.node.quantity}} | Price: {{(edge.node.price / 100 ) | currency:
-                    'PLN'}}</ion-card-subtitle
-                >
-                <ion-card-subtitle>
-                    <nz-tag [nzColor]="colorMap[edge.node.status.toLowerCase()]" marginLeft="1em" display="inline-flex">
-                        {{ edge.node.status }}
-                    </nz-tag>
-                </ion-card-subtitle>
-            </ion-card-content>
-        </ion-card>
+        <ion-list-header>
+            <ion-label>
+                Estimated cost:
+                <strong>
+                    <ion-text color="primary">
+                        {{ (cartItems$ | async)?.partyCartItemsConnection?.edges | calculateEstimatedCost | currency:
+                        'PLN' }}
+                    </ion-text>
+                </strong>
+            </ion-label>
+        </ion-list-header>
+
+        <party-cart-item *ngFor="let edge of (cartItems$ | async)?.partyCartItemsConnection?.edges" [item]="edge.node">
+        </party-cart-item>
     </ng-container>
 
     <ng-template #noItems>

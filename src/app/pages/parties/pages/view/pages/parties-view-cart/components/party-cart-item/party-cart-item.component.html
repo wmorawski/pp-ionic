@@ -1,0 +1,61 @@
+<nz-spin [nzSpinning]="loading">
+    <ion-card>
+        <ion-card-content class="ion-no-padding">
+            <div paddingLeft="1em" paddingRight="1em" paddingTop="1em">
+                <ion-card-title display="flex" aic
+                    >{{ item.name }}
+                    <nz-tag [nzColor]="colorMap[item.status.toLowerCase()]" marginLeft="1em" display="inline-flex">
+                        {{ item.status }}
+                    </nz-tag>
+                </ion-card-title>
+                <ion-card-subtitle
+                    >Added by
+                    <strong
+                        ><ion-text color="primary">{{ item.user.firstName }} {{ item.user.lastName }}</ion-text></strong
+                    ></ion-card-subtitle
+                >
+                <ion-card-subtitle
+                    >Quantity: {{ item.quantity }} | Price: {{ item.price / 100 | currency: 'PLN' }}</ion-card-subtitle
+                >
+            </div>
+            <ng-container *ngIf="isAuthor">
+                <ion-row class="buttons" *ngIf="item.status === 'PENDING'">
+                    <ion-col>
+                        <ion-button (click)="accept()" expand="full" fill="clear" size="small" color="success">
+                            Accept
+                        </ion-button>
+                    </ion-col>
+                    <ion-col>
+                        <ion-button (click)="reject()" expand="full" fill="clear" size="small" color="danger">
+                            Reject
+                        </ion-button>
+                    </ion-col>
+                </ion-row>
+                <ion-row class="buttons" *ngIf="item.status === 'ACCEPTED'">
+                    <ion-col>
+                        <ion-button (click)="pending()" expand="full" fill="clear" size="small" color="primary">
+                            Move to pending
+                        </ion-button>
+                    </ion-col>
+                    <ion-col>
+                        <ion-button (click)="reject()" expand="full" fill="clear" size="small" color="danger">
+                            Reject
+                        </ion-button>
+                    </ion-col>
+                </ion-row>
+                <ion-row class="buttons" *ngIf="item.status === 'REJECTED'">
+                    <ion-col>
+                        <ion-button (click)="pending()" expand="full" fill="clear" size="small" color="primary">
+                            Move to pending
+                        </ion-button>
+                    </ion-col>
+                    <ion-col>
+                        <ion-button (click)="accept()" expand="full" fill="clear" size="small" color="success">
+                            Accept
+                        </ion-button>
+                    </ion-col>
+                </ion-row>
+            </ng-container>
+        </ion-card-content>
+    </ion-card>
+</nz-spin>

@@ -41,10 +41,6 @@ export const MESSAGE_FRAGMENT = gql`
             avatar
             id
         }
-        isSendByMe @client
-        optimisticallyAdded @client
-        optimisticallyCreated @client
-        hasOptimisticError @client
         content
         createdAt
     }
@@ -140,6 +136,14 @@ export const PARTY_CART_ITEMS_CONNECTION_NODE_FRAGMENT = gql`
         user {
             firstName
             lastName
+        }
+        cart {
+            id
+            party {
+                author {
+                    id
+                }
+            }
         }
     }
 `;

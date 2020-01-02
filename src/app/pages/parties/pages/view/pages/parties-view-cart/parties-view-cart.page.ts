@@ -1,13 +1,20 @@
 import { Router } from '@angular/router';
 import { getPartyVariables } from 'src/app/shared/helpers/graphql-utils';
-import { Party_CartItemsConnectionGQL, PartyQueryGQL } from './../../../../../../graphql/generated/types';
+import {
+    Party_CartItemsConnectionGQL,
+    PartyQueryGQL,
+    PartyCartItem,
+    Party_UpdatePartyCartItemGQL,
+    PartyCartItemStatus,
+    Party_CartItemsConnectionQuery,
+} from './../../../../../../graphql/generated/types';
 import { AddToCartModalComponent } from './../../components/modals/add-to-cart-modal/add-to-cart-modal.component';
 import { ModalController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import gql from 'graphql-tag';
 import { PARTY_CART_ITEMS_CONNECTION_NODE_FRAGMENT } from 'src/app/graphql/fragments';
-import { Party_CartItemsConnectionVariables } from 'src/app/graphql/generated/types';
+import { Party_CartItemsConnectionVariables, Party } from 'src/app/graphql/generated/types';
 import { map } from 'rxjs/operators';
 
 const variablesSubject = new BehaviorSubject<Party_CartItemsConnectionVariables>({});
@@ -74,13 +81,8 @@ export const PARTY_CART_ITEMS_PAGE_SIZE = 20;
 export class PartiesViewCartPage implements OnInit {
     id: string;
     cartItems$;
-    party;
+    party: any;
     cartId: string;
-    colorMap = {
-        pending: 'blue',
-        accepted: 'green',
-        rejected: 'red',
-    };
     constructor(
         private readonly modalCtrl: ModalController,
         private readonly partyCartItemsGQL: Party_CartItemsConnectionGQL,
@@ -93,7 +95,8 @@ export class PartiesViewCartPage implements OnInit {
     }
     async ionViewWillEnter() {
         this.id = this.router.url.split('/')[2];
-        this.party = this.partyQueryGQL.watch(getPartyVariables(this.id)).valueChanges.subscribe(({ data }) => {
+        this.partyQueryGQL.watch(getPartyVariables(this.id)).valueChanges.subscribe(({ data }) => {
+            this.party = data.party;
             this.cartId = data.party.cart.id;
             this.cartItems$ = this.partyCartItemsGQL
                 .watch({ where: { cart: { id: data.party.cart.id } } })

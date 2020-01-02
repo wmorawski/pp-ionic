@@ -13,7 +13,7 @@ export type Scalars = {
   /** 
  * The `Long` scalar type represents non-fractional signed whole numeric values.
    * Long can represent values between -(2^63) and 2^63 - 1.
- **/
+ */
   Long: any,
 };
 
@@ -782,13 +782,13 @@ export type BatchPayload = {
 
 export type Chat = Node & {
    __typename?: 'Chat',
+  hasUnreadMessages: Scalars['Boolean'],
   id: Scalars['ID'],
   party: Party,
   members?: Maybe<Array<User>>,
   messages?: Maybe<Array<Message>>,
   createdAt: Scalars['DateTime'],
   updatedAt: Scalars['DateTime'],
-  hasUnreadMessages: Scalars['Boolean'],
 };
 
 
@@ -1662,16 +1662,16 @@ export type LocationWhereUniqueInput = {
 
 export type Message = Node & {
    __typename?: 'Message',
+  isSendByMe: Scalars['Boolean'],
+  optimisticallyAdded: Scalars['Boolean'],
+  optimisticallyCreated: Scalars['Boolean'],
+  hasOptimisticError: Scalars['Boolean'],
   id: Scalars['ID'],
   author: User,
   chat: Chat,
   content: Scalars['String'],
   createdAt: Scalars['DateTime'],
   updatedAt: Scalars['DateTime'],
-  isSendByMe: Scalars['Boolean'],
-  optimisticallyAdded: Scalars['Boolean'],
-  optimisticallyCreated: Scalars['Boolean'],
-  hasOptimisticError: Scalars['Boolean'],
 };
 
 /** A connection to a list of items. */
@@ -2081,6 +2081,7 @@ export type Mutation = {
   deleteManyAlbums: BatchPayload,
   importPlaylistsToParty: Scalars['Boolean'],
   combinePlaylists: Playlist,
+  joinParty?: Maybe<Scalars['Boolean']>,
   signup: AuthPayload,
   login: AuthPayload,
   socialLogin: AuthPayload,
@@ -2089,7 +2090,6 @@ export type Mutation = {
   acceptFriendInvitation?: Maybe<Scalars['Boolean']>,
   unfriendPerson?: Maybe<Scalars['Boolean']>,
   resetPassword?: Maybe<AuthPayload>,
-  joinParty?: Maybe<Scalars['Boolean']>,
 };
 
 
@@ -2569,6 +2569,11 @@ export type MutationCombinePlaylistsArgs = {
 };
 
 
+export type MutationJoinPartyArgs = {
+  partyId: Scalars['ID']
+};
+
+
 export type MutationSignupArgs = {
   email: Scalars['String'],
   password: Scalars['String'],
@@ -2618,11 +2623,6 @@ export type MutationResetPasswordArgs = {
   resetToken: Scalars['String'],
   password: Scalars['String'],
   confirmPassword: Scalars['String']
-};
-
-
-export type MutationJoinPartyArgs = {
-  partyId: Scalars['ID']
 };
 
 export enum MutationType {
@@ -6046,13 +6046,13 @@ export type Query = {
   node?: Maybe<Node>,
   authenticateParty: PartyAuthenticationResult,
   hasChats: Scalars['Boolean'],
+  hasParties: Scalars['Boolean'],
+  canJoinParty?: Maybe<Scalars['Boolean']>,
+  partyCartCost: Scalars['Float'],
   me?: Maybe<User>,
   getUsers: Array<Maybe<User>>,
   userFriends: UserFriends,
   paginateUsers: UserConnection,
-  hasParties: Scalars['Boolean'],
-  canJoinParty?: Maybe<Scalars['Boolean']>,
-  partyCartCost: Scalars['Float'],
   temp__?: Maybe<Scalars['Boolean']>,
 };
 
@@ -6450,6 +6450,23 @@ export type QueryHasChatsArgs = {
 };
 
 
+export type QueryHasPartiesArgs = {
+  where?: Maybe<PartyWhereInput>
+};
+
+
+export type QueryCanJoinPartyArgs = {
+  userId: Scalars['String'],
+  inviteSecret: Scalars['String'],
+  partyId: Scalars['String']
+};
+
+
+export type QueryPartyCartCostArgs = {
+  id: Scalars['ID']
+};
+
+
 export type QueryGetUsersArgs = {
   where?: Maybe<UserWhereInput>,
   orderBy?: Maybe<UserOrderByInput>,
@@ -6474,23 +6491,6 @@ export type QueryPaginateUsersArgs = {
   before?: Maybe<Scalars['String']>,
   first?: Maybe<Scalars['Int']>,
   last?: Maybe<Scalars['Int']>
-};
-
-
-export type QueryHasPartiesArgs = {
-  where?: Maybe<PartyWhereInput>
-};
-
-
-export type QueryCanJoinPartyArgs = {
-  userId: Scalars['String'],
-  inviteSecret: Scalars['String'],
-  partyId: Scalars['String']
-};
-
-
-export type QueryPartyCartCostArgs = {
-  id: Scalars['ID']
 };
 
 export enum SocialMediaType {
@@ -6815,6 +6815,7 @@ export type TrackWhereUniqueInput = {
 
 export type User = Node & {
    __typename?: 'User',
+  status: UserStatus,
   id: Scalars['ID'],
   email: Scalars['String'],
   firstName: Scalars['String'],
@@ -6840,7 +6841,6 @@ export type User = Node & {
   appPushNotificationToken?: Maybe<Scalars['String']>,
   pushNotificationsScopes: Array<PushNotificationScope>,
   pendingInvitations?: Maybe<Array<User>>,
-  status: UserStatus,
 };
 
 
@@ -8276,6 +8276,7 @@ export type UserWhereUniqueInput = {
   id?: Maybe<Scalars['ID']>,
   email?: Maybe<Scalars['String']>,
 };
+
 export type Party_FragmentFragment = (
   { __typename?: 'Party' }
   & Pick<Party, 'id' | 'title' | 'description' | 'colorTint' | 'start' | 'end' | 'isPublic' | 'inviteSecret'>
@@ -8296,7 +8297,7 @@ export type Party_FragmentFragment = (
 
 export type Message_FragmentFragment = (
   { __typename?: 'Message' }
-  & Pick<Message, 'id' | 'isSendByMe' | 'optimisticallyAdded' | 'optimisticallyCreated' | 'hasOptimisticError' | 'content' | 'createdAt'>
+  & Pick<Message, 'id' | 'content' | 'createdAt'>
   & { author: (
     { __typename?: 'User' }
     & Pick<User, 'firstName' | 'lastName' | 'avatar' | 'id'>
@@ -8358,6 +8359,16 @@ export type Party_Cart_Items_Connection_Node_FragmentFragment = (
   & { user: (
     { __typename?: 'User' }
     & Pick<User, 'firstName' | 'lastName'>
+  ), cart: (
+    { __typename?: 'PartyCart' }
+    & Pick<PartyCart, 'id'>
+    & { party: (
+      { __typename?: 'Party' }
+      & { author: (
+        { __typename?: 'User' }
+        & Pick<User, 'id'>
+      ) }
+    ) }
   ) }
 );
 
@@ -8433,9 +8444,10 @@ export type CreatePartyMutationVariables = {
 
 export type CreatePartyMutation = (
   { __typename?: 'Mutation' }
-  & { createParty: { __typename?: 'Party' }
+  & { createParty: (
+    { __typename?: 'Party' }
     & Party_FragmentFragment
-   }
+  ) }
 );
 
 export type CreateMessageMutationVariables = {
@@ -8556,9 +8568,8 @@ export type AddTrackToPartyMutation = (
   & { createPartySavedTrack: (
     { __typename?: 'PartySavedTrack' }
     & Pick<PartySavedTrack, 'spotifyId'>
-  )
     & Full_Saved_Track_FragmentFragment
-   }
+  ) }
 );
 
 export type User_DeleteFriendInvitationMutationVariables = {
@@ -8632,9 +8643,8 @@ export type PartiesQueryQuery = (
       { __typename?: 'Location' }
       & Pick<Location, 'placeName' | 'latitude' | 'longitude'>
     ) }
-  )
     & Party_FragmentFragment
-  >> }
+  )>> }
 );
 
 export type PartyQueryQueryVariables = {
@@ -8650,9 +8660,8 @@ export type PartyQueryQuery = (
       { __typename?: 'Location' }
       & Pick<Location, 'placeName' | 'latitude' | 'longitude'>
     ) }
-  )
     & Party_FragmentFragment
-  > }
+  )> }
 );
 
 export type PaginatePartiesQueryQueryVariables = {
@@ -8675,9 +8684,10 @@ export type PaginatePartiesQueryQuery = (
       & Pick<PageInfo, 'hasNextPage' | 'endCursor'>
     ), edges: Array<Maybe<(
       { __typename?: 'PartyEdge' }
-      & { node: { __typename?: 'Party' }
+      & { node: (
+        { __typename?: 'Party' }
         & Party_FragmentFragment
-       }
+      ) }
     )>> }
   ) }
 );
@@ -8744,9 +8754,10 @@ export type PaginateMessagesQueryQuery = (
       & Pick<PageInfo, 'startCursor' | 'hasPreviousPage'>
     ), edges: Array<Maybe<(
       { __typename?: 'MessageEdge' }
-      & { node: { __typename?: 'Message' }
+      & { node: (
+        { __typename?: 'Message' }
         & Message_FragmentFragment
-       }
+      ) }
     )>> }
   ) }
 );
@@ -8808,9 +8819,10 @@ export type PartyInvitationsConnectionQueryQuery = (
     { __typename?: 'PartyInvitationConnection' }
     & { edges: Array<Maybe<(
       { __typename?: 'PartyInvitationEdge' }
-      & { node: { __typename?: 'PartyInvitation' }
+      & { node: (
+        { __typename?: 'PartyInvitation' }
         & Party_Invitation_FragmentFragment
-       }
+      ) }
     )>>, pageInfo: (
       { __typename?: 'PageInfo' }
       & Pick<PageInfo, 'hasNextPage' | 'endCursor'>
@@ -8857,9 +8869,10 @@ export type PartyInvitationsQueryQueryVariables = {
 
 export type PartyInvitationsQueryQuery = (
   { __typename?: 'Query' }
-  & { partyInvitations: Array<Maybe<{ __typename?: 'PartyInvitation' }
+  & { partyInvitations: Array<Maybe<(
+    { __typename?: 'PartyInvitation' }
     & Party_Invitation_FragmentFragment
-  >> }
+  )>> }
 );
 
 export type CanJoinPartyQueryQueryVariables = {
@@ -8890,9 +8903,8 @@ export type Party_SavedTracksQuery = (
   & { partySavedTracks: Array<Maybe<(
     { __typename?: 'PartySavedTrack' }
     & Pick<PartySavedTrack, 'spotifyId'>
-  )
     & Full_Saved_Track_FragmentFragment
-  >> }
+  )>> }
 );
 
 export type ChatMessagesSubscriptionSubscriptionVariables = {
@@ -8928,9 +8940,10 @@ export type PartyInvitationSubscriptionSubscription = (
   & { partyInvitation: Maybe<(
     { __typename?: 'PartyInvitationSubscriptionPayload' }
     & Pick<PartyInvitationSubscriptionPayload, 'mutation'>
-    & { node: Maybe<{ __typename?: 'PartyInvitation' }
+    & { node: Maybe<(
+      { __typename?: 'PartyInvitation' }
       & Party_Invitation_FragmentFragment
-    >, previousValues: Maybe<(
+    )>, previousValues: Maybe<(
       { __typename?: 'PartyInvitationPreviousValues' }
       & Pick<PartyInvitationPreviousValues, 'id' | 'invitedUserId' | 'partyId'>
     )> }
@@ -8944,9 +8957,10 @@ export type Party_CreatePartyCartItemMutationVariables = {
 
 export type Party_CreatePartyCartItemMutation = (
   { __typename?: 'Mutation' }
-  & { createPartyCartItem: { __typename?: 'PartyCartItem' }
+  & { createPartyCartItem: (
+    { __typename?: 'PartyCartItem' }
     & Party_Cart_Items_Connection_Node_FragmentFragment
-   }
+  ) }
 );
 
 export type Party_CartItemsConnectionQueryVariables = {
@@ -8969,9 +8983,10 @@ export type Party_CartItemsConnectionQuery = (
       & Pick<PageInfo, 'hasNextPage' | 'endCursor' | 'startCursor'>
     ), edges: Array<Maybe<(
       { __typename?: 'PartyCartItemEdge' }
-      & { node: { __typename?: 'PartyCartItem' }
+      & { node: (
+        { __typename?: 'PartyCartItem' }
         & Party_Cart_Items_Connection_Node_FragmentFragment
-       }
+      ) }
     )>> }
   ), pagination: (
     { __typename?: 'PartyCartItemConnection' }
@@ -9003,9 +9018,10 @@ export type Party_CreatePlaylistMutationVariables = {
 
 export type Party_CreatePlaylistMutation = (
   { __typename?: 'Mutation' }
-  & { createPlaylist: { __typename?: 'Playlist' }
+  & { createPlaylist: (
+    { __typename?: 'Playlist' }
     & Party_Playlists_Connection_Node_FragmentFragment
-   }
+  ) }
 );
 
 export type Party_PlaylistsConnectionQueryVariables = {
@@ -9031,9 +9047,8 @@ export type Party_PlaylistsConnectionQuery = (
       & { node: (
         { __typename?: 'Playlist' }
         & Pick<Playlist, 'createdAt'>
-      )
         & Party_Playlists_Connection_Node_FragmentFragment
-       }
+      ) }
     )>> }
   ) }
 );
@@ -9078,6 +9093,7 @@ export type Party_DeletePartyMutation = (
     & Pick<Party, 'id'>
   )> }
 );
+
 export type Party_FragmentLocation = Party_FragmentFragment['location'];
 export type Party_FragmentAuthor = Party_FragmentFragment['author'];
 export type Party_FragmentMembers = Party_FragmentFragment['members'][0];
@@ -9092,6 +9108,9 @@ export type Full_Saved_Track_FragmentAlbum = Full_Saved_Track_FragmentFragment['
 export type Party_Playlists_Connection_Node_FragmentUser = Party_Playlists_Connection_Node_FragmentFragment['user'];
 export type Party_Playlists_Connection_Node_FragmentTracks = Party_Playlists_Connection_Node_FragmentFragment['tracks'][0];
 export type Party_Cart_Items_Connection_Node_FragmentUser = Party_Cart_Items_Connection_Node_FragmentFragment['user'];
+export type Party_Cart_Items_Connection_Node_FragmentCart = Party_Cart_Items_Connection_Node_FragmentFragment['cart'];
+export type Party_Cart_Items_Connection_Node_FragmentParty = Party_Cart_Items_Connection_Node_FragmentFragment['cart']['party'];
+export type Party_Cart_Items_Connection_Node_FragmentAuthor = Party_Cart_Items_Connection_Node_FragmentFragment['cart']['party']['author'];
 export type SignupVariables = SignupMutationVariables;
 export type SignupSignup = SignupMutation['signup'];
 export type SignupUser = SignupMutation['signup']['user'];
@@ -9209,7 +9228,8 @@ export type Party_LeavePartyUpdateUser = Party_LeavePartyMutation['updateUser'];
 export type Party_JoinPublicPartyVariables = Party_JoinPublicPartyMutationVariables;
 export type Party_JoinPublicPartyUpdateUser = Party_JoinPublicPartyMutation['updateUser'];
 export type Party_DeletePartyVariables = Party_DeletePartyMutationVariables;
-export type Party_DeletePartyDeleteParty = Party_DeletePartyMutation['deleteParty'];export const Party_FragmentFragmentDoc = gql`
+export type Party_DeletePartyDeleteParty = Party_DeletePartyMutation['deleteParty'];
+export const Party_FragmentFragmentDoc = gql`
     fragment PARTY_FRAGMENT on Party {
   id
   title
@@ -9249,10 +9269,6 @@ export const Message_FragmentFragmentDoc = gql`
     avatar
     id
   }
-  isSendByMe @client
-  optimisticallyAdded @client
-  optimisticallyCreated @client
-  hasOptimisticError @client
   content
   createdAt
 }
@@ -9343,6 +9359,14 @@ export const Party_Cart_Items_Connection_Node_FragmentFragmentDoc = gql`
   user {
     firstName
     lastName
+  }
+  cart {
+    id
+    party {
+      author {
+        id
+      }
+    }
   }
 }
     `;

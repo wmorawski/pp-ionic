@@ -17,6 +17,7 @@ import { PartyItemComponent } from './components/party-item/party-item.component
 import { NgZorroAntdMobileModule } from 'ng-zorro-antd-mobile';
 import { NzButtonModule, NzIconModule, NgZorroAntdModule } from 'ng-zorro-antd';
 import { MomentModule } from 'ngx-moment';
+import { CalculateEstimatedCostPipe } from './pipes/calculate-estimated-cost.pipe';
 
 @NgModule({
     declarations: [
@@ -28,6 +29,7 @@ import { MomentModule } from 'ngx-moment';
         GraphqlErrorComponent,
         PartyItemComponent,
         HeaderComponent,
+        CalculateEstimatedCostPipe,
     ],
     imports: [
         CommonModule,
@@ -55,6 +57,7 @@ import { MomentModule } from 'ngx-moment';
         GraphqlErrorComponent,
         PartyItemComponent,
         HeaderComponent,
+        CalculateEstimatedCostPipe,
     ],
 })
 export class SharedModule {}

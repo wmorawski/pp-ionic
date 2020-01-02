@@ -1,3 +1,7 @@
+import { SharedModule } from 'src/app/shared/shared.module';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { PartyCartItemComponent } from './components/party-cart-item/party-cart-item.component';
+import { StyledComponentsModule } from 'angular-styled-components';
 import { NgZorroAntdModule } from 'ng-zorro-antd';
 import { AddToCartModalComponent } from './../../components/modals/add-to-cart-modal/add-to-cart-modal.component';
 import { NgModule } from '@angular/core';
@@ -24,8 +28,11 @@ const routes: Routes = [
         RouterModule.forChild(routes),
         ReactiveFormsModule,
         NgZorroAntdModule,
+        NzSpinModule,
+        StyledComponentsModule,
+        SharedModule,
     ],
-    declarations: [PartiesViewCartPage, AddToCartModalComponent],
+    declarations: [PartiesViewCartPage, AddToCartModalComponent, PartyCartItemComponent],
     entryComponents: [AddToCartModalComponent],
 })
 export class PartiesViewCartPageModule {}
