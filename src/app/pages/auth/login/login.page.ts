@@ -25,6 +25,7 @@ export class LoginPage implements OnInit {
     public spotifyLoading = false;
     public twitterLoading = false;
     public error = null;
+    public environment = environment;
     private loginSubscription: Subscription;
     constructor(
         private authService: AuthService,

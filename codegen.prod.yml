@@ -1,6 +1,6 @@
 overwrite: true
 schema:
-    - 'https://api.partyplanner.fun/graphql'
+    - 'https://api.ppback.fun/graphql'
     - 'src/app/graphql/client-schema.graphql'
 documents:
     - './src/app/graphql/*.ts'
