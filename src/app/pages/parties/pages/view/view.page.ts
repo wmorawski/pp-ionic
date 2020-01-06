@@ -52,6 +52,7 @@ export class ViewPage implements OnInit {
     id;
     party: Observable<any>;
     loading = true;
+    isMember = false;
     constructor(
         private router: ActivatedRoute,
         private appService: AppService,
@@ -65,20 +66,31 @@ export class ViewPage implements OnInit {
         private readonly deletePartyMutationGQL: Party_DeletePartyGQL,
         private readonly partyInvitationsQueryGQL: PartyInvitationsQueryGQL,
         private readonly joinPartyMutationGQL: JoinPartyMutationGQL,
-        private readonly joinPublicPartyMutationGQL: Party_JoinPublicPartyGQL
+        private readonly joinPublicPartyMutationGQL: Party_JoinPublicPartyGQL,
     ) {}
 
     ngOnInit() {}
     ionViewWillEnter() {
         this.id = this.router.snapshot.params.id;
         this.party = this.partyQueryGQL.watch(getPartyVariables(this.id)).valueChanges.pipe(
-            map(result => {
+            map((result) => {
                 this.loading = result.loading;
                 return result.data.party;
-            })
+            }),
         );
         this.party.subscribe((party: Party) => {
-            if (!party || (!party.members.some(member => member.id === localStorage.getItem(PP_USER_ID)) && !party.isPublic)) {
+            const userId = localStorage.getItem(PP_USER_ID);
+            if (party.members.some((member) => member.id === userId) && party.author.id !== userId) {
+                this.isMember = true;
+            } else if (party.author.id === userId) {
+                this.isMember = true;
+            } else {
+                this.isMember = false;
+            }
+            if (
+                !party ||
+                (!party.members.some((member) => member.id === localStorage.getItem(PP_USER_ID)) && !party.isPublic)
+            ) {
                 this.navCtrl.navigateRoot('/parties');
             }
         });
@@ -95,7 +107,8 @@ export class ViewPage implements OnInit {
         (
             await this.alertCtrl.create({
                 header: 'Are you sure you want to leave this party?',
-                message: 'You will be able to re-join later, either by an direct invitation or by joining manually if party is public.',
+                message:
+                    'You will be able to re-join later, either by an direct invitation or by joining manually if party is public.',
                 buttons: [
                     {
                         text: 'Cancel',
@@ -164,7 +177,7 @@ export class ViewPage implements OnInit {
                             variables: getPartyVariables(this.id),
                         },
                     ],
-                }
+                },
             )
             .subscribe(
                 () => {
@@ -172,7 +185,7 @@ export class ViewPage implements OnInit {
                 },
                 () => {
                     this.showToast('Something went wrong');
-                }
+                },
             );
     }
 
@@ -188,7 +201,7 @@ export class ViewPage implements OnInit {
                 },
                 () => {
                     this.showToast('Something went wrong');
-                }
+                },
             );
     }
 
@@ -204,7 +217,7 @@ export class ViewPage implements OnInit {
                             },
                         },
                     },
-                    { refetchQueries: [{ query: PARTY_QUERY, variables: getPartyVariables(this.id) }] }
+                    { refetchQueries: [{ query: PARTY_QUERY, variables: getPartyVariables(this.id) }] },
                 )
                 .subscribe(
                     () => {
@@ -212,18 +225,18 @@ export class ViewPage implements OnInit {
                     },
                     () => {
                         this.showToast('Something went wrong');
-                    }
+                    },
                 );
         } else {
             this.partyInvitationsQueryGQL
                 .watch({ where: { partyId: this.id } }, { fetchPolicy: 'cache-and-network' })
-                .valueChanges.pipe(map(res => res.data.partyInvitations))
-                .subscribe(invitations => {
-                    if (invitations.some(inv => inv.user.id === localStorage.getItem(PP_USER_ID))) {
+                .valueChanges.pipe(map((res) => res.data.partyInvitations))
+                .subscribe((invitations) => {
+                    if (invitations.some((inv) => inv.user.id === localStorage.getItem(PP_USER_ID))) {
                         this.joinPartyMutationGQL
                             .mutate(
                                 { partyId: this.id },
-                                { refetchQueries: [{ query: PARTY_QUERY, variables: getPartyVariables(this.id) }] }
+                                { refetchQueries: [{ query: PARTY_QUERY, variables: getPartyVariables(this.id) }] },
                             )
                             .subscribe(
                                 () => {
@@ -231,7 +244,7 @@ export class ViewPage implements OnInit {
                                 },
                                 () => {
                                     this.showToast('Something went wrong');
-                                }
+                                },
                             );
                     }
                 });
@@ -245,7 +258,8 @@ export class ViewPage implements OnInit {
                 (party: Party) => {
                     let buttons: ActionSheetButton[] = [];
                     const userId = localStorage.getItem(PP_USER_ID);
-                    if (party.members.some(member => member.id === userId) && party.author.id !== userId) {
+                    if (party.members.some((member) => member.id === userId) && party.author.id !== userId) {
+                        this.isMember = true;
                         buttons = [
                             {
                                 text: 'Leave party',
@@ -254,6 +268,7 @@ export class ViewPage implements OnInit {
                             },
                         ];
                     } else if (party.author.id === userId) {
+                        this.isMember = true;
                         buttons = [
                             {
                                 text: 'Manage invitations',
@@ -274,6 +289,7 @@ export class ViewPage implements OnInit {
                             },
                         ];
                     } else if (party.isPublic) {
+                        this.isMember = false;
                         buttons = [
                             {
                                 text: 'Join to party',
@@ -285,9 +301,9 @@ export class ViewPage implements OnInit {
                     }
                     resolve(buttons);
                 },
-                error => {
+                (error) => {
                     reject(error);
-                }
+                },
             );
         });
     }

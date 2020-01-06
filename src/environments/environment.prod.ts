@@ -17,8 +17,8 @@ export const environment = {
                 'playlist-modify-private',
                 'streaming',
             ],
-            tokenExchangeUrl: 'auth/spotify/exchange',
-            tokenRefreshUrl: 'auth/spotify/refresh',
+            tokenExchangeUrl: 'https://api.ppback.fun/auth/spotify/exchange',
+            tokenRefreshUrl: 'https://api.ppback.fun/auth/spotify/refresh',
         },
     },
 };

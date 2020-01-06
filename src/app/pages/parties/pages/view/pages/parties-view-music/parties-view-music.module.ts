@@ -1,3 +1,5 @@
+import { PlaylistImportableComponent } from './components/playlists/import-playlist-modal/playlist-importable/playlist-importable.component';
+import { ImportPlaylistModalComponent } from './components/playlists/import-playlist-modal/import-playlist-modal.component';
 import { CreatePlaylistModalComponent } from './components/create-playlist-modal/create-playlist-modal.component';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { PlaylistComponent } from './components/playlist/playlist.component';
@@ -50,9 +52,11 @@ const routes: Routes = [
         PlaylistsComponent,
         PlaylistComponent,
         SavedTrackComponent,
+        ImportPlaylistModalComponent,
         CreatePlaylistModalComponent,
+        PlaylistImportableComponent,
     ],
-    entryComponents: [CreatePlaylistModalComponent],
+    entryComponents: [CreatePlaylistModalComponent, ImportPlaylistModalComponent],
     providers: [SpotifyAuth, Media],
 })
 export class PartiesViewMusicPageModule {}

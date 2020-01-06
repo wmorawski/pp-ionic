@@ -18,44 +18,57 @@
                     >Quantity: {{ item.quantity }} | Price: {{ item.price / 100 | currency: 'PLN' }}</ion-card-subtitle
                 >
             </div>
-            <ng-container *ngIf="isAuthor">
-                <ion-row class="buttons" *ngIf="item.status === 'PENDING'">
-                    <ion-col>
-                        <ion-button (click)="accept()" expand="full" fill="clear" size="small" color="success">
-                            Accept
-                        </ion-button>
-                    </ion-col>
-                    <ion-col>
-                        <ion-button (click)="reject()" expand="full" fill="clear" size="small" color="danger">
-                            Reject
-                        </ion-button>
-                    </ion-col>
-                </ion-row>
-                <ion-row class="buttons" *ngIf="item.status === 'ACCEPTED'">
-                    <ion-col>
-                        <ion-button (click)="pending()" expand="full" fill="clear" size="small" color="primary">
-                            Move to pending
-                        </ion-button>
-                    </ion-col>
-                    <ion-col>
-                        <ion-button (click)="reject()" expand="full" fill="clear" size="small" color="danger">
-                            Reject
-                        </ion-button>
-                    </ion-col>
-                </ion-row>
-                <ion-row class="buttons" *ngIf="item.status === 'REJECTED'">
-                    <ion-col>
-                        <ion-button (click)="pending()" expand="full" fill="clear" size="small" color="primary">
-                            Move to pending
-                        </ion-button>
-                    </ion-col>
-                    <ion-col>
-                        <ion-button (click)="accept()" expand="full" fill="clear" size="small" color="success">
-                            Accept
-                        </ion-button>
-                    </ion-col>
-                </ion-row>
-            </ng-container>
+            <ion-row class="buttons" *ngIf="item.status === 'PENDING' && (isAuthor || isOwn)">
+                <ion-col *ngIf="isAuthor">
+                    <ion-button (click)="accept()" expand="full" fill="clear" size="small" color="success">
+                        Accept
+                    </ion-button>
+                </ion-col>
+                <ion-col *ngIf="isAuthor">
+                    <ion-button (click)="reject()" expand="full" fill="clear" size="small" color="danger">
+                        Reject
+                    </ion-button>
+                </ion-col>
+                <ion-col *ngIf="isAuthor || isOwn">
+                    <ion-button (click)="delete()" expand="full" fill="clear" size="small" color="danger">
+                        Delete
+                    </ion-button>
+                </ion-col>
+            </ion-row>
+            <ion-row class="buttons" *ngIf="item.status === 'ACCEPTED' && isAuthor">
+                <ion-col>
+                    <ion-button (click)="pending()" expand="full" fill="clear" size="small" color="primary">
+                        Move to pending
+                    </ion-button>
+                </ion-col>
+                <ion-col>
+                    <ion-button (click)="reject()" expand="full" fill="clear" size="small" color="danger">
+                        Reject
+                    </ion-button>
+                </ion-col>
+                <ion-col>
+                    <ion-button (click)="delete()" expand="full" fill="clear" size="small" color="danger">
+                        Delete
+                    </ion-button>
+                </ion-col>
+            </ion-row>
+            <ion-row class="buttons" *ngIf="item.status === 'REJECTED' && (isAuthor || isOwn)">
+                <ion-col *ngIf="isAuthor">
+                    <ion-button (click)="pending()" expand="full" fill="clear" size="small" color="primary">
+                        Move to pending
+                    </ion-button>
+                </ion-col>
+                <ion-col *ngIf="isAuthor">
+                    <ion-button (click)="accept()" expand="full" fill="clear" size="small" color="danger">
+                        Accept
+                    </ion-button>
+                </ion-col>
+                <ion-col *ngIf="isAuthor || isOwn">
+                    <ion-button (click)="delete()" expand="full" fill="clear" size="small" color="success">
+                        Delete
+                    </ion-button>
+                </ion-col>
+            </ion-row>
         </ion-card-content>
     </ion-card>
 </nz-spin>

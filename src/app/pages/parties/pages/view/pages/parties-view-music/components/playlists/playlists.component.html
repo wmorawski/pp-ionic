@@ -1,5 +1,17 @@
 <ng-container *ngIf="(playlists$ | async)?.data?.playlistsConnection?.edges as playlists; else noParties">
-    <app-playlist [playlist]="playlist" *ngFor="let playlist of playlists"></app-playlist>
+    <ng-container *ngIf="playlists.length; else noParties">
+        <app-playlist [playlist]="playlist" *ngFor="let playlist of playlists"></app-playlist>
+    </ng-container>
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button>
+            <ion-icon name="vinyl"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-list side="start">
+            <ion-fab-button (click)="openImportModal()"><ion-icon name="cloud-download"></ion-icon></ion-fab-button>
+            <ion-fab-button><ion-icon name="check-square"></ion-icon></ion-fab-button>
+            <ion-fab-button><ion-icon name="spotify"></ion-icon></ion-fab-button>
+        </ion-fab-list>
+    </ion-fab>
 </ng-container>
 <ng-template #noParties>
     <nz-empty></nz-empty>

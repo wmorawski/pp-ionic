@@ -1,3 +1,5 @@
+import { ImportPlaylistModalComponent } from './import-playlist-modal/import-playlist-modal.component';
+import { ModalController } from '@ionic/angular';
 import { Component, OnInit, Input } from '@angular/core';
 import { PARTY_PLAYLISTS_CONNECTION_NODE_FRAGMENT } from 'src/app/graphql/fragments';
 import { Apollo } from 'apollo-angular';
@@ -47,7 +49,7 @@ export const PLAYLIST_CONNECTION_PAGINATION_SIZE = 20;
 export class PlaylistsComponent implements OnInit {
     @Input() id: string;
     playlists$: any;
-    constructor(private readonly apollo: Apollo) {}
+    constructor(private readonly apollo: Apollo, private readonly modalCtrl: ModalController) {}
 
     ngOnInit() {
         this.playlists$ = this.apollo.watchQuery({
@@ -60,5 +62,16 @@ export class PlaylistsComponent implements OnInit {
             },
             notifyOnNetworkStatusChange: true,
         }).valueChanges;
+    }
+
+    async openImportModal() {
+        (
+            await this.modalCtrl.create({
+                component: ImportPlaylistModalComponent,
+                componentProps: {
+                    id: this.id,
+                },
+            })
+        ).present();
     }
 }

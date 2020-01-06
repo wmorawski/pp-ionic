@@ -1,0 +1,26 @@
+<nz-list-item [nzActions]="[spotifyButton, checkBox]">
+    <nz-list-item-meta [nzTitle]="nzTitle" [nzAvatar]="img" [nzDescription]="description">
+        <ng-template #nzTitle>
+            {{ playlist.node.name }}
+        </ng-template>
+    </nz-list-item-meta>
+</nz-list-item>
+<ng-template #spotifyButton>
+    <ion-button (click)="viewOnSpotify()" size="small" fill="outline" color="success">
+        <ion-icon slot="start" name="spotify"></ion-icon> View
+    </ion-button>
+</ng-template>
+<ng-template #checkBox>
+    <ion-checkbox [(ngModel)]="isSelected" (ionChange)="handleChange($event)"></ion-checkbox>
+</ng-template>
+<ng-template #description
+    >By
+    <strong
+        ><ion-text color="primary"
+            >{{ playlist.node.user.firstName }} {{ playlist.node.user.lastName }}</ion-text
+        ></strong
+    ></ng-template
+>
+<ng-template #img>
+    <nz-avatar [nzShape]="'square'" [nzSrc]="playlist.node.imageUrl" style="width: 48; height: 48"></nz-avatar>
+</ng-template>

@@ -1,34 +1,40 @@
 <ng-container style="position: relative" *ngIf="savedTracks$">
     <ng-container style="position: relative" *ngIf="savedTracks$ | async as savedTracks; else noSavedTracksOrLoading">
-        <ion-grid style="position: relative">
-            <ion-row style="position: sticky; top: 0">
-                <ion-col size="6">
-                    <ion-button (click)="toggleSelectMode()" [color]="selectMode ? 'danger' : 'primary'" expand="block">
-                        <ion-icon slot="start" name="check-square"></ion-icon>
-                        {{ selectMode ? 'Cancel selection' : 'Select tracks' }}
-                    </ion-button>
-                </ion-col>
-                <ion-col size="6">
-                    <ion-button
-                        [disabled]="!selectedTracks.length"
-                        (click)="startCreatingPlaylist()"
-                        color="success"
-                        expand="block"
-                    >
-                        <ion-icon slot="start" name="spotify"></ion-icon>
-                        Create playlist
-                    </ion-button>
-                </ion-col>
-            </ion-row>
-        </ion-grid>
-        <saved-track
-            [track]="track"
-            *ngFor="let track of savedTracks"
-            (trackChange)="handleTrackChange($event)"
-            (spotifyPlay)="handleSpotifyPlay($event)"
-            [selectMode]="selectMode"
-            (trackSelectionChange)="handleTrackSelectionChange($event)"
-        ></saved-track>
+        <ng-container *ngIf="savedTracks.length; else noSavedTracks">
+            <ion-grid style="position: relative">
+                <ion-row style="position: sticky; top: 0">
+                    <ion-col size="6">
+                        <ion-button
+                            (click)="toggleSelectMode()"
+                            [color]="selectMode ? 'danger' : 'primary'"
+                            expand="block"
+                        >
+                            <ion-icon slot="start" name="check-square"></ion-icon>
+                            {{ selectMode ? 'Cancel selection' : 'Select tracks' }}
+                        </ion-button>
+                    </ion-col>
+                    <ion-col size="6">
+                        <ion-button
+                            [disabled]="!selectedTracks.length"
+                            (click)="startCreatingPlaylist()"
+                            color="success"
+                            expand="block"
+                        >
+                            <ion-icon slot="start" name="spotify"></ion-icon>
+                            Create playlist
+                        </ion-button>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+            <saved-track
+                [track]="track"
+                *ngFor="let track of savedTracks"
+                (trackChange)="handleTrackChange($event)"
+                (spotifyPlay)="handleSpotifyPlay($event)"
+                [selectMode]="selectMode"
+                (trackSelectionChange)="handleTrackSelectionChange($event)"
+            ></saved-track>
+        </ng-container>
     </ng-container>
     <ng-template #noSavedTracksOrLoading>
         <ng-container>
@@ -36,8 +42,11 @@
                 <nz-spin nzSimple nzSize="large"></nz-spin>
             </div>
         </ng-container>
-        <ng-template #noSavedTracks>
-            <nz-empty></nz-empty>
-        </ng-template>
+    </ng-template>
+    <ng-template #noSavedTracks>
+        <nz-empty [nzNotFoundContent]="contentTpl"></nz-empty>
+    </ng-template>
+    <ng-template #contentTpl>
+        <span>There is no saved tracks for this party</span>
     </ng-template>
 </ng-container>

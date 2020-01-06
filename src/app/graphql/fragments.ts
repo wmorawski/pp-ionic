@@ -134,6 +134,7 @@ export const PARTY_CART_ITEMS_CONNECTION_NODE_FRAGMENT = gql`
         quantity
         status
         user {
+            id
             firstName
             lastName
         }

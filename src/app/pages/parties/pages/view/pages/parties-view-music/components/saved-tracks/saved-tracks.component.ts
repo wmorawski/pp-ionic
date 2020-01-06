@@ -26,12 +26,9 @@ export class SavedTracksComponent implements OnInit {
     currentTrack = null;
     constructor(private readonly modalCtrl: ModalController) {}
 
-    ngOnInit() {
-        console.log(this.savedTracks$);
-    }
+    ngOnInit() {}
 
     handleTrackChange(ev) {
-        console.log(ev);
         // this.currentTrack = ev;
     }
 

@@ -1,0 +1,70 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>Import playlists</ion-title>
+        <ion-buttons slot="end">
+            <ion-button (click)="handleDismiss()">Close</ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+<ion-content color="light">
+    <ion-grid>
+        <ion-row>
+            <ion-col size="12">
+                <SearchBar
+                    [placeholder]="'Search for playlist'"
+                    [(ngModel)]="filterQuery"
+                    (ngModelChange)="handleFilter($event)"
+                    [maxLength]="32"
+                    cancelText="Cancel"
+                    style="background: transparent"
+                ></SearchBar>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col size="12">
+                <ion-list-header>
+                    <ion-label
+                        >Playlists selected:
+                        <strong
+                            ><ion-text color="primary">{{ selectedPlaylists.length }}</ion-text></strong
+                        ></ion-label
+                    >
+                </ion-list-header>
+            </ion-col>
+        </ion-row>
+        <ion-row *ngIf="playlists$ | async as playlists; else noPlaylists">
+            <ion-col size="12">
+                <nz-list
+                    class="demo-loadmore-list"
+                    [nzBordered]="true"
+                    [nzDataSource]="playlists"
+                    [nzItemLayout]="'horizontal'"
+                    [nzLoading]="loading"
+                    [nzRenderItem]="item"
+                >
+                    <ng-template #item let-item>
+                        <party-playlist-importable
+                            [playlist]="item"
+                            (selectionChanged)="handleChangeSelection($event, item)"
+                        ></party-playlist-importable>
+                    </ng-template>
+                </nz-list>
+            </ion-col>
+        </ion-row>
+        <ng-template #noPlaylists>
+            <nz-empty></nz-empty>
+        </ng-template>
+        <ion-row>
+            <ion-col size="12">
+                <ion-button
+                    (click)="importPlaylists()"
+                    expand="block"
+                    color="success"
+                    [disabled]="!selectedPlaylists.length"
+                >
+                    Import playlists
+                </ion-button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>

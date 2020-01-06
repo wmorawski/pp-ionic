@@ -19,11 +19,11 @@
                     <ion-icon name="alert-circle" size="small"></ion-icon>
                     About
                 </ion-tab-button>
-                <ion-tab-button tab="music">
+                <ion-tab-button tab="music" *ngIf="isMember">
                     <ion-icon name="spotify" size="small"></ion-icon>
                     Music
                 </ion-tab-button>
-                <ion-tab-button tab="cart">
+                <ion-tab-button tab="cart" *ngIf="isMember">
                     <ion-icon name="shopping-cart" size="small"></ion-icon>
                     Cart
                 </ion-tab-button>

@@ -111,8 +111,13 @@ export class LoginPage implements OnInit {
 
     async spotifyLogin() {
         this.spotifyLoading = true;
-        const authRes = await this.authWithSpotify();
-        init({ token: authRes.accessToken });
+        try {
+            const authRes = await this.authWithSpotify();
+            init({ token: authRes.accessToken });
+        } catch (e) {
+            this.spotifyLoading = false;
+        }
+
         const profile = await getCurrentUserProfile();
         const [firstName, lastName] = profile.displayName.split(' ');
         this.loginSubscription = this.apollo
