@@ -12,6 +12,7 @@ import {
 import { Component, OnInit, Input, EventEmitter } from '@angular/core';
 import gql from 'graphql-tag';
 import { pluck } from 'ramda';
+import { PARTY_PLAYLISTS_CONNECTION_QUERY, PLAYLIST_CONNECTION_PAGINATION_SIZE } from '../playlists.component';
 
 export const IMPORT_PLAYLISTS_TO_PARTY_MUTATION = gql`
     mutation Party_ImportPlaylistsToParty($playlists: String!, $partyId: ID!) {
@@ -93,10 +94,25 @@ export class ImportPlaylistModalComponent implements OnInit {
 
     importPlaylists() {
         this.iptpmGQL
-            .mutate({
-                partyId: this.id,
-                playlists: pluck('id', this.selectedPlaylists).join(','),
-            })
+            .mutate(
+                {
+                    partyId: this.id,
+                    playlists: pluck('id', this.selectedPlaylists).join(','),
+                },
+                {
+                    refetchQueries: [
+                        {
+                            query: PARTY_PLAYLISTS_CONNECTION_QUERY,
+                            variables: {
+                                where: {
+                                    parties_some: { id: this.id },
+                                },
+                                first: PLAYLIST_CONNECTION_PAGINATION_SIZE,
+                            },
+                        },
+                    ],
+                }
+            )
             .subscribe(res => {
                 this.modalCtrl.dismiss();
             });
