@@ -1,6 +1,11 @@
 <ng-container *ngIf="(playlists$ | async)?.data?.playlistsConnection?.edges as playlists; else noParties">
     <ng-container *ngIf="playlists.length; else noParties">
-        <app-playlist [playlist]="playlist" *ngFor="let playlist of playlists"></app-playlist>
+        <app-playlist
+            [playlist]="playlist"
+            [selectionMode]="selectionMode"
+            *ngFor="let playlist of playlists"
+            (playlistSelectionChange)="handlePlaylistSelectionChange($event, playlist)"
+        ></app-playlist>
     </ng-container>
     <ion-fab vertical="bottom" horizontal="end" slot="fixed">
         <ion-fab-button>
@@ -8,8 +13,15 @@
         </ion-fab-button>
         <ion-fab-list side="start">
             <ion-fab-button (click)="openImportModal()"><ion-icon name="cloud-download"></ion-icon></ion-fab-button>
-            <ion-fab-button><ion-icon name="check-square"></ion-icon></ion-fab-button>
-            <ion-fab-button><ion-icon name="spotify"></ion-icon></ion-fab-button>
+            <ion-fab-button (click)="toggleSelectionMode()" [activated]="selectionMode"
+                ><ion-icon name="check-square"></ion-icon
+            ></ion-fab-button>
+            <ion-fab-button
+                (click)="combineSelected()"
+                [disabled]="selectedPlaylists.length < 2"
+                [color]="selectedPlaylists.length < 2 ? 'default' : 'success'"
+                ><ion-icon name="spotify"></ion-icon
+            ></ion-fab-button>
         </ion-fab-list>
     </ion-fab>
 </ng-container>

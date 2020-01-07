@@ -39,6 +39,11 @@ export const routes: Routes = [
         canActivate: [AuthGuard],
     },
     {
+        path: 'people',
+        loadChildren: () => import('./pages/people/people.module').then((m) => m.PeoplePageModule),
+        canActivate: [AuthGuard],
+    },
+    {
         path: 'profile',
         loadChildren: () => import('./pages/profile/profile.module').then((m) => m.ProfilePageModule),
         canActivate: [AuthGuard],
@@ -47,8 +52,7 @@ export const routes: Routes = [
         path: 'more',
         loadChildren: () => import('./pages/more/more.module').then((m) => m.MorePageModule),
         canActivate: [AuthGuard],
-    },  { path: 'parties-view-cart', loadChildren: './pages/parties/pages/view/pages/parties-view-cart/parties-view-cart.module#PartiesViewCartPageModule' },
-
+    },
 ];
 
 @NgModule({

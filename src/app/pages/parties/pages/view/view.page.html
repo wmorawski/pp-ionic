@@ -14,10 +14,12 @@
     </ion-header>
     <ion-content color="light">
         <ion-tabs>
-            <ion-tab-bar slot="bottom">
+            <ion-tab-bar
+                slot="bottom"
+                [ngClass]="{ 'navbar-hidden': !isNavbarVisible, 'navbar-visible': isNavbarVisible }"
+            >
                 <ion-tab-button tab="home">
                     <ion-icon name="alert-circle" size="small"></ion-icon>
-                    About
                 </ion-tab-button>
                 <ion-tab-button tab="music" *ngIf="isMember">
                     <ion-icon name="spotify" size="small"></ion-icon>

@@ -9,6 +9,7 @@ export const ME_QUERY = gql`
             firstName
             lastName
             avatar
+            isPrivate
         }
     }
 `;

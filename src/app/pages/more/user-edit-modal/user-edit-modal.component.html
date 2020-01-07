@@ -1,0 +1,82 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>Edit your profile</ion-title>
+    </ion-toolbar>
+</ion-header>
+<ion-content color="light">
+    <ion-grid fixed>
+        <ion-row>
+            <ion-col size="12">
+                <ion-card>
+                    <ion-card-header>
+                        <ion-card-title>About you</ion-card-title>
+                    </ion-card-header>
+                    <ion-card-content>
+                        <form nz-form [formGroup]="aboutForm" (ngSubmit)="onAboutSubmit()">
+                            <nz-form-item>
+                                <nz-form-label [nzSpan]="6" nzFor="firstName">First name</nz-form-label>
+                                <nz-form-control [nzSpan]="14">
+                                    <input
+                                        nz-input
+                                        formControlName="firstName"
+                                        name="firstName"
+                                        type="text"
+                                        id="firstName"
+                                        placeholder="First name"
+                                    />
+                                </nz-form-control>
+                            </nz-form-item>
+                            <nz-form-item>
+                                <nz-form-label [nzSpan]="6" nzFor="lastName">Last name</nz-form-label>
+                                <nz-form-control [nzSpan]="14">
+                                    <input
+                                        nz-input
+                                        formControlName="lastName"
+                                        name="lastName"
+                                        type="text"
+                                        id="lastName"
+                                        placeholder="Last name"
+                                    />
+                                </nz-form-control>
+                            </nz-form-item>
+                            <button
+                                nz-button
+                                nzType="primary"
+                                [disabled]="aboutForm.invalid"
+                                nzBlock
+                                marginTop="1em"
+                                marginBottom="1.5em"
+                            >
+                                Save changes
+                            </button>
+                        </form>
+                    </ion-card-content>
+                </ion-card>
+            </ion-col>
+            <ion-col size="12">
+                <ion-card>
+                    <ion-card-header>
+                        <ion-card-title>Privacy</ion-card-title>
+                    </ion-card-header>
+                    <ion-card-content>
+                        <form nz-form [formGroup]="privacyForm" (ngSubmit)="onPrivacySubmit()">
+                            <CheckboxItem formControlName="visible">
+                                <small>I want to be visible on <strong>People</strong> tab</small>
+                            </CheckboxItem>
+                            <button
+                                nz-button
+                                nzType="primary"
+                                [disabled]="privacyForm.invalid"
+                                nzBlock
+                                marginTop="1em"
+                                marginBottom="1.5em"
+                            >
+                                Save changes
+                            </button>
+                        </form>
+                    </ion-card-content>
+                </ion-card>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>

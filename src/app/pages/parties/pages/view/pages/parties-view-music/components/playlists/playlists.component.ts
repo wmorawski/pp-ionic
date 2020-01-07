@@ -1,9 +1,14 @@
+import { CombinePlaylistModalComponent } from './combine-playlist-modal/combine-playlist-modal.component';
+import { PlaylistEdge } from 'src/app/graphql/generated/types';
+import { ifElse } from 'ramda';
+import { Playlist } from './../../../../../../../../graphql/generated/types';
 import { ImportPlaylistModalComponent } from './import-playlist-modal/import-playlist-modal.component';
 import { ModalController } from '@ionic/angular';
 import { Component, OnInit, Input } from '@angular/core';
 import { PARTY_PLAYLISTS_CONNECTION_NODE_FRAGMENT } from 'src/app/graphql/fragments';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
+import { isTrue } from 'src/app/shared/helpers/is-true';
 
 export const PARTY_PLAYLISTS_CONNECTION_QUERY = gql`
     query Party_PlaylistsConnection(
@@ -49,6 +54,8 @@ export const PLAYLIST_CONNECTION_PAGINATION_SIZE = 20;
 export class PlaylistsComponent implements OnInit {
     @Input() id: string;
     playlists$: any;
+    selectionMode = false;
+    selectedPlaylists: Playlist[] = [];
     constructor(private readonly apollo: Apollo, private readonly modalCtrl: ModalController) {}
 
     ngOnInit() {
@@ -73,5 +80,39 @@ export class PlaylistsComponent implements OnInit {
                 },
             })
         ).present();
+    }
+
+    toggleSelectionMode() {
+        this.selectionMode = !this.selectionMode;
+    }
+
+    async combineSelected() {
+        const modal = await this.modalCtrl.create({
+            component: CombinePlaylistModalComponent,
+            componentProps: {
+                id: this.id,
+                playlists: this.selectedPlaylists,
+            },
+        });
+        modal.present();
+        modal.onWillDismiss().then(() => {
+            this.selectedPlaylists = [];
+            this.selectionMode = false;
+        });
+    }
+
+    handlePlaylistSelectionChange(e, playlist: PlaylistEdge) {
+        ifElse(
+            isTrue,
+            () => this.selectPlaylist(playlist),
+            () => this.deselectPlaylist(playlist),
+        )(e);
+    }
+
+    selectPlaylist(edge: PlaylistEdge) {
+        this.selectedPlaylists.push(edge.node);
+    }
+    deselectPlaylist(edge: PlaylistEdge) {
+        this.selectedPlaylists = this.selectedPlaylists.filter((p) => p.id !== edge.node.id);
     }
 }

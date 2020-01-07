@@ -1,0 +1,35 @@
+<ion-content color="light">
+    <ion-grid fixed paddingTop="0" paddingLeft="0" paddingRight="0">
+        <ion-row paddingTop="0" paddingLeft="0" paddingRight="0">
+            <ion-col size="12" paddingTop="0" paddingLeft="0" paddingRight="0">
+                <SearchBar
+                    [placeholder]="'Search for user'"
+                    [(ngModel)]="searchQuery"
+                    (ngModelChange)="handleFilter($event)"
+                    [maxLength]="32"
+                    cancelText="Cancel"
+                ></SearchBar>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col size="12">
+                <ion-row *ngIf="people$ | async as people">
+                    <ion-col size="12">
+                        <nz-list
+                            class="demo-loadmore-list"
+                            [nzDataSource]="people"
+                            [nzSplit]="true"
+                            [nzItemLayout]="'horizontal'"
+                            [nzLoading]="loading"
+                            [nzRenderItem]="item"
+                        >
+                            <ng-template #item let-item>
+                                <people-user [user]="item"></people-user>
+                            </ng-template>
+                        </nz-list>
+                    </ion-col>
+                </ion-row>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>

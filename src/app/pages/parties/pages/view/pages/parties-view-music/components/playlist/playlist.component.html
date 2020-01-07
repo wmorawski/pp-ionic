@@ -1,42 +1,56 @@
 <ion-card style="margin-top: .8em !important; margin-bottom: .8em !important" *ngIf="playlist; else noPlaylist">
     <ion-card-content style="padding: 0">
-        <ion-row aic style="padding: .6em">
-            <ion-col size="2">
-                <ion-img
-                    style="border-radius: 6px; box-shadow: 0 4px 16px rgba(0,0,0,.12);"
-                    [src]="playlist.node.imageUrl"
-                ></ion-img>
-            </ion-col>
-            <ion-col size="10" display="flex" aic fdc>
-                <ion-card-title style="font-size: 90%">{{ playlist.node.name }}</ion-card-title>
-                <ion-card-subtitle style="font-size: 60%">
-                    By {{ playlist.node.user.firstName }} {{ playlist.node.user.lastName }} &nbsp;
-                    <nz-tag
-                        [nzColor]="playlist.node.importable ? 'blue' : 'gold'"
-                        style="font-size: 90%;"
-                        display="inline-flex"
-                    >
-                        {{ playlist.node.importable ? 'Importable' : 'Private' }}
-                    </nz-tag>
-                </ion-card-subtitle>
-            </ion-col>
-        </ion-row>
         <ion-row>
-            <ion-col>
-                <ion-button
-                    [href]="playlist.node.spotifyExternalUrl"
-                    expand="full"
-                    fill="clear"
-                    size="small"
-                    color="success"
-                >
-                    <ion-icon name="spotify"></ion-icon>
-                </ion-button>
+            <ion-col
+                [size]="selectionMode ? 2 : 0"
+                [ngClass]="{ defaultHidden: !selectionMode, animateWidth: true, 'ion-no-padding ion-no-margin': true }"
+                aic
+                jcc
+                display="flex"
+                style="margin: 0; padding: 0"
+            >
+                <ion-checkbox (ionChange)="onSelectionChange($event)" [(ngModel)]="selected"></ion-checkbox>
             </ion-col>
-            <ion-col>
-                <ion-button (click)="showInfo()" expand="full" fill="clear" size="small" color="primary">
-                    <ion-icon name="info"></ion-icon>
-                </ion-button>
+            <ion-col [size]="selectionMode ? 10 : 12" class="ion-no-padding ion-no-margin">
+                <ion-row aic style="padding: .6em">
+                    <ion-col size="2">
+                        <ion-img
+                            style="border-radius: 6px; box-shadow: 0 4px 16px rgba(0,0,0,.12);"
+                            [src]="playlist.node.imageUrl"
+                        ></ion-img>
+                    </ion-col>
+                    <ion-col size="10" display="flex" aic fdc>
+                        <ion-card-title style="font-size: 90%">{{ playlist.node.name }}</ion-card-title>
+                        <ion-card-subtitle style="font-size: 60%">
+                            By {{ playlist.node.user.firstName }} {{ playlist.node.user.lastName }} &nbsp;
+                            <nz-tag
+                                [nzColor]="playlist.node.importable ? 'blue' : 'gold'"
+                                style="font-size: 90%;"
+                                display="inline-flex"
+                            >
+                                {{ playlist.node.importable ? 'Importable' : 'Private' }}
+                            </nz-tag>
+                        </ion-card-subtitle>
+                    </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col>
+                        <ion-button
+                            [href]="playlist.node.spotifyExternalUrl"
+                            expand="full"
+                            fill="clear"
+                            size="small"
+                            color="success"
+                        >
+                            <ion-icon name="spotify"></ion-icon>
+                        </ion-button>
+                    </ion-col>
+                    <ion-col>
+                        <ion-button (click)="showInfo()" expand="full" fill="clear" size="small" color="primary">
+                            <ion-icon name="info"></ion-icon>
+                        </ion-button>
+                    </ion-col>
+                </ion-row>
             </ion-col>
         </ion-row>
     </ion-card-content>

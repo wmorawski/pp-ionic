@@ -53,6 +53,7 @@ export class ViewPage implements OnInit {
     party: Observable<any>;
     loading = true;
     isMember = false;
+    public isNavbarVisible = true;
     constructor(
         private router: ActivatedRoute,
         private appService: AppService,
@@ -95,6 +96,9 @@ export class ViewPage implements OnInit {
             }
         });
         this.appService.hideMainNav();
+        this.appService.isSecondVisible.subscribe((visible) => {
+            this.isNavbarVisible = visible;
+        });
         // this.platform.backButton.subscribe((e) => {
         //     this.navCtrl.navigateRoot('parties');
         // });

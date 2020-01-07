@@ -22,6 +22,7 @@ const routes: Routes = [
         component: PartiesPage,
     },
     { path: 'create', loadChildren: () => import('./pages/create/create.module').then((m) => m.CreatePageModule) },
+    { path: 'join/:id', loadChildren: () => import('./pages/join/join.module').then((m) => m.JoinPageModule) },
     {
         path: ':id',
         component: ViewPage,

@@ -1,0 +1,73 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>Combine playlists</ion-title>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+    <ion-grid fixed>
+        <ion-row>
+            <ion-col size="12">
+                <form nz-form>
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="6" nzFor="name">Playlist name</nz-form-label>
+                        <nz-form-control [nzSpan]="14">
+                            <input
+                                nz-input
+                                [(ngModel)]="playlistName"
+                                name="name"
+                                type="text"
+                                id="name"
+                                placeholder="Playlist name"
+                            />
+                        </nz-form-control>
+                    </nz-form-item>
+                    <CheckboxItem name="delete" [(ngModel)]="deleteAffected">
+                        Delete playlist when combining
+                    </CheckboxItem>
+                    <CheckboxItem name="restrict" [(ngModel)]="notImportable">
+                        Restrict to this party
+                    </CheckboxItem>
+                    <button
+                        nz-button
+                        nzType="primary"
+                        (click)="combinePlaylists()"
+                        nzBlock
+                        marginTop="1em"
+                        marginBottom="1.5em"
+                    >
+                        Combine
+                    </button>
+                    <nz-list
+                        [nzDataSource]="playlists"
+                        nzBordered
+                        [nzHeader]="'Selected playlists (' + playlists.length + ')'"
+                        [nzFooter]="false"
+                        [nzRenderItem]="defaultItem"
+                        [nzLoading]="false"
+                    >
+                        <ng-template #defaultItem let-item>
+                            <nz-list-item>
+                                <nz-list-item-meta
+                                    *ngIf="item"
+                                    [nzTitle]="item.name"
+                                    [nzAvatar]="preview"
+                                    paddingLeft="2em"
+                                    paddingTop="1em"
+                                >
+                                    <ng-template #preview>
+                                        <nz-avatar
+                                            [nzShape]="'square'"
+                                            [nzSize]="'large'"
+                                            [nzSrc]="item.imageUrl"
+                                        ></nz-avatar>
+                                    </ng-template>
+                                </nz-list-item-meta>
+                            </nz-list-item>
+                        </ng-template>
+                    </nz-list>
+                </form>
+            </ion-col>
+            <ion-col size="6"></ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>

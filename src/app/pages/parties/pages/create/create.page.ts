@@ -35,10 +35,10 @@ export class CreatePage implements OnInit {
         title: [null, [Validators.required]],
         dateStart: [null, [Validators.required]],
         dateEnd: [null, [Validators.required]],
-        description: [null, [Validators.required]],
+        description: [null],
         isPublic: false,
         colorTint: '#4caf50',
-        location: [null, [Validators.required]],
+        location: [null],
     };
     private createPartyMutationSubscription: Subscription;
 

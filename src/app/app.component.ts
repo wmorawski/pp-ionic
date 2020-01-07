@@ -33,10 +33,10 @@ export class AppComponent implements OnDestroy {
         private apollo: Apollo,
         private fcm: FcmService,
         private toastCtrl: ToastController,
-        private navCtrl: NavController
+        private navCtrl: NavController,
     ) {
         this.initializeApp();
-        this.authService.isAuthenticated.subscribe(logged => {
+        this.authService.isAuthenticated.subscribe((logged) => {
             this.isLogged = logged;
             if (logged === true) {
                 this.meQuerySubscription = this.apollo
@@ -52,10 +52,13 @@ export class AppComponent implements OnDestroy {
                 this.startFcm();
             }
         });
-        this.appService.isNavbarVisible.subscribe(visible => {
+        this.appService.isNavbarVisible.subscribe((visible) => {
             this.isNavbarVisible = visible;
         });
-        this.appService.needsMainNavigation.subscribe(visible => {
+        // this.appService.isSecondVisible.subscribe((visible) => {
+        //     this.isMainNavVisible = visible;
+        // });
+        this.appService.needsMainNavigation.subscribe((visible) => {
             this.isMainNavVisible = visible;
         });
         this.authService.autoLogin();
@@ -96,21 +99,20 @@ export class AppComponent implements OnDestroy {
     }
 
     startFcm() {
-        this.fcm
-            .getToken()
+        this.fcm.getToken();
         this.fcm.sub('notifications');
         // Listen to incoming messages
         this.fcm
             .listenToNotifications()
             .pipe(
-                tap(async msg => {
+                tap(async (msg) => {
                     // show a toast
                     const toast = await this.toastCtrl.create({
                         message: msg.body,
                         duration: 3000,
                     });
                     toast.present();
-                })
+                }),
             )
             .subscribe();
     }

@@ -1,3 +1,4 @@
+import { CombinePlaylistModalComponent } from './components/playlists/combine-playlist-modal/combine-playlist-modal.component';
 import { PlaylistImportableComponent } from './components/playlists/import-playlist-modal/playlist-importable/playlist-importable.component';
 import { ImportPlaylistModalComponent } from './components/playlists/import-playlist-modal/import-playlist-modal.component';
 import { CreatePlaylistModalComponent } from './components/create-playlist-modal/create-playlist-modal.component';
@@ -55,8 +56,9 @@ const routes: Routes = [
         ImportPlaylistModalComponent,
         CreatePlaylistModalComponent,
         PlaylistImportableComponent,
+        CombinePlaylistModalComponent,
     ],
-    entryComponents: [CreatePlaylistModalComponent, ImportPlaylistModalComponent],
+    entryComponents: [CreatePlaylistModalComponent, ImportPlaylistModalComponent, CombinePlaylistModalComponent],
     providers: [SpotifyAuth, Media],
 })
 export class PartiesViewMusicPageModule {}

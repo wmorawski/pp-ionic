@@ -1,0 +1,19 @@
+<nz-list-item [nzActions]="[actionButton]">
+    <nz-list-item-meta [nzTitle]="nzTitle" [nzAvatar]="img" [nzDescription]="description">
+        <ng-template #nzTitle> {{ user.node.firstName }} {{ user.node.lastName }} </ng-template>
+    </nz-list-item-meta>
+</nz-list-item>
+<ng-template #actionButton>
+    <ion-button [disabled]="true" size="small" color="primary">
+        <ion-icon slot="start" name="users"></ion-icon> Add friend
+    </ion-button>
+</ng-template>
+<ng-template #description
+    >Joined
+    <strong
+        ><ion-text color="primary">{{ user.node.createdAt | date: 'dd MMM yyyy HH:mm' }}</ion-text></strong
+    ></ng-template
+>
+<ng-template #img>
+    <nz-avatar [nzShape]="'square'" [nzSrc]="user.node.avatar" style="width: 48; height: 48"></nz-avatar>
+</ng-template>
