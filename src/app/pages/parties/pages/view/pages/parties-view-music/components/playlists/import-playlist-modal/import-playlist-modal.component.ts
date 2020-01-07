@@ -4,11 +4,14 @@ import { map, distinctUntilChanged, debounceTime } from 'rxjs/operators';
 import { PP_USER_ID } from './../../../../../../../../../constants';
 import {
     Party_PlaylistsConnectionGQL,
+    Party_ImportPlaylistsToPartyGQL,
     Party,
     PlaylistEdge,
+    Playlist,
 } from './../../../../../../../../../graphql/generated/types';
 import { Component, OnInit, Input, EventEmitter } from '@angular/core';
 import gql from 'graphql-tag';
+import { pluck } from 'ramda';
 
 export const IMPORT_PLAYLISTS_TO_PARTY_MUTATION = gql`
     mutation Party_ImportPlaylistsToParty($playlists: String!, $partyId: ID!) {
@@ -26,9 +29,13 @@ export class ImportPlaylistModalComponent implements OnInit {
     watcher: QueryRef<any>;
     playlists$: any = [];
     filterQuery: string;
-    selectedPlaylists: PlaylistEdge[] = [];
+    selectedPlaylists: Playlist[] = [];
     filterQueryChanged: EventEmitter<boolean> = new EventEmitter<boolean>();
-    constructor(private readonly ppcgql: Party_PlaylistsConnectionGQL, private readonly modalCtrl: ModalController) {}
+    constructor(
+        private readonly ppcgql: Party_PlaylistsConnectionGQL,
+        private readonly modalCtrl: ModalController,
+        private readonly iptpmGQL: Party_ImportPlaylistsToPartyGQL
+    ) {}
 
     ngOnInit() {
         this.watcher = this.ppcgql.watch(
@@ -40,17 +47,17 @@ export class ImportPlaylistModalComponent implements OnInit {
                     importable: true,
                 },
             },
-            { fetchPolicy: 'cache-and-network' },
+            { fetchPolicy: 'cache-and-network' }
         );
         this.playlists$ = this.watcher.valueChanges.pipe(
-            map((r) => {
+            map(r => {
                 this.loading = r.loading;
                 this.selectedPlaylists = [];
                 return r.data ? r.data.playlistsConnection.edges : [];
-            }),
+            })
         );
 
-        this.filterQueryChanged.pipe(distinctUntilChanged(), debounceTime(600)).subscribe((_) => {
+        this.filterQueryChanged.pipe(distinctUntilChanged(), debounceTime(600)).subscribe(_ => {
             this.watcher.refetch({
                 where: {
                     parties_none: { id: this.id },
@@ -63,14 +70,13 @@ export class ImportPlaylistModalComponent implements OnInit {
     }
 
     selectPlaylist(edge: PlaylistEdge) {
-        this.selectedPlaylists.push(edge);
+        this.selectedPlaylists.push(edge.node);
     }
     deselectPlaylist(edge: PlaylistEdge) {
-        this.selectedPlaylists = this.selectedPlaylists.filter((p) => p.node.id !== edge.node.id);
+        this.selectedPlaylists = this.selectedPlaylists.filter(p => p.id !== edge.node.id);
     }
 
     handleChangeSelection(ev: boolean, edge: PlaylistEdge) {
-        console.log(ev, edge);
         if (ev) {
             this.selectPlaylist(edge);
         } else {
@@ -85,5 +91,14 @@ export class ImportPlaylistModalComponent implements OnInit {
         this.modalCtrl.dismiss();
     }
 
-    importPlaylists() {}
+    importPlaylists() {
+        this.iptpmGQL
+            .mutate({
+                partyId: this.id,
+                playlists: pluck('id', this.selectedPlaylists).join(','),
+            })
+            .subscribe(res => {
+                this.modalCtrl.dismiss();
+            });
+    }
 }
