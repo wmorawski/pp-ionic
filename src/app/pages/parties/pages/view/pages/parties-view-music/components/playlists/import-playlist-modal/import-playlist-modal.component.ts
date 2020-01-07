@@ -1,14 +1,14 @@
 import { ModalController } from '@ionic/angular';
 import { QueryRef } from 'apollo-angular';
 import { map, distinctUntilChanged, debounceTime } from 'rxjs/operators';
-import { PP_USER_ID } from './../../../../../../../../../constants';
+import { PP_USER_ID } from 'src/app/constants';
 import {
     Party_PlaylistsConnectionGQL,
     Party_ImportPlaylistsToPartyGQL,
     Party,
     PlaylistEdge,
     Playlist,
-} from './../../../../../../../../../graphql/generated/types';
+} from 'src/app/graphql/generated/types';
 import { Component, OnInit, Input, EventEmitter } from '@angular/core';
 import gql from 'graphql-tag';
 import { pluck } from 'ramda';
