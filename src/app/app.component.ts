@@ -1,3 +1,7 @@
+import { CalendarPage } from './pages/calendar/calendar.page';
+import { PartiesPage } from './pages/parties/parties.page';
+import { HomePage } from './pages/home/home.page';
+import { JoinPage } from './pages/parties/pages/join/join.page';
 import { FcmService } from './services/fcm.service';
 import { Component, OnDestroy } from '@angular/core';
 
@@ -10,6 +14,7 @@ import { Subscription } from 'rxjs';
 import { ME_QUERY } from './graphql/queries';
 import { Apollo } from 'apollo-angular';
 import { tap } from 'rxjs/operators';
+import { Deeplinks } from '@ionic-native/deeplinks/ngx';
 
 @Component({
     selector: 'app-root',
@@ -34,6 +39,7 @@ export class AppComponent implements OnDestroy {
         private fcm: FcmService,
         private toastCtrl: ToastController,
         private navCtrl: NavController,
+        protected deeplinks: Deeplinks,
     ) {
         this.initializeApp();
         this.authService.isAuthenticated.subscribe((logged) => {
@@ -42,7 +48,7 @@ export class AppComponent implements OnDestroy {
                 this.meQuerySubscription = this.apollo
                     .watchQuery<any>({
                         query: ME_QUERY,
-                        fetchPolicy: 'network-only',
+                        fetchPolicy: 'cache-and-network',
                     })
                     .valueChanges.subscribe(({ data, loading }) => {
                         this.loading = loading;
@@ -81,6 +87,25 @@ export class AppComponent implements OnDestroy {
             //         navigator['app'].exitApp();
             //     }
             // });
+
+            this.deeplinks
+                .routeWithNavController(this.navCtrl, {
+                    '/': HomePage,
+                    '/parties': PartiesPage,
+                    '/parties/join/:id': JoinPage,
+                })
+                .subscribe(
+                    (match) => {
+                        // match.$route - the route we matched, which is the matched entry from the arguments to route()
+                        // match.$args - the args passed in the link
+                        // match.$link - the full link data
+                        console.log('Successfully matched route', match);
+                    },
+                    (nomatch) => {
+                        // nomatch.$link - the full link data
+                        console.error('Got a deeplink that didnt match', nomatch);
+                    },
+                );
         });
     }
     async presentToast() {
@@ -95,6 +120,9 @@ export class AppComponent implements OnDestroy {
 
     ionViewWillEnter() {}
     ngOnDestroy(): void {
+        this.meQuerySubscription.unsubscribe();
+    }
+    ionViewWillLeave() {
         this.meQuerySubscription.unsubscribe();
     }
 

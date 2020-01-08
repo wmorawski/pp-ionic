@@ -1,3 +1,4 @@
+import { Deeplinks } from '@ionic-native/deeplinks/ngx';
 import { LocalResolvers } from './graphql/resolvers';
 import { FCM } from '@ionic-native/fcm/ngx';
 import { FcmService } from './services/fcm.service';
@@ -71,6 +72,7 @@ const firebase = {
         { provide: NZ_I18N, useValue: en_US },
         FCM,
         FcmService,
+        Deeplinks,
     ],
     bootstrap: [AppComponent],
 })

@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="fun.partyplanner.partyplanner" version="1.3.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="fun.partyplanner.partyplanner" version="1.3.2" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Party Planner</name>
     <description>Simplify your party life - Organize, make plans, schedule, invite others!</description>
     <author email="ptplannerio@gmail.com" href="https://team.partyplanner.fun/">Ionic Framework Team</author>

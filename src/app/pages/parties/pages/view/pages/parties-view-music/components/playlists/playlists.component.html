@@ -2,6 +2,7 @@
     <ng-container *ngIf="playlists.length; else noParties">
         <app-playlist
             [playlist]="playlist"
+            [id]="id"
             [selectionMode]="selectionMode"
             *ngFor="let playlist of playlists"
             (playlistSelectionChange)="handlePlaylistSelectionChange($event, playlist)"

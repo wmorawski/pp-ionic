@@ -33,7 +33,7 @@
                         </ion-card-subtitle>
                     </ion-col>
                 </ion-row>
-                <ion-row>
+                <ion-row class="buttons">
                     <ion-col>
                         <ion-button
                             [href]="playlist.node.spotifyExternalUrl"
@@ -48,6 +48,11 @@
                     <ion-col>
                         <ion-button (click)="showInfo()" expand="full" fill="clear" size="small" color="primary">
                             <ion-icon name="info"></ion-icon>
+                        </ion-button>
+                    </ion-col>
+                    <ion-col>
+                        <ion-button (click)="delete()" expand="full" fill="clear" size="small" color="danger">
+                            <ion-icon name="trash-2"></ion-icon>
                         </ion-button>
                     </ion-col>
                 </ion-row>

@@ -40,6 +40,7 @@
         "@graphql-codegen/typescript-compatibility": "^1.9.1",
         "@graphql-codegen/typescript-operations": "^1.9.1",
         "@ionic-native/core": "^5.18.0",
+        "@ionic-native/deeplinks": "^5.19.1",
         "@ionic-native/facebook": "^5.18.0",
         "@ionic-native/fcm": "^5.18.0",
         "@ionic-native/firebase": "^5.18.0",
@@ -164,7 +165,13 @@
                 "GRADLE_TOOLS_VERSION": "3.5.0",
                 "GOOGLE_SERVICES_VERSION": "4.2.0"
             },
-            "cordova-plugin-geolocation": {}
+            "cordova-plugin-geolocation": {},
+            "ionic-plugin-deeplinks": {
+                "URL_SCHEME": "partyplanner",
+                "DEEPLINK_SCHEME": "https",
+                "DEEPLINK_HOST": "partyplanner.fun",
+                "ANDROID_PREFIX_PATH": "/"
+            }
         },
         "platforms": [
             "android"

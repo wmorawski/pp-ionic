@@ -7218,6 +7218,38 @@ export type Party_CreatePlaylistMutation = (
   ) }
 );
 
+export type Party_EditPlaylistMutationVariables = {
+  data: PlaylistUpdateInput,
+  where: PlaylistWhereUniqueInput
+};
+
+
+export type Party_EditPlaylistMutation = (
+  { __typename?: 'Mutation' }
+  & { updatePlaylist: Maybe<(
+    { __typename?: 'Playlist' }
+    & Pick<Playlist, 'id'>
+  )> }
+);
+
+export type Party_DeletePlaylistMutationVariables = {
+  where: PlaylistWhereUniqueInput
+};
+
+
+export type Party_DeletePlaylistMutation = (
+  { __typename?: 'Mutation' }
+  & { deletePlaylist: Maybe<(
+    { __typename?: 'Playlist' }
+    & Pick<Playlist, 'id'>
+  )> }
+);
+
+export type EditPlaylistCacheFragmentFragment = (
+  { __typename?: 'Playlist' }
+  & Pick<Playlist, 'name' | 'importable'>
+);
+
 export type Party_CombinePlaylistsMutationVariables = {
   partyPlannerData: CombinePlaylistPartyPlannerData,
   spotifyData: CombinePlaylistCreatedSpotifyPlaylistInput
@@ -7471,6 +7503,10 @@ export type Party_UpdatePartyCartItemVariables = Party_UpdatePartyCartItemMutati
 export type Party_UpdatePartyCartItemUpdatePartyCartItem = Party_UpdatePartyCartItemMutation['updatePartyCartItem'];
 export type Party_CreatePlaylistVariables = Party_CreatePlaylistMutationVariables;
 export type Party_CreatePlaylistCreatePlaylist = Party_Playlists_Connection_Node_FragmentFragment;
+export type Party_EditPlaylistVariables = Party_EditPlaylistMutationVariables;
+export type Party_EditPlaylistUpdatePlaylist = Party_EditPlaylistMutation['updatePlaylist'];
+export type Party_DeletePlaylistVariables = Party_DeletePlaylistMutationVariables;
+export type Party_DeletePlaylistDeletePlaylist = Party_DeletePlaylistMutation['deletePlaylist'];
 export type Party_CombinePlaylistsVariables = Party_CombinePlaylistsMutationVariables;
 export type Party_CombinePlaylistsCombinePlaylists = Party_CombinePlaylistsMutation['combinePlaylists'];
 export type Party_ImportPlaylistsToPartyVariables = Party_ImportPlaylistsToPartyMutationVariables;
@@ -7646,6 +7682,12 @@ export const Information_FragmentFragmentDoc = gql`
 export const User_Privacy_FragmentFragmentDoc = gql`
     fragment USER_PRIVACY_FRAGMENT on User {
   isPrivate
+}
+    `;
+export const EditPlaylistCacheFragmentFragmentDoc = gql`
+    fragment EditPlaylistCacheFragment on Playlist {
+  name
+  importable
 }
     `;
 export const SignupDocument = gql`
@@ -8360,6 +8402,36 @@ export const Party_CreatePlaylistDocument = gql`
   })
   export class Party_CreatePlaylistGQL extends Apollo.Mutation<Party_CreatePlaylistMutation, Party_CreatePlaylistMutationVariables> {
     document = Party_CreatePlaylistDocument;
+    
+  }
+export const Party_EditPlaylistDocument = gql`
+    mutation Party_EditPlaylist($data: PlaylistUpdateInput!, $where: PlaylistWhereUniqueInput!) {
+  updatePlaylist(data: $data, where: $where) {
+    id
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class Party_EditPlaylistGQL extends Apollo.Mutation<Party_EditPlaylistMutation, Party_EditPlaylistMutationVariables> {
+    document = Party_EditPlaylistDocument;
+    
+  }
+export const Party_DeletePlaylistDocument = gql`
+    mutation Party_DeletePlaylist($where: PlaylistWhereUniqueInput!) {
+  deletePlaylist(where: $where) {
+    id
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class Party_DeletePlaylistGQL extends Apollo.Mutation<Party_DeletePlaylistMutation, Party_DeletePlaylistMutationVariables> {
+    document = Party_DeletePlaylistDocument;
     
   }
 export const Party_CombinePlaylistsDocument = gql`
