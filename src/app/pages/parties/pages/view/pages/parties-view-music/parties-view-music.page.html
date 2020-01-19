@@ -1,9 +1,12 @@
 <ion-content color="light">
     <ng-container *ngIf="authorized; else noAuthorized">
+        <ng-container *ngTemplateOutlet="topTracksSpotify"></ng-container>
+        <ng-container *ngTemplateOutlet="searchedTracksSpotify"></ng-container>
         <Tabs
-            [useOnPan]="true"
-            [swipeable]="true"
+            [useOnPan]="false"
+            [swipeable]="false"
             [activeTab]="pageNumber"
+            (onChange)="handleTabChange()"
             [page]="3"
             [tabBarActiveTextColor]="'#1890ff'"
         >
@@ -25,7 +28,6 @@
                         (trackChange)="handleTrackChange($event)"
                     ></spotify-top-track>
                 </ng-container>
-                <ng-container *ngTemplateOutlet="topTracksSpotify"></ng-container>
             </TabPane>
             <TabPane [title]="titleTemplate1">
                 <ng-template #titleTemplate1>
@@ -51,7 +53,6 @@
                         (trackChange)="handleTrackChangeSearched($event)"
                     ></spotify-top-track>
                 </ng-container>
-                <ng-container *ngTemplateOutlet="searchedTracksSpotify"></ng-container>
             </TabPane>
             <TabPane [title]="savedTracksTitle" style="position: relative">
                 <ng-template #savedTracksTitle>

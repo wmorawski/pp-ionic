@@ -1,5 +1,6 @@
 .player {
     position: absolute;
+    z-index: 10000;
     height: auto;
     bottom: 0;
     background: white;

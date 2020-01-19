@@ -34,11 +34,7 @@ export class TopTrackComponent implements OnInit, OnDestroy {
         });
     }
 
-    ngOnDestroy() {
-        if (this.savedTracks) {
-            this.savedTracks.unsubscribe();
-        }
-    }
+    ngOnDestroy() {}
 
     play() {
         this.trackChange.emit(this.track);

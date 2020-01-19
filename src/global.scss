@@ -140,6 +140,10 @@ main {
     font-weight: 500;
     font-size: 95%;
 }
+ion-toolbar.sc-ion-searchbar-ios-h,
+ion-toolbar .sc-ion-searchbar-ios-h {
+    padding-top: 15px !important;
+}
 
 $colors-list: 'success' 'warning' 'danger' 'primary' 'secondary' 'tertiary' 'dark' 'medium' 'light';
 @each $current-color in $colors-list {

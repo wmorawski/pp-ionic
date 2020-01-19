@@ -5,6 +5,7 @@ import {
     User_UserInfoGQL,
     User_UpdatePrivacyGQL,
     MeQueryDocument,
+    MeQueryMe,
 } from './../../../graphql/generated/types';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import gql from 'graphql-tag';
@@ -65,8 +66,8 @@ export class UserEditModalComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.meGQL
             .watch({}, { fetchPolicy: 'cache-and-network' })
-            .valueChanges.pipe(map((u) => u.data.me))
-            .subscribe((me) => {
+            .valueChanges.pipe(map((u) => (u.data ? u.data.me : ({} as any))))
+            .subscribe((me: MeQueryMe) => {
                 console.log(me);
                 this.aboutForm.get('firstName').setValue(me.firstName);
                 this.aboutForm.get('lastName').setValue(me.lastName);

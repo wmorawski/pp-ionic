@@ -99,6 +99,11 @@ export class PartiesViewMusicPage implements OnInit {
         return cordova.plugins.spotifyAuth.authorize(environment.spotify.config);
     }
 
+    handleTabChange() {
+        this.currentTrack = null;
+        this.currentTrackSearched = null;
+    }
+
     async handleAuthorization() {
         this.result = await this.authWithSpotify();
         init({ token: this.result.accessToken });

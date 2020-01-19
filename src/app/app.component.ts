@@ -52,7 +52,7 @@ export class AppComponent implements OnDestroy {
                     })
                     .valueChanges.subscribe(({ data, loading }) => {
                         this.loading = loading;
-                        this.currentUser = data.me;
+                        this.currentUser = data ? data.me : ({} as any);
                     });
 
                 this.startFcm();
