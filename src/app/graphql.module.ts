@@ -13,7 +13,7 @@ import ApolloClient from 'apollo-client';
 import gql from 'graphql-tag';
 import { getMainDefinition } from 'apollo-utilities';
 
-const uri = (environment.production ? environment.backendUrl : '') + '/graphql'; // <-- add the URL of the GraphQL server here
+const uri = environment.backendUrl + '/graphql'; // <-- add the URL of the GraphQL server here
 export function provideApollo(httpLink: HttpLink) {
     const basic = setContext((operation, context) => ({
         headers: {

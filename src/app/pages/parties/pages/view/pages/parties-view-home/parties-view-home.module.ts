@@ -19,6 +19,8 @@ import { NgZorroAntdModule } from 'ng-zorro-antd';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { NgZorroAntdMobileModule } from 'ng-zorro-antd-mobile';
 import { AvatarModule } from 'ngx-avatar';
+import { NgxMapboxGLModule } from 'ngx-mapbox-gl';
+import { environment } from 'src/environments/environment';
 
 const routes: Routes = [
     {
@@ -40,6 +42,9 @@ const routes: Routes = [
         SharedModule,
         MomentModule,
         AvatarModule,
+        NgxMapboxGLModule.withConfig({
+            accessToken: environment.mapbox.accessToken,
+        }),
     ],
     providers: [I18nPluralPipe, Geolocation],
     declarations: [

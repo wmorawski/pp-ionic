@@ -78,6 +78,16 @@
                                                 ></ion-col
                                             >
                                             <ion-col size="12">{{ party.location.placeName }}</ion-col>
+                                            <ion-col size="12">
+                                                <ion-button
+                                                    [routerLink]="['/parties', party.id]"
+                                                    color="primary"
+                                                    size="small"
+                                                    expand="block"
+                                                >
+                                                    Go to the party
+                                                </ion-button>
+                                            </ion-col>
                                         </ion-row>
                                     </ion-grid>
                                 </mgl-popup>

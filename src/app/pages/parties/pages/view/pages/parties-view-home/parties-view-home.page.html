@@ -64,6 +64,32 @@
                 <party-meta-info icon="map-pin" *ngIf="location$ | async" [content]="partyLocation"></party-meta-info>
             </ion-col>
         </ion-row>
+        <ion-row *ngIf="location$  | async as location">
+            <ion-col size="12" height="250px">
+                <mgl-map
+                    [style]="'mapbox://styles/mapbox/streets-v9'"
+                    [zoom]="[12]"
+                    [center]="[party.location.longitude,party.location.latitude]"
+                    (load)="initMap($event)"
+                >
+                    <mgl-marker
+                        [lngLat]="[party.location.longitude, party.location.latitude]"
+                        className="red"
+                        anchor="center"
+                        #partyMarker
+                    >
+                        <ion-icon
+                            name="map-marker"
+                            [ngStyle]="{ color: party.colorTint, fontSize: '32px', stroke: 'black', strokeWidth: 2 }"
+                        ></ion-icon>
+                        <p class="ion-text-center ion-justify-content-center">
+                            <strong>{{ party.title }}</strong>
+                        </p>
+                    </mgl-marker>
+                    <mgl-control mglGeolocate [showUserLocation]="true" [trackUserLocation]="true"></mgl-control>
+                </mgl-map>
+            </ion-col>
+        </ion-row>
     </ion-grid>
     <ng-template #partyMembers>
         <strong>{{ party.members.length | shortNumber }}</strong>

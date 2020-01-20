@@ -48,7 +48,7 @@ export class AppComponent implements OnDestroy {
                 this.meQuerySubscription = this.apollo
                     .watchQuery<any>({
                         query: ME_QUERY,
-                        fetchPolicy: 'cache-and-network',
+                        fetchPolicy: 'network-only',
                     })
                     .valueChanges.subscribe(({ data, loading }) => {
                         this.loading = loading;

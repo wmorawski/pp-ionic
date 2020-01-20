@@ -1,3 +1,4 @@
+import { Map } from 'mapbox-gl';
 import { PP_USER_ID } from 'src/app/constants';
 import { MembersModalComponent } from './../../components/modals/members-modal/members-modal.component';
 import { InvitesModalComponent } from './../../components/modals/invites-modal/invites-modal.component';
@@ -31,19 +32,22 @@ export class PartiesViewHomePage implements OnInit {
     };
     party;
     partySubscription: Subscription;
+    map: Map;
     constructor(
         private appService: AppService,
         private router: Router,
         private partyQueryGQL: PartyQueryGQL,
         private mabpox: MapboxService,
         private geo: Geolocation,
-        private modalController: ModalController
+        private modalController: ModalController,
     ) {}
 
     ngOnInit() {}
     ionViewWillEnter() {
         this.id = this.router.url.split('/')[2]; // temporary workaround;
-        this.party$ = this.partyQueryGQL.watch(getPartyVariables(this.id)).valueChanges.pipe(map(result => result.data.party));
+        this.party$ = this.partyQueryGQL
+            .watch(getPartyVariables(this.id))
+            .valueChanges.pipe(map((result) => result.data.party));
         this.partySubscription = this.party$.subscribe(async (party: Party) => {
             this.party = party;
             const userPosition = await this.geo.getCurrentPosition();
@@ -57,6 +61,7 @@ export class PartiesViewHomePage implements OnInit {
                     tLatitude: party.location.latitude,
                 },
             });
+            this.location$.subscribe(console.log);
         });
     }
 
@@ -65,7 +70,7 @@ export class PartiesViewHomePage implements OnInit {
     }
 
     showQrModal() {
-        return this.party$.pipe(first()).subscribe(async party => {
+        return this.party$.pipe(first()).subscribe(async (party) => {
             return await (
                 await this.modalController.create({
                     component: QrModalComponent,
@@ -78,7 +83,7 @@ export class PartiesViewHomePage implements OnInit {
     }
 
     showInvitesModal() {
-        this.party$.pipe(first()).subscribe(async party => {
+        this.party$.pipe(first()).subscribe(async (party) => {
             return await (
                 await this.modalController.create({
                     component: InvitesModalComponent,
@@ -104,6 +109,13 @@ export class PartiesViewHomePage implements OnInit {
     }
 
     get goingColor() {
-        return this.party.members.some(member => member.id === localStorage.getItem(PP_USER_ID)) ? 'primary' : 'medium';
+        return this.party.members.some((member) => member.id === localStorage.getItem(PP_USER_ID))
+            ? 'primary'
+            : 'medium';
+    }
+
+    initMap(e) {
+        this.map = e;
+        this.map.resize();
     }
 }

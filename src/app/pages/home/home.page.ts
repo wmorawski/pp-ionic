@@ -5,7 +5,7 @@ import { AppService } from 'src/app/services/app.service';
 import { Subscription } from 'rxjs';
 import { Apollo } from 'apollo-angular';
 import { ME_QUERY } from 'src/app/graphql/queries';
-import { PartiesQueryGQL } from 'src/app/graphql/generated/types';
+import { PartiesQueryGQL, MeQueryMe } from 'src/app/graphql/generated/types';
 import { getPublicPartiesVariables } from 'src/app/shared/helpers/graphql-utils';
 import { map } from 'rxjs/operators';
 @Component({
@@ -15,6 +15,7 @@ import { map } from 'rxjs/operators';
 })
 export class HomePage extends NavbarManager {
     public publicParties: any;
+    public me: MeQueryMe;
     constructor(
         private readonly authService: AuthService,
         protected readonly appService: AppService,
